@@ -26,37 +26,38 @@ die Eingaben landen aber nur im Browser-Speicher statt im Google Sheet.
 
 1. Das [Google Sheet](https://docs.google.com/spreadsheets/d/10PoAB8SqxYJWnmy9jdVE1kav7ygcKsLwatucQoH6jbE/edit)
    öffnen → **Erweiterungen › Apps Script**.
-2. Im Apps-Script-Editor die Dateien aus dem Ordner `apps-script/` anlegen und den Inhalt
-   1:1 einfügen:
+2. Zwei Dateien einfügen – mehr braucht es nicht:
 
-   | Datei im Editor | Typ | Quelle |
+   | Im Apps-Script-Editor | Typ | Inhalt aus |
    | --- | --- | --- |
-   | `Code.gs` | Skript | `apps-script/Code.gs` |
-   | `Config.gs` | Skript | `apps-script/Config.gs` |
-   | `Calc.gs` | Skript | `apps-script/Calc.gs` |
-   | `Sheets.gs` | Skript | `apps-script/Sheets.gs` |
-   | `Quotes.gs` | Skript | `apps-script/Quotes.gs` |
-   | `Reminders.gs` | Skript | `apps-script/Reminders.gs` |
-   | `Index.html` | HTML | `apps-script/Index.html` |
-   | `Stylesheet.html` | HTML | `apps-script/Stylesheet.html` |
-   | `JavaScript.html` | HTML | `apps-script/JavaScript.html` |
+   | `Code.gs` (bereits vorhanden, Inhalt ersetzen) | Skript | [`apps-script-single/Code.gs`](apps-script-single/Code.gs) |
+   | `Index.html` (über **+ › HTML** anlegen) | HTML | [`apps-script-single/Index.html`](apps-script-single/Index.html) |
 
-   Unter **Projekteinstellungen** die Option «`appsscript.json`-Manifestdatei im Editor
-   anzeigen» aktivieren und den Inhalt von `apps-script/appsscript.json` übernehmen.
+   Wichtig: Die HTML-Datei muss genau `Index` heissen. Speichern nicht vergessen.
+3. Empfohlen: unter **Projekteinstellungen** die Option «`appsscript.json`-Manifestdatei im
+   Editor anzeigen» aktivieren und den Inhalt von [`apps-script/appsscript.json`](apps-script/appsscript.json)
+   übernehmen. Das setzt die Zeitzone auf Europe/Zurich und die Berechtigungen.
 
-   Die Sheet-ID ist in `Config.gs` bereits eingetragen – es ist nichts zu verknüpfen.
-3. **Bereitstellen › Neue Bereitstellung › Web-App**
+   Die Sheet-ID ist im Code bereits eingetragen – es ist nichts zu verknüpfen.
+4. **Bereitstellen › Neue Bereitstellung › Web-App**
    * Ausführen als: **Ich**
    * Zugriff: **Alle Personen mit Google-Konto**
 
-   Die entstehende URL ist das Tool – am besten als Lesezeichen oder auf dem Handy-Startbildschirm
-   speichern.
-4. Sheet neu laden → neues Menü **LAEMU Stundenrapport** → **Tabelle einrichten**.
+   Beim ersten Mal fragt Google nach der Freigabe der Berechtigungen. Die entstehende URL
+   endet auf `/exec` und ist das Tool – am besten als Lesezeichen oder auf dem
+   Handy-Startbildschirm speichern.
+5. Sheet neu laden → neues Menü **LAEMU Stundenrapport** → **Tabelle einrichten**.
    Damit entstehen die Blätter «Einstellungen», je ein Blatt pro Mitarbeiter:in und
    «Monatsübersicht».
-5. Im Blatt **Einstellungen** die E-Mail-Adressen eintragen, danach im Menü
+6. Im Blatt **Einstellungen** die E-Mail-Adressen eintragen, danach im Menü
    **Erinnerungs-Trigger installieren** wählen. Ab dann kommt am 1. jedes Monats
    automatisch die Monatsübersicht per Mail.
+
+Die zwei Dateien in `apps-script-single/` werden aus `apps-script/` erzeugt
+(`node tools/build-appsscript-bundle.js`). Wer im Editor lieber die einzelnen Dateien
+hat – `Code.gs`, `Config.gs`, `Calc.gs`, `Sheets.gs`, `Quotes.gs`, `Reminders.gs`,
+`Index.html`, `Stylesheet.html`, `JavaScript.html` – kopiert stattdessen die Dateien aus
+`apps-script/` einzeln; beides ergibt dasselbe Tool.
 
 ## Vercel oder eigene Domain
 
@@ -174,14 +175,16 @@ genügt ein `@font-face`-Block in `Stylesheet.html`.
 ```bash
 npm test             # 18 Tests: Feiertage, Soll/Ist, Ferien, Validierung, Tagesspruch
 npm run preview      # Vorschau neu bauen
+npm run bundle       # apps-script-single/ neu erzeugen
 ```
 
 Die Rechenlogik in `apps-script/Calc.gs` ist bewusst frei von Google-APIs, damit sie sowohl
 in Apps Script als auch in den Tests und in der Vorschau läuft.
 
 ```
-index.html       Startseite/Weiterleitung für Vercel oder eine eigene Domain
-apps-script/     Web-App (Backend .gs + Oberfläche .html)
+index.html          Startseite/Weiterleitung für Vercel oder eine eigene Domain
+apps-script/        Web-App (Backend .gs + Oberfläche .html)
+apps-script-single/ dieselbe Web-App, zusammengefasst auf zwei Dateien (generiert)
 brand/           Logo und Favicon als Vektor, direkt aus den Brand Guidelines extrahiert
 preview/         generierte Vorschau (nicht von Hand bearbeiten)
 test/            Tests der Rechenlogik
