@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "node --test test/calc.test.js",
-    "preview": "node tools/build-preview.js"
+    "preview": "node tools/build-preview.js",
+    "bundle": "node tools/build-appsscript-bundle.js"
   },
   "license": "UNLICENSED"
 }
