@@ -79,7 +79,7 @@ function laemuEnsureSettingsSheet_(ss) {
   sheet.setColumnWidth(5, 170);
   sheet.setColumnWidth(7, 130);
   sheet.setColumnWidth(8, 240);
-  sheet.getRange(rows.length + 3, 1).setValue(
+  sheet.getRange(rows.length + 3, 2).setValue(
     'Hinweis: E-Mail eintragen, damit die monatliche Erinnerung verschickt wird. ' +
     'Startsaldo = bereits bestehende Überstunden beim Beginn der Erfassung. ' +
     'Wöchentliche Sollzeit: ' + WEEKLY_HOURS + ' h (' + laemuDailyTarget(1) + ' h pro Arbeitstag).')
@@ -133,6 +133,15 @@ function laemuEnsureMonthlySheet_(ss) {
   return sheet;
 }
 
+/** Stellt sicher, dass das Blatt genügend Zeilen für n Datenzeilen hat. */
+function laemuEnsureRows_(sheet, dataRows) {
+  var needed = dataRows + 1;
+  var available = sheet.getMaxRows();
+  if (available < needed) {
+    sheet.insertRowsAfter(available, needed - available);
+  }
+}
+
 /** Mitarbeitende aus dem Blatt «Einstellungen», sonst aus Config.gs. */
 function laemuGetEmployees() {
   var ss = laemuSpreadsheet_();
@@ -142,8 +151,8 @@ function laemuGetEmployees() {
   var out = [];
   for (var i = 1; i < values.length; i++) {
     var row = values[i];
-    var name = String(row[0] || '').trim();
-    if (!name) continue;
+    if (!laemuIsEmployeeRow(row)) continue;
+    var name = String(row[0]).trim();
     var startIso = laemuCellToIso_(row[2]);
     out.push({
       name: name,
@@ -281,6 +290,7 @@ function laemuSaveDay_(employee, day) {
   }
   if (kept.length) {
     var out = kept.map(function (x) { return x.row; });
+    laemuEnsureRows_(sheet, out.length);
     sheet.getRange(2, 1, out.length, ENTRY_HEADERS.length).setValues(out);
   }
   return sheet;
@@ -322,6 +332,7 @@ function laemuRebuildMonthly() {
     sheet.getRange(2, 1, lastRow - 1, MONTHLY_HEADERS.length).clearContent();
   }
   if (rows.length) {
+    laemuEnsureRows_(sheet, rows.length);
     sheet.getRange(2, 1, rows.length, MONTHLY_HEADERS.length).setValues(rows);
     sheet.getRange(2, 4, rows.length, 8).setNumberFormat('0.00');
   }
