@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LAEMU Stundenrapport</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20306.24%20200.18%22%20fill%3D%22%2523BC8C33%22%3E%3Cg%20transform%3D%22translate(-1073.084%2C578.345)%20scale(1%2C-1)%22%3E%3Cpath%20d%3D%22M1073.921%20430.496%20C1073.084%20421.815%201081.048%20414.777%201089.520%20416.848%20C1095.433%20418.291%201101.077%20420.641%201105.776%20424.214%20C1113.680%20430.217%201120.529%20439.635%201125.218%20448.345%20C1129.907%20457.055%201137.771%20480.619%201144.470%20480.559%20C1150.692%20480.499%201156.297%20467.598%201167.377%20447.897%20C1206.619%20378.163%201241.630%20450.007%201251.425%20475.114%20C1256.035%20486.910%201260.753%20497.950%201265.681%20509.727%20C1269.792%20519.572%201272.440%20526.540%201278.702%20526.640%20C1287.233%20526.779%201295.466%20494.854%201298.711%20481.126%20C1301.946%20467.399%201306.973%20453.541%201306.973%20453.541%20C1322.184%20410.407%201363.368%20398.173%201373.143%20405.061%20C1379.325%20409.412%201354.349%20412.279%201342.950%20458.340%20C1339.864%20470.803%201334.309%20490.812%201331.194%20506.730%20C1325.639%20535.101%201312.847%20563.164%201287.830%20569.237%20C1250.310%20578.345%201233.377%20531.448%201221.093%20502.460%20L1207.355%20469.360%20C1205.295%20464.094%201200.646%20457.822%201193.419%20469.648%20C1185.624%20482.410%201176.864%20495.969%201176.864%20495.969%20C1167.914%20509.727%201154.674%20517.213%201138.368%20514.256%20C1115.084%20510.035%201109.758%20472.914%201096.199%20453.273%20C1092.735%20448.255%201087.867%20443.457%201082.034%20441.158%20C1077.544%20439.386%201074.378%20435.314%201073.911%20430.506%20L1073.921%20430.496%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+  <?!= include('Stylesheet'); ?>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. LAEMU-Logo -->
+  <header class="brand">
+    <svg role="img" aria-label="LAEMU" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 679.57 168.55" fill="currentColor"><g transform="translate(-884.201,599.433) scale(1,-1)" fill-rule="nonzero"><path d="M1436.668 498.385 C1434.070 508.879 1429.395 525.728 1426.772 539.131 C1422.096 563.020 1411.328 586.650 1390.270 591.763 C1358.687 599.433 1344.433 559.944 1334.093 535.535 L1322.529 507.664 C1320.794 503.230 1316.881 497.949 1310.797 507.907 C1304.236 518.653 1296.862 530.070 1296.862 530.070 C1289.329 541.654 1278.184 547.957 1264.458 545.468 C1244.858 541.914 1240.375 510.656 1228.962 494.118 C1224.914 488.242 1218.588 482.743 1210.945 482.718 L1210.945 482.643 L1149.321 482.643 L1149.321 515.837 L1207.166 515.837 L1207.166 536.700 L1149.321 536.700 L1149.321 568.443 L1219.132 568.443 L1219.132 589.307 L1124.660 589.307 L1124.660 461.788 L1208.943 461.788 C1218.454 461.763 1229.272 463.783 1237.014 469.659 C1243.668 474.713 1249.433 482.643 1253.380 489.977 C1257.335 497.320 1263.947 517.153 1269.586 517.102 C1274.823 517.052 1279.541 506.189 1288.868 489.600 C1321.900 430.883 1351.372 491.377 1359.617 512.517 C1363.497 522.450 1367.469 531.746 1371.617 541.662 C1375.078 549.952 1377.307 555.820 1382.577 555.904 C1389.759 556.021 1396.689 529.139 1399.421 517.580 C1402.144 506.021 1406.376 494.353 1406.376 494.353 C1419.180 458.033 1453.846 447.731 1462.075 453.531 C1467.279 457.195 1446.254 459.609 1436.660 498.393 L1436.668 498.385 Z"/><path d="M908.686 589.307 L884.201 589.307 L884.201 461.788 L968.316 461.788 L976.453 482.643 L908.686 482.643 L908.686 589.307 Z"/><path d="M1037.432 589.307 L987.204 461.788 L1011.321 461.788 L1021.477 488.812 L1075.149 488.812 L1085.481 461.788 L1111.776 461.788 L1061.004 589.307 L1037.432 589.307 Z M1029.446 509.676 L1048.308 559.374 L1067.171 509.676 L1029.454 509.676 L1029.446 509.676 Z"/><path d="M1539.295 589.306 L1539.295 514.210 C1539.295 493.715 1528.418 482.106 1509.371 482.106 C1489.243 482.106 1479.271 492.810 1479.271 514.210 L1479.271 589.306 L1454.610 589.306 L1454.610 510.220 C1454.610 479.382 1475.467 459.977 1509.371 459.977 C1543.275 459.977 1563.772 479.566 1563.772 510.220 L1563.772 589.306 L1539.295 589.306 Z"/></g></svg>
+    <div class="claim">Am Puls der Ländlermusik.</div>
+  </header>
+
+  <!-- 2. Spruch des Tages -->
+  <section class="quote" aria-label="Spruch des Tages">
+    <svg class="mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.24 200.18" fill="currentColor"><g transform="translate(-1073.084,578.345) scale(1,-1)"><path d="M1073.921 430.496 C1073.084 421.815 1081.048 414.777 1089.520 416.848 C1095.433 418.291 1101.077 420.641 1105.776 424.214 C1113.680 430.217 1120.529 439.635 1125.218 448.345 C1129.907 457.055 1137.771 480.619 1144.470 480.559 C1150.692 480.499 1156.297 467.598 1167.377 447.897 C1206.619 378.163 1241.630 450.007 1251.425 475.114 C1256.035 486.910 1260.753 497.950 1265.681 509.727 C1269.792 519.572 1272.440 526.540 1278.702 526.640 C1287.233 526.779 1295.466 494.854 1298.711 481.126 C1301.946 467.399 1306.973 453.541 1306.973 453.541 C1322.184 410.407 1363.368 398.173 1373.143 405.061 C1379.325 409.412 1354.349 412.279 1342.950 458.340 C1339.864 470.803 1334.309 490.812 1331.194 506.730 C1325.639 535.101 1312.847 563.164 1287.830 569.237 C1250.310 578.345 1233.377 531.448 1221.093 502.460 L1207.355 469.360 C1205.295 464.094 1200.646 457.822 1193.419 469.648 C1185.624 482.410 1176.864 495.969 1176.864 495.969 C1167.914 509.727 1154.674 517.213 1138.368 514.256 C1115.084 510.035 1109.758 472.914 1096.199 453.273 C1092.735 448.255 1087.867 443.457 1082.034 441.158 C1077.544 439.386 1074.378 435.314 1073.911 430.506 L1073.921 430.496 Z"/></g></svg>
+    <p id="quoteText">&nbsp;</p>
+    <div class="author" id="quoteAuthor"></div>
+  </section>
+
+  <main class="card">
+
+    <!-- 3. Mitarbeiter -->
+    <section class="block">
+      <div class="block-head"><span class="step">01</span><h2>Wer erfasst?</h2></div>
+      <div class="pills" id="employeePills"></div>
+      <p class="default-note" id="employeeNote"></p>
+    </section>
+
+    <!-- 4. Datum -->
+    <section class="block">
+      <div class="block-head"><span class="step">02</span><h2>Für welchen Tag?</h2></div>
+      <div class="date-row">
+        <div class="field">
+          <label for="dateInput">Datum</label>
+          <input type="date" id="dateInput">
+        </div>
+        <div class="pills">
+          <button type="button" class="pill small" data-shift="0">Heute</button>
+          <button type="button" class="pill small" data-shift="-1">Gestern</button>
+          <button type="button" class="pill small" data-shift="-2">Vorgestern</button>
+        </div>
+      </div>
+      <div class="date-meta" id="dateMeta"></div>
+    </section>
+
+    <!-- 5. Projekte -->
+    <section class="block">
+      <div class="block-head"><span class="step">03</span><h2>Woran hast du gearbeitet?</h2></div>
+      <p class="hint">Projekt wählen, Arbeitsbeginn und Arbeitsende erfassen – die Stunden werden automatisch in Dezimalstellen berechnet.</p>
+      <div id="projectList"></div>
+      <div class="actions-row">
+        <button type="button" class="linkish" id="addProject">+ Weiteres Projekt erfassen</button>
+        <!-- 6. Link «Weiteres» -->
+        <button type="button" class="linkish subtle" id="addAbsence">+ Weiteres (Ferien, Feiertag, Krank …)</button>
+      </div>
+      <div id="absenceList" style="margin-top:16px"></div>
+    </section>
+
+    <!-- 7. Pause -->
+    <section class="block">
+      <div class="block-head"><span class="step">04</span><h2>Pausenzeit</h2></div>
+      <div class="pause-row">
+        <div class="field">
+          <label for="pauseInput">Minuten</label>
+          <input type="number" id="pauseInput" min="0" max="720" step="5" value="0" inputmode="numeric">
+        </div>
+        <div class="pills">
+          <button type="button" class="pill small" data-pause="0">Keine</button>
+          <button type="button" class="pill small" data-pause="15">15 Min</button>
+          <button type="button" class="pill small" data-pause="30">30 Min</button>
+          <button type="button" class="pill small" data-pause="45">45 Min</button>
+          <button type="button" class="pill small" data-pause="60">60 Min</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Total -->
+    <section class="block">
+      <div class="block-head"><span class="step">05</span><h2>Total</h2></div>
+      <div class="summary">
+        <h3>Zusammenzug des Tages</h3>
+        <div id="summaryLines"></div>
+        <div class="summary-total">
+          <span class="lbl">Total Tag</span>
+          <span class="val" id="dayTotal">0.00<small>h</small></span>
+        </div>
+      </div>
+
+      <!-- 10. Einreichen -->
+      <button type="button" class="submit" id="submitBtn">Einreichen →</button>
+      <div id="formErrors"></div>
+    </section>
+  </main>
+
+  <!-- 9. Überstunden und Ferien -->
+  <section class="stats" id="stats" aria-live="polite"></section>
+  <div id="reminderBox"></div>
+
+  <p class="foot">
+    Wöchentliche Arbeitszeit <strong id="footWeekly">42</strong> Stunden ·
+    Feiertage Kanton Schwyz werden gutgeschrieben, wenn sie auf Montag bis Freitag fallen.
+  </p>
+</div>
+
+<!-- 12. Erfolgsnachricht -->
+<div class="overlay" id="successOverlay" role="dialog" aria-modal="true">
+  <div class="overlay-inner">
+    <div class="wave"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.24 200.18" fill="currentColor"><g transform="translate(-1073.084,578.345) scale(1,-1)"><path d="M1073.921 430.496 C1073.084 421.815 1081.048 414.777 1089.520 416.848 C1095.433 418.291 1101.077 420.641 1105.776 424.214 C1113.680 430.217 1120.529 439.635 1125.218 448.345 C1129.907 457.055 1137.771 480.619 1144.470 480.559 C1150.692 480.499 1156.297 467.598 1167.377 447.897 C1206.619 378.163 1241.630 450.007 1251.425 475.114 C1256.035 486.910 1260.753 497.950 1265.681 509.727 C1269.792 519.572 1272.440 526.540 1278.702 526.640 C1287.233 526.779 1295.466 494.854 1298.711 481.126 C1301.946 467.399 1306.973 453.541 1306.973 453.541 C1322.184 410.407 1363.368 398.173 1373.143 405.061 C1379.325 409.412 1354.349 412.279 1342.950 458.340 C1339.864 470.803 1334.309 490.812 1331.194 506.730 C1325.639 535.101 1312.847 563.164 1287.830 569.237 C1250.310 578.345 1233.377 531.448 1221.093 502.460 L1207.355 469.360 C1205.295 464.094 1200.646 457.822 1193.419 469.648 C1185.624 482.410 1176.864 495.969 1176.864 495.969 C1167.914 509.727 1154.674 517.213 1138.368 514.256 C1115.084 510.035 1109.758 472.914 1096.199 453.273 C1092.735 448.255 1087.867 443.457 1082.034 441.158 C1077.544 439.386 1074.378 435.314 1073.911 430.506 L1073.921 430.496 Z"/></g></svg></div>
+    <h2 id="successTitle">Danke!</h2>
+    <p id="successSub"></p>
+    <div class="recap" id="successRecap"></div>
+    <p id="successReminder" style="margin-top:14px"></p>
+    <button type="button" class="submit again" id="againBtn">Weiteren Tag erfassen</button>
+  </div>
+</div>
+
+<script>
+  var LAEMU_BOOTSTRAP = <?!= bootstrap ?>;
+</script>
+<?!= include('JavaScript'); ?>
+</body>
+</html>

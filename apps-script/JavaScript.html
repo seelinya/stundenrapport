@@ -1,0 +1,690 @@
+<script>
+/* LAEMU Stundenrapport – Bedienlogik
+   Die Berechnung im Browser dient der sofortigen Anzeige; verbindlich ist
+   immer die Berechnung im Backend (Calc.gs), die beim Einreichen läuft. */
+(function () {
+  'use strict';
+
+  var B = window.LAEMU_BOOTSTRAP || {};
+  var STORAGE_KEY = 'laemu.stundenrapport.mitarbeiter';
+
+  var state = {
+    employee: null,
+    date: B.today,
+    projects: [],
+    absences: [],
+    pause: 0,
+    dayState: null,
+    stats: null,
+    dailyTarget: B.dailyTarget || 8.4,
+    loading: false
+  };
+
+  var el = {
+    quoteText: document.getElementById('quoteText'),
+    quoteAuthor: document.getElementById('quoteAuthor'),
+    employeePills: document.getElementById('employeePills'),
+    employeeNote: document.getElementById('employeeNote'),
+    dateInput: document.getElementById('dateInput'),
+    dateMeta: document.getElementById('dateMeta'),
+    projectList: document.getElementById('projectList'),
+    absenceList: document.getElementById('absenceList'),
+    addProject: document.getElementById('addProject'),
+    addAbsence: document.getElementById('addAbsence'),
+    pauseInput: document.getElementById('pauseInput'),
+    summaryLines: document.getElementById('summaryLines'),
+    dayTotal: document.getElementById('dayTotal'),
+    submitBtn: document.getElementById('submitBtn'),
+    formErrors: document.getElementById('formErrors'),
+    stats: document.getElementById('stats'),
+    reminderBox: document.getElementById('reminderBox'),
+    footWeekly: document.getElementById('footWeekly'),
+    overlay: document.getElementById('successOverlay'),
+    successTitle: document.getElementById('successTitle'),
+    successSub: document.getElementById('successSub'),
+    successRecap: document.getElementById('successRecap'),
+    successReminder: document.getElementById('successReminder'),
+    againBtn: document.getElementById('againBtn')
+  };
+
+  /* ---------- Hilfsfunktionen ---------- */
+
+  function round2(v) { return Math.round((Number(v) + Number.EPSILON) * 100) / 100; }
+  function fmt(v) { return round2(v).toFixed(2); }
+  function signed(v) { return (Number(v) > 0 ? '+' : '') + fmt(v); }
+
+  function escapeHtml(text) {
+    return String(text == null ? '' : text).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function minutesOfDay(value) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(String(value || ''));
+    if (!m) return null;
+    return Number(m[1]) * 60 + Number(m[2]);
+  }
+
+  function hoursBetween(from, to) {
+    var f = minutesOfDay(from), t = minutesOfDay(to);
+    if (f === null || t === null || t <= f) return 0;
+    return round2((t - f) / 60);
+  }
+
+  function addDays(iso, days) {
+    var p = iso.split('-');
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]), 12, 0, 0);
+    d.setDate(d.getDate() + days);
+    var m = d.getMonth() + 1, dd = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (dd < 10 ? '0' + dd : dd);
+  }
+
+  function formatDate(iso) {
+    var p = String(iso).split('-');
+    return p[2] + '.' + p[1] + '.' + p[0];
+  }
+
+  function currentEmployee() {
+    for (var i = 0; i < B.employees.length; i++) {
+      if (B.employees[i].name === state.employee) return B.employees[i];
+    }
+    return null;
+  }
+
+  function server(method, args, onOk, onErr) {
+    var runner = window.google && google.script && google.script.run;
+    if (!runner) {
+      if (onErr) onErr(new Error('Keine Verbindung zum Server.'));
+      return;
+    }
+    google.script.run
+      .withSuccessHandler(onOk)
+      .withFailureHandler(onErr || function (e) { showErrors([String(e && e.message || e)]); })[method]
+      .apply(null, args);
+  }
+
+  /* ---------- Tagesspruch ---------- */
+
+  function renderQuote() {
+    if (!B.quote) return;
+    el.quoteText.textContent = '«' + B.quote.text + '»';
+    el.quoteAuthor.textContent = B.quote.author + ' · ' + (B.todayLabel || '');
+  }
+
+  /* ---------- Mitarbeitende ---------- */
+
+  function renderEmployees() {
+    el.employeePills.innerHTML = '';
+    B.employees.forEach(function (emp) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pill';
+      b.textContent = emp.name;
+      b.setAttribute('aria-pressed', String(emp.name === state.employee));
+      b.addEventListener('click', function () { selectEmployee(emp.name, true); });
+      el.employeePills.appendChild(b);
+    });
+    var emp = currentEmployee();
+    el.employeeNote.innerHTML = emp
+      ? 'Auf diesem Gerät als Standard gespeichert: <strong>' + escapeHtml(emp.name) + '</strong>.'
+      : 'Bitte wählen – die Auswahl wird auf diesem Gerät als Standard gespeichert.';
+  }
+
+  function selectEmployee(name, persist) {
+    state.employee = name;
+    if (persist) {
+      try { window.localStorage.setItem(STORAGE_KEY, name); } catch (e) { /* Privatmodus */ }
+    }
+    var emp = currentEmployee();
+    if (emp) state.dailyTarget = emp.dailyTarget || state.dailyTarget;
+    renderEmployees();
+    loadDay();
+  }
+
+  /* ---------- Datum ---------- */
+
+  var WEEKDAYS = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+
+  function localWeekday(iso) {
+    var p = iso.split('-');
+    var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]), 12, 0, 0);
+    return WEEKDAYS[(d.getDay() + 6) % 7];
+  }
+
+  function renderDateMeta() {
+    var d = state.dayState && state.dayState.date === state.date ? state.dayState : null;
+    var parts = [];
+    var weekday = d ? d.weekday : localWeekday(state.date);
+    if (weekday) parts.push('<span class="tagday">' + escapeHtml(weekday) + '</span>');
+    if (d && d.holiday) {
+      parts.push('<span class="tagday gold">' + escapeHtml(d.holiday) + '</span>');
+      parts.push(d.isWeekend
+        ? 'Feiertag am Wochenende – keine Gutschrift.'
+        : 'Feiertag: ' + fmt(state.dailyTarget) + ' h werden automatisch gutgeschrieben.');
+    } else if (d && d.isWeekend) {
+      parts.push('Wochenende – kein Soll, erfasste Arbeit zählt vollumfänglich.');
+    }
+    if (d && d.beforeStart) {
+      parts.push('<br>Hinweis: Dieses Datum liegt vor dem Anstellungsbeginn (' + formatDate(d.startDate) + ').');
+    }
+    if (d && d.existing) {
+      parts.push('<br><strong>Für diesen Tag sind bereits Einträge erfasst.</strong> Sie sind unten geladen und werden beim Einreichen ersetzt.');
+    }
+    el.dateMeta.innerHTML = parts.join(' ');
+  }
+
+  /* ---------- Projekte ---------- */
+
+  function emptyProject() { return { tag: '', from: '', to: '', note: '' }; }
+
+  function renderProjects() {
+    el.projectList.innerHTML = '';
+    state.projects.forEach(function (project, index) {
+      el.projectList.appendChild(projectNode(project, index));
+    });
+  }
+
+  function projectNode(project, index) {
+    var wrap = document.createElement('div');
+    wrap.className = 'entry';
+
+    var head = document.createElement('div');
+    head.className = 'entry-head';
+    var title = document.createElement('span');
+    title.className = 'entry-title';
+    title.textContent = 'Projekt ' + (index + 1);
+    head.appendChild(title);
+    if (state.projects.length > 1) {
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'icon-btn';
+      del.textContent = '✕ Entfernen';
+      del.addEventListener('click', function () {
+        state.projects.splice(index, 1);
+        renderProjects();
+        recalc();
+      });
+      head.appendChild(del);
+    }
+    wrap.appendChild(head);
+
+    var pills = document.createElement('div');
+    pills.className = 'pills';
+    (B.projectTags || []).forEach(function (tag) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pill';
+      b.textContent = tag;
+      b.setAttribute('aria-pressed', String(project.tag === tag));
+      b.addEventListener('click', function () {
+        project.tag = project.tag === tag ? '' : tag;
+        Array.prototype.forEach.call(pills.children, function (child) {
+          child.setAttribute('aria-pressed', String(child.textContent === project.tag));
+        });
+        noteField.style.display = project.tag === 'Weiteres' ? '' : 'none';
+        if (project.tag !== 'Weiteres') { project.note = ''; noteInput.value = ''; }
+      });
+      pills.appendChild(b);
+    });
+    wrap.appendChild(pills);
+
+    var times = document.createElement('div');
+    times.className = 'times';
+    var hoursValue = document.createElement('span');
+
+    function timeField(labelText, key) {
+      var field = document.createElement('div');
+      field.className = 'field';
+      var id = 'p' + index + key;
+      field.innerHTML = '<label for="' + id + '">' + labelText + '</label>';
+      var input = document.createElement('input');
+      input.type = 'time';
+      input.id = id;
+      input.step = '300';
+      input.value = project[key] || '';
+      input.addEventListener('input', function () {
+        project[key] = input.value;
+        hoursValue.textContent = fmt(hoursBetween(project.from, project.to));
+        recalc();
+      });
+      field.appendChild(input);
+      return field;
+    }
+
+    times.appendChild(timeField('Arbeitsbeginn', 'from'));
+    times.appendChild(timeField('Arbeitsende', 'to'));
+
+    var result = document.createElement('div');
+    result.className = 'result';
+    hoursValue.className = 'value';
+    hoursValue.textContent = fmt(hoursBetween(project.from, project.to));
+    result.appendChild(hoursValue);
+    var unit = document.createElement('div');
+    unit.className = 'unit';
+    unit.textContent = 'Stunden';
+    result.appendChild(unit);
+    times.appendChild(result);
+    wrap.appendChild(times);
+
+    var noteField = document.createElement('div');
+    noteField.className = 'note-field';
+    noteField.style.display = project.tag === 'Weiteres' ? '' : 'none';
+    noteField.innerHTML = '<label for="pn' + index + '">Kurz beschreiben</label>';
+    var noteInput = document.createElement('input');
+    noteInput.type = 'text';
+    noteInput.id = 'pn' + index;
+    noteInput.placeholder = 'z. B. Auftritt Muotathal';
+    noteInput.value = project.note || '';
+    noteInput.addEventListener('input', function () { project.note = noteInput.value; });
+    noteField.appendChild(noteInput);
+    wrap.appendChild(noteField);
+
+    return wrap;
+  }
+
+  /* ---------- Weiteres (Abwesenheiten) ---------- */
+
+  function renderAbsences() {
+    el.absenceList.innerHTML = '';
+    state.absences.forEach(function (absence, index) {
+      el.absenceList.appendChild(absenceNode(absence, index));
+    });
+  }
+
+  function absenceNode(absence, index) {
+    var wrap = document.createElement('div');
+    wrap.className = 'entry absence';
+
+    var head = document.createElement('div');
+    head.className = 'entry-head';
+    var title = document.createElement('span');
+    title.className = 'entry-title';
+    title.textContent = 'Weiteres';
+    head.appendChild(title);
+    var del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'icon-btn';
+    del.textContent = '✕ Entfernen';
+    del.addEventListener('click', function () {
+      state.absences.splice(index, 1);
+      renderAbsences();
+      recalc();
+    });
+    head.appendChild(del);
+    wrap.appendChild(head);
+
+    var pills = document.createElement('div');
+    pills.className = 'pills';
+    (B.absenceTags || []).forEach(function (tag) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pill gold';
+      b.textContent = tag;
+      b.setAttribute('aria-pressed', String(absence.tag === tag));
+      b.addEventListener('click', function () {
+        absence.tag = absence.tag === tag ? '' : tag;
+        Array.prototype.forEach.call(pills.children, function (child) {
+          child.setAttribute('aria-pressed', String(child.textContent === absence.tag));
+        });
+        // Die Stundeneingabe erscheint erst, wenn ein Tag gesetzt ist.
+        details.style.display = absence.tag ? '' : 'none';
+        noteField.style.display = absence.tag === 'Weiteres' ? '' : 'none';
+        recalc();
+      });
+      pills.appendChild(b);
+    });
+    wrap.appendChild(pills);
+
+    var details = document.createElement('div');
+    details.className = 'times';
+    details.style.display = absence.tag ? '' : 'none';
+
+    var field = document.createElement('div');
+    field.className = 'field';
+    field.innerHTML = '<label for="a' + index + 'h">Anzahl Stunden</label>';
+    var hoursInput = document.createElement('input');
+    hoursInput.type = 'number';
+    hoursInput.id = 'a' + index + 'h';
+    hoursInput.min = '0';
+    hoursInput.max = '24';
+    hoursInput.step = '0.25';
+    hoursInput.inputMode = 'decimal';
+    hoursInput.value = absence.hours ? String(absence.hours) : '';
+    hoursInput.addEventListener('input', function () {
+      absence.hours = Number(hoursInput.value || 0);
+      recalc();
+    });
+    field.appendChild(hoursInput);
+    details.appendChild(field);
+
+    var quick = document.createElement('div');
+    quick.className = 'field';
+    quick.innerHTML = '<label>Quick Action</label>';
+    var full = document.createElement('button');
+    full.type = 'button';
+    full.className = 'pill';
+    full.textContent = 'Ganzer Tag (' + fmt(state.dailyTarget) + ' h)';
+    full.addEventListener('click', function () {
+      absence.hours = round2(state.dailyTarget);
+      hoursInput.value = String(absence.hours);
+      recalc();
+    });
+    quick.appendChild(full);
+    details.appendChild(quick);
+    wrap.appendChild(details);
+
+    var noteField = document.createElement('div');
+    noteField.className = 'note-field';
+    noteField.style.display = absence.tag === 'Weiteres' ? '' : 'none';
+    noteField.innerHTML = '<label for="an' + index + '">Kurz beschreiben</label>';
+    var noteInput = document.createElement('input');
+    noteInput.type = 'text';
+    noteInput.id = 'an' + index;
+    noteInput.placeholder = 'z. B. Militärdienst';
+    noteInput.value = absence.note || '';
+    noteInput.addEventListener('input', function () { absence.note = noteInput.value; });
+    noteField.appendChild(noteInput);
+    wrap.appendChild(noteField);
+
+    return wrap;
+  }
+
+  /* ---------- Berechnung der Tagesanzeige ---------- */
+
+  function computeDay() {
+    var gross = 0;
+    state.projects.forEach(function (p) { gross += hoursBetween(p.from, p.to); });
+    gross = round2(gross);
+
+    var pause = round2(Number(state.pause || 0) / 60);
+    var work = round2(Math.max(0, gross - pause));
+
+    var absence = 0, bookedHoliday = 0, vacation = 0;
+    state.absences.forEach(function (a) {
+      var h = Number(a.hours || 0);
+      if (!a.tag || !(h > 0)) return;
+      absence += h;
+      if (a.tag === 'Feiertag') bookedHoliday += h;
+      if (a.tag === 'Ferien') vacation += h;
+    });
+    absence = round2(absence);
+
+    var d = state.dayState || {};
+    var target = d.isWeekend ? 0 : round2(state.dailyTarget);
+    var credit = (d.holiday && !d.isWeekend) ? round2(Math.max(0, state.dailyTarget - bookedHoliday)) : 0;
+    var total = round2(work + absence + credit);
+
+    return {
+      gross: gross, pause: pause, work: work, absence: absence,
+      credit: credit, total: total, target: target,
+      balance: round2(total - target),
+      vacationDays: round2(vacation / state.dailyTarget)
+    };
+  }
+
+  function recalc() {
+    var c = computeDay();
+    var lines = [];
+    function line(label, value) {
+      lines.push('<div class="summary-line"><span>' + label + '</span><span>' + value + '</span></div>');
+    }
+    line('Projektzeit', fmt(c.gross) + ' h');
+    if (state.pause > 0) line('Pause', '− ' + fmt(c.pause) + ' h');
+    line('Gearbeitet', fmt(c.work) + ' h');
+    if (c.absence > 0) line('Weiteres (Ferien, Krank, …)', fmt(c.absence) + ' h');
+    if (c.credit > 0) line('Feiertagsgutschrift', fmt(c.credit) + ' h');
+    line('Sollzeit ' + (c.target === 0 ? '(Wochenende)' : ''), fmt(c.target) + ' h');
+    line('Saldo Tag', signed(c.balance) + ' h');
+    el.summaryLines.innerHTML = lines.join('');
+    el.dayTotal.innerHTML = fmt(c.total) + '<small>h</small>';
+  }
+
+  /* ---------- Kennzahlen ---------- */
+
+  function renderStats() {
+    var s = state.stats;
+    if (!s) {
+      el.stats.innerHTML = '<div class="stat wide"><div class="k">Überstunden</div><div class="v">–</div>' +
+        '<div class="s">Bitte Mitarbeiter:in wählen.</div></div>';
+      el.reminderBox.innerHTML = '';
+      return;
+    }
+    var tiles = [];
+    tiles.push('<div class="stat"><div class="k">Überstunden total</div>' +
+      '<div class="v gold">' + signed(s.overtime) + '<small style="font-size:15px"> h</small></div>' +
+      '<div class="s">Stand ' + (s.periodEnd ? formatDate(s.periodEnd) : '–') +
+      (s.periodStart ? ' · seit ' + formatDate(s.periodStart) : '') + '</div></div>');
+
+    if (s.showVacation) {
+      tiles.push('<div class="stat"><div class="k">Ferien bis 31.12.' + s.year + '</div>' +
+        '<div class="v">' + fmt(s.vacationRemaining) + '<small style="font-size:15px"> Tage</small></div>' +
+        '<div class="s">' + fmt(s.vacationEntitlement) + ' Tage Anspruch ' + s.year +
+        ' · ' + fmt(s.vacationUsed) + ' bezogen</div></div>');
+    } else {
+      tiles.push('<div class="stat"><div class="k">Saldo ' + escapeHtml(s.monthLabel) + '</div>' +
+        '<div class="v">' + signed(s.monthBalance) + '<small style="font-size:15px"> h</small></div>' +
+        '<div class="s">' + fmt(s.monthTotal) + ' h von ' + fmt(s.monthTarget) + ' h Soll</div></div>');
+    }
+
+    tiles.push('<div class="stat wide"><div class="k">' + escapeHtml(s.monthLabel) + '</div>' +
+      '<div class="v">' + fmt(s.monthTotal) + '<small style="font-size:15px"> h erfasst</small></div>' +
+      '<div class="s">Soll ' + fmt(s.monthTarget) + ' h' +
+      (s.showVacation ? ' · Saldo ' + signed(s.monthBalance) + ' h' : '') +
+      ' · ' + s.recordedDays + ' Tage insgesamt erfasst</div></div>');
+
+    el.stats.innerHTML = tiles.join('');
+
+    if (s.missingDaysCount > 0) {
+      el.reminderBox.innerHTML = '<div class="reminder"><strong>Erinnerung:</strong> Im ' +
+        escapeHtml(s.monthLabel) + ' fehlen noch ' + s.missingDaysCount +
+        (s.missingDaysCount === 1 ? ' Arbeitstag' : ' Arbeitstage') + ' – ' +
+        escapeHtml(s.missingDays.slice(0, 8).join(', ')) +
+        (s.missingDaysCount > 8 ? ' …' : '') + '.</div>';
+    } else {
+      el.reminderBox.innerHTML = '<div class="reminder">Im ' + escapeHtml(s.monthLabel) +
+        ' ist bisher jeder Arbeitstag erfasst. Danke!</div>';
+    }
+  }
+
+  /* ---------- Laden ---------- */
+
+  function loadDay() {
+    if (!state.employee || !state.date) return;
+    state.loading = true;
+    el.stats.classList.add('busy');
+    server('laemuGetDayState', [state.employee, state.date], function (result) {
+      state.loading = false;
+      el.stats.classList.remove('busy');
+      state.dayState = result;
+      state.stats = result.stats;
+      state.dailyTarget = result.dailyTarget || state.dailyTarget;
+      if (result.existing) {
+        state.projects = (result.existing.projects || []).map(function (p) {
+          return { tag: p.tag, from: p.from, to: p.to, note: p.note || '' };
+        });
+        state.absences = (result.existing.absences || []).map(function (a) {
+          return { tag: a.tag, hours: a.hours, note: a.note || '' };
+        });
+        state.pause = result.existing.pauseMinutes || 0;
+      } else {
+        state.projects = [emptyProject()];
+        state.absences = [];
+        state.pause = 0;
+      }
+      if (!state.projects.length) state.projects = [emptyProject()];
+      el.pauseInput.value = String(state.pause);
+      markPausePills();
+      renderProjects();
+      renderAbsences();
+      renderDateMeta();
+      renderStats();
+      recalc();
+    }, function (error) {
+      state.loading = false;
+      el.stats.classList.remove('busy');
+      showErrors(['Die Daten konnten nicht geladen werden: ' + (error && error.message ? error.message : error)]);
+    });
+  }
+
+  /* ---------- Einreichen ---------- */
+
+  function showErrors(messages) {
+    if (!messages || !messages.length) {
+      el.formErrors.innerHTML = '';
+      return;
+    }
+    el.formErrors.innerHTML = '<div class="errors"><strong>Bitte noch kurz prüfen:</strong><ul>' +
+      messages.map(function (m) { return '<li>' + escapeHtml(m) + '</li>'; }).join('') + '</ul></div>';
+    el.formErrors.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function submit() {
+    if (!state.employee) { showErrors(['Bitte zuerst wählen, wer erfasst.']); return; }
+    showErrors([]);
+    el.submitBtn.disabled = true;
+    el.submitBtn.textContent = 'Wird gespeichert …';
+
+    var payload = {
+      employee: state.employee,
+      date: state.date,
+      pauseMinutes: Number(state.pause || 0),
+      projects: state.projects.filter(function (p) { return p.tag || p.from || p.to; }),
+      absences: state.absences.filter(function (a) { return a.tag || a.hours; })
+    };
+
+    server('laemuSubmitDay', [payload], function (result) {
+      el.submitBtn.disabled = false;
+      el.submitBtn.textContent = 'Einreichen →';
+      if (!result || !result.ok) {
+        showErrors((result && result.errors) || ['Unbekannter Fehler.']);
+        return;
+      }
+      state.stats = result.stats;
+      renderStats();
+      showSuccess(result);
+    }, function (error) {
+      el.submitBtn.disabled = false;
+      el.submitBtn.textContent = 'Einreichen →';
+      showErrors(['Speichern fehlgeschlagen: ' + (error && error.message ? error.message : error)]);
+    });
+  }
+
+  function showSuccess(result) {
+    var day = result.day || {};
+    var stats = result.stats || {};
+    el.successTitle.textContent = result.message;
+    el.successSub.textContent = 'Der Rapport vom ' + formatDate(day.date || state.date) +
+      ' ist im Google Sheet gespeichert.';
+    var rows = [];
+    rows.push('<div><span>Total Tag</span><span>' + fmt(day.totalHours || 0) + ' h</span></div>');
+    rows.push('<div><span>Saldo Tag</span><span>' + signed(day.balance || 0) + ' h</span></div>');
+    rows.push('<div><span>Überstunden total</span><span>' + signed(stats.overtime || 0) + ' h</span></div>');
+    if (stats.showVacation) {
+      rows.push('<div><span>Ferien bis 31.12.' + stats.year + '</span><span>' +
+        fmt(stats.vacationRemaining) + ' Tage</span></div>');
+    }
+    el.successRecap.innerHTML = rows.join('');
+    el.successReminder.textContent = result.reminder || '';
+    el.overlay.classList.add('show');
+  }
+
+  /* ---------- Pause ---------- */
+
+  function markPausePills() {
+    var pills = document.querySelectorAll('[data-pause]');
+    Array.prototype.forEach.call(pills, function (pill) {
+      pill.setAttribute('aria-pressed', String(Number(pill.getAttribute('data-pause')) === Number(state.pause)));
+    });
+  }
+
+  /* ---------- Start ---------- */
+
+  function init() {
+    el.footWeekly.textContent = B.weeklyHours;
+    renderQuote();
+
+    var stored = null;
+    try { stored = window.localStorage.getItem(STORAGE_KEY); } catch (e) { stored = null; }
+    var names = B.employees.map(function (e) { return e.name; });
+    var initial = B.matchedEmployee || (stored && names.indexOf(stored) >= 0 ? stored : null);
+
+    state.date = B.today;
+    el.dateInput.value = state.date;
+    el.dateInput.addEventListener('change', function () {
+      if (!el.dateInput.value) return;
+      state.date = el.dateInput.value;
+      markShiftPills();
+      renderDateMeta();
+      loadDay();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-shift]'), function (btn) {
+      btn.addEventListener('click', function () {
+        state.date = addDays(B.today, Number(btn.getAttribute('data-shift')));
+        el.dateInput.value = state.date;
+        markShiftPills();
+        renderDateMeta();
+        loadDay();
+      });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pause]'), function (btn) {
+      btn.addEventListener('click', function () {
+        state.pause = Number(btn.getAttribute('data-pause'));
+        el.pauseInput.value = String(state.pause);
+        markPausePills();
+        recalc();
+      });
+    });
+
+    el.pauseInput.addEventListener('input', function () {
+      state.pause = Number(el.pauseInput.value || 0);
+      markPausePills();
+      recalc();
+    });
+
+    el.addProject.addEventListener('click', function () {
+      state.projects.push(emptyProject());
+      renderProjects();
+      recalc();
+    });
+
+    el.addAbsence.addEventListener('click', function () {
+      state.absences.push({ tag: '', hours: 0, note: '' });
+      renderAbsences();
+      recalc();
+      el.absenceList.lastChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    el.submitBtn.addEventListener('click', submit);
+    el.againBtn.addEventListener('click', function () {
+      el.overlay.classList.remove('show');
+      loadDay();
+    });
+
+    renderEmployees();
+    renderDateMeta();
+    markShiftPills();
+    markPausePills();
+    state.projects = [emptyProject()];
+    renderProjects();
+    recalc();
+    renderStats();
+
+    if (initial) selectEmployee(initial, false);
+  }
+
+  function markShiftPills() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-shift]'), function (btn) {
+      var iso = addDays(B.today, Number(btn.getAttribute('data-shift')));
+      btn.setAttribute('aria-pressed', String(iso === state.date));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
