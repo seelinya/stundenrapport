@@ -22,7 +22,6 @@
 
   var el = {
     quoteText: document.getElementById('quoteText'),
-    quoteAuthor: document.getElementById('quoteAuthor'),
     employeePills: document.getElementById('employeePills'),
     employeeNote: document.getElementById('employeeNote'),
     dateInput: document.getElementById('dateInput'),
@@ -108,7 +107,6 @@
   function renderQuote() {
     if (!B.quote) return;
     el.quoteText.textContent = '«' + B.quote.text + '»';
-    el.quoteAuthor.textContent = B.quote.author + ' · ' + (B.todayLabel || '');
   }
 
   /* ---------- Mitarbeitende ---------- */

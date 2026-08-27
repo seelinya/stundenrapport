@@ -87,26 +87,19 @@ button { touch-action: manipulation; }
 }
 .quote .mark {
   display: block;
-  width: clamp(20px, 5vw, 24px);
+  width: clamp(17px, 4.2vw, 20px);
   height: auto;
-  margin: 0 auto 10px;
+  margin: 0 auto 8px;
   color: var(--gold);
   opacity: .8;
 }
 .quote p {
   font-family: var(--font-deco);
-  font-size: clamp(18px, 4.6vw, 22px);
-  line-height: 1.3;
+  font-size: clamp(16px, 3.9vw, 19px);
+  line-height: 1.35;
   color: var(--gold);
-  margin: 0 0 6px;
+  margin: 0;
   text-wrap: balance;
-}
-.quote .author {
-  font-size: clamp(10px, 2.6vw, 11px);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--stone);
-  opacity: .85;
 }
 
 /* ---------- Karte ---------- */
@@ -558,7 +551,6 @@ input[readonly] { background: var(--silver); color: var(--stone); }
   <section class="quote" aria-label="Spruch des Tages">
     <svg class="mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.24 200.18" fill="currentColor"><g transform="translate(-1073.084,578.345) scale(1,-1)"><path d="M1073.921 430.496 C1073.084 421.815 1081.048 414.777 1089.520 416.848 C1095.433 418.291 1101.077 420.641 1105.776 424.214 C1113.680 430.217 1120.529 439.635 1125.218 448.345 C1129.907 457.055 1137.771 480.619 1144.470 480.559 C1150.692 480.499 1156.297 467.598 1167.377 447.897 C1206.619 378.163 1241.630 450.007 1251.425 475.114 C1256.035 486.910 1260.753 497.950 1265.681 509.727 C1269.792 519.572 1272.440 526.540 1278.702 526.640 C1287.233 526.779 1295.466 494.854 1298.711 481.126 C1301.946 467.399 1306.973 453.541 1306.973 453.541 C1322.184 410.407 1363.368 398.173 1373.143 405.061 C1379.325 409.412 1354.349 412.279 1342.950 458.340 C1339.864 470.803 1334.309 490.812 1331.194 506.730 C1325.639 535.101 1312.847 563.164 1287.830 569.237 C1250.310 578.345 1233.377 531.448 1221.093 502.460 L1207.355 469.360 C1205.295 464.094 1200.646 457.822 1193.419 469.648 C1185.624 482.410 1176.864 495.969 1176.864 495.969 C1167.914 509.727 1154.674 517.213 1138.368 514.256 C1115.084 510.035 1109.758 472.914 1096.199 453.273 C1092.735 448.255 1087.867 443.457 1082.034 441.158 C1077.544 439.386 1074.378 435.314 1073.911 430.506 L1073.921 430.496 Z"/></g></svg>
     <p id="quoteText">&nbsp;</p>
-    <div class="author" id="quoteAuthor"></div>
   </section>
 
   <main class="card">
@@ -1622,7 +1614,6 @@ window.LAEMU_BOOTSTRAP = LAEMU_PREVIEW.bootstrap();
 
   var el = {
     quoteText: document.getElementById('quoteText'),
-    quoteAuthor: document.getElementById('quoteAuthor'),
     employeePills: document.getElementById('employeePills'),
     employeeNote: document.getElementById('employeeNote'),
     dateInput: document.getElementById('dateInput'),
@@ -1708,7 +1699,6 @@ window.LAEMU_BOOTSTRAP = LAEMU_PREVIEW.bootstrap();
   function renderQuote() {
     if (!B.quote) return;
     el.quoteText.textContent = '«' + B.quote.text + '»';
-    el.quoteAuthor.textContent = B.quote.author + ' · ' + (B.todayLabel || '');
   }
 
   /* ---------- Mitarbeitende ---------- */
