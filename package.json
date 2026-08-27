@@ -1,0 +1,11 @@
+{
+  "name": "laemu-stundenrapport",
+  "version": "1.0.0",
+  "description": "Stundenrapport-Erfassungstool für LAEMU – Google Apps Script Web-App mit Anbindung an Google Sheets",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/calc.test.js",
+    "preview": "node tools/build-preview.js"
+  },
+  "license": "UNLICENSED"
+}
