@@ -259,3 +259,22 @@ test('Datumshilfen rechnen über Monats- und Jahresgrenzen', () => {
   assert.equal(L.laemuMonthLabel('2026-08'), 'August 2026');
   assert.equal(L.laemuIsWeekend('2026-08-29'), true);
 });
+
+test('Hinweiszeilen im Blatt «Einstellungen» gelten nicht als Mitarbeitende', () => {
+  // Echte Zeilen
+  assert.equal(L.laemuIsEmployeeRow(
+    ['Lian Müller', 'Mitarbeiter', '2026-09-01', 1, 25, 'ja', 0, 'lian@example.ch']), true);
+  assert.equal(L.laemuIsEmployeeRow(
+    ['Niklaus Hess', 'Inhaber', '2026-01-01', 1, 0, 'nein', 0, '']), true);
+  // Der Hinweistext, der beim Einrichten ins Blatt geschrieben wird
+  assert.equal(L.laemuIsEmployeeRow([
+    'Hinweis: E-Mail eintragen, damit die monatliche Erinnerung verschickt wird. ' +
+    'Startsaldo = bereits bestehende Überstunden beim Beginn der Erfassung. ' +
+    'Wöchentliche Sollzeit: 42 h (8.4 h pro Arbeitstag).', '', '', '', '', '', '', '']), false);
+  // Leere und unvollständige Zeilen
+  assert.equal(L.laemuIsEmployeeRow(['', '', '', '', '', '', '', '']), false);
+  assert.equal(L.laemuIsEmployeeRow(['Nur ein Name ohne Angaben', '', '', '', '', '', '', '']), false);
+  assert.equal(L.laemuIsEmployeeRow(null), false);
+  // Ein Name allein genügt, sobald eine weitere Spalte gefüllt ist
+  assert.equal(L.laemuIsEmployeeRow(['Neue Person', '', '', 1, '', '', '', '']), true);
+});

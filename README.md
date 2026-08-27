@@ -26,14 +26,12 @@ die Eingaben landen aber nur im Browser-Speicher statt im Google Sheet.
 
 1. Das [Google Sheet](https://docs.google.com/spreadsheets/d/10PoAB8SqxYJWnmy9jdVE1kav7ygcKsLwatucQoH6jbE/edit)
    öffnen → **Erweiterungen › Apps Script**.
-2. Zwei Dateien einfügen – mehr braucht es nicht:
+2. Im Editor die Datei `Code.gs` öffnen, den vorhandenen Inhalt vollständig markieren
+   und durch [`apps-script-single/Code.gs`](apps-script-single/Code.gs) ersetzen. Speichern.
 
-   | Im Apps-Script-Editor | Typ | Inhalt aus |
-   | --- | --- | --- |
-   | `Code.gs` (bereits vorhanden, Inhalt ersetzen) | Skript | [`apps-script-single/Code.gs`](apps-script-single/Code.gs) |
-   | `Index.html` (über **+ › HTML** anlegen) | HTML | [`apps-script-single/Index.html`](apps-script-single/Index.html) |
+   Diese eine Datei enthält alles – Backend und Oberfläche. Es muss keine weitere Datei
+   angelegt oder benannt werden.
 
-   Wichtig: Die HTML-Datei muss genau `Index` heissen. Speichern nicht vergessen.
 3. Empfohlen: unter **Projekteinstellungen** die Option «`appsscript.json`-Manifestdatei im
    Editor anzeigen» aktivieren und den Inhalt von [`apps-script/appsscript.json`](apps-script/appsscript.json)
    übernehmen. Das setzt die Zeitzone auf Europe/Zurich und die Berechtigungen.
@@ -53,11 +51,19 @@ die Eingaben landen aber nur im Browser-Speicher statt im Google Sheet.
    **Erinnerungs-Trigger installieren** wählen. Ab dann kommt am 1. jedes Monats
    automatisch die Monatsübersicht per Mail.
 
-Die zwei Dateien in `apps-script-single/` werden aus `apps-script/` erzeugt
-(`node tools/build-appsscript-bundle.js`). Wer im Editor lieber die einzelnen Dateien
-hat – `Code.gs`, `Config.gs`, `Calc.gs`, `Sheets.gs`, `Quotes.gs`, `Reminders.gs`,
-`Index.html`, `Stylesheet.html`, `JavaScript.html` – kopiert stattdessen die Dateien aus
-`apps-script/` einzeln; beides ergibt dasselbe Tool.
+`apps-script-single/Code.gs` wird aus `apps-script/` erzeugt
+(`node tools/build-appsscript-bundle.js`); die Oberfläche liegt darin als Zeichenkette.
+Wer im Editor lieber die einzelnen Dateien hat – `Code.gs`, `Config.gs`, `Calc.gs`,
+`Sheets.gs`, `Quotes.gs`, `Reminders.gs`, `Index.html`, `Stylesheet.html`,
+`JavaScript.html` – kopiert stattdessen die Dateien aus `apps-script/` einzeln; beides
+ergibt dasselbe Tool.
+
+**Wichtig bei jeder Änderung am Code:** Die `/exec`-Adresse liefert immer die zuletzt
+*bereitgestellte* Version, nicht den Editor-Stand. Nach einer Änderung deshalb
+**Bereitstellen › Bereitstellungen verwalten › Stift › Version: Neue Version ›
+Bereitstellen** – die URL bleibt dieselbe. Zum Ausprobieren ohne Bereitstellung gibt es
+unter **Bereitstellen › Testbereitstellungen** eine Adresse auf `/dev`, die stets den
+aktuellen Code ausführt.
 
 ## Vercel oder eigene Domain
 
@@ -184,7 +190,7 @@ in Apps Script als auch in den Tests und in der Vorschau läuft.
 ```
 index.html          Startseite/Weiterleitung für Vercel oder eine eigene Domain
 apps-script/        Web-App (Backend .gs + Oberfläche .html)
-apps-script-single/ dieselbe Web-App, zusammengefasst auf zwei Dateien (generiert)
+apps-script-single/ dieselbe Web-App, zusammengefasst in einer Datei (generiert)
 brand/           Logo und Favicon als Vektor, direkt aus den Brand Guidelines extrahiert
 preview/         generierte Vorschau (nicht von Hand bearbeiten)
 test/            Tests der Rechenlogik
