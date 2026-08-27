@@ -134,9 +134,13 @@ label, .label {
 }
 
 input[type="date"], input[type="time"], input[type="number"], input[type="text"] {
+  display: block;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
   min-height: var(--tap);
+  -webkit-appearance: none;
+  appearance: none;
   font-size: 16px;            /* verhindert das Hineinzoomen auf iOS */
   color: var(--black);
   background: var(--white);
@@ -214,13 +218,17 @@ input[readonly] { background: var(--silver); color: var(--stone); }
 }
 .entry-title { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--stone); }
 
+/* Auf schmalen Geräten steht jedes Eingabefeld auf einer eigenen Zeile.
+   Native Datums- und Zeitfelder haben eine Mindestbreite, die sich nicht
+   unterschreiten lässt – nebeneinander würden sie sonst ineinanderlaufen. */
 .times {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--gap);
-  align-items: end;
+  align-items: start;
   margin-top: 14px;
 }
+.times > * { min-width: 0; }
 .times .result {
   grid-column: 1 / -1;
   display: flex;
@@ -483,7 +491,22 @@ input[readonly] { background: var(--silver); color: var(--stone); }
   .pause-row .field { flex: 0 0 132px; }
   .pause-row .pills { flex: 1 1 auto; padding-bottom: 2px; }
 
-  .times { grid-template-columns: 1fr 1fr auto; }
+  .actions-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+    flex-wrap: wrap;
+  }
+  .block .hint { margin-left: 28px; }
+}
+
+/* Ab 560 px ist Platz für Beginn, Ende und Stunden in einer Zeile. */
+@media (min-width: 560px) {
+  .times {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+  }
   .times .result {
     grid-column: auto;
     border-top: 0;
@@ -494,15 +517,6 @@ input[readonly] { background: var(--silver); color: var(--stone); }
     align-items: flex-end;
     gap: 0;
   }
-
-  .actions-row {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px 20px;
-    flex-wrap: wrap;
-  }
-  .block .hint { margin-left: 28px; }
 }
 
 /* Ab 720 px steht genügend Platz für den vollen Innenabstand zur Verfügung. */
