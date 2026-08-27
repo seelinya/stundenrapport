@@ -58,6 +58,21 @@ die Eingaben landen aber nur im Browser-Speicher statt im Google Sheet.
    **Erinnerungs-Trigger installieren** wählen. Ab dann kommt am 1. jedes Monats
    automatisch die Monatsübersicht per Mail.
 
+## Vercel oder eigene Domain
+
+Auf Vercel liegen nur statische Dateien – der Teil, der ins Google Sheet schreibt, läuft
+zwingend in Apps Script. Eine Vercel-Domain kann aber als kurze Merk-URL davorgeschaltet
+werden:
+
+1. Web-App wie oben bereitstellen und die URL kopieren (endet auf `/exec`).
+2. In `index.html` im Wurzelverzeichnis ganz oben `var TOOL_URL = ''` mit dieser URL füllen.
+3. Committen – Vercel veröffentlicht automatisch neu, die Domain leitet direkt aufs Tool weiter.
+
+Solange keine URL eingetragen ist, zeigt die Domain eine Startseite mit genau diesen Schritten.
+`/preview/index.html` bleibt als Demo erreichbar (rechnet identisch, speichert aber nur im
+Browser). Mit `#info` am Ende der Adresse lässt sich die Startseite auch bei gesetzter
+Weiterleitung öffnen.
+
 ### Alternativ mit clasp
 
 ```bash
@@ -165,6 +180,7 @@ Die Rechenlogik in `apps-script/Calc.gs` ist bewusst frei von Google-APIs, damit
 in Apps Script als auch in den Tests und in der Vorschau läuft.
 
 ```
+index.html       Startseite/Weiterleitung für Vercel oder eine eigene Domain
 apps-script/     Web-App (Backend .gs + Oberfläche .html)
 brand/           Logo und Favicon als Vektor, direkt aus den Brand Guidelines extrahiert
 preview/         generierte Vorschau (nicht von Hand bearbeiten)
