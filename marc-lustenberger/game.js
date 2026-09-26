@@ -372,10 +372,11 @@
     level = parseInt((document.querySelector("input[name='level']:checked") || {}).value || "0", 10);
     foeName.textContent = LEVELS[level].name;
     state = "play"; pos = 0; shown = 0; timeLeft = DURATION; landed = false; particles = [];
-    overlay.hidden = true;
     overlay.classList.remove("is-result");
-    tapHint.hidden = false;
-    setTimeout(function () { tapHint.hidden = true; }, 1800);
+    overlay.classList.add("is-play");
+    ovTitle.textContent = "Klick! Klick! Klick!";
+    ovText.textContent = "So schnell du kannst – jeder Klick gibt Marc Kraft.";
+    startBtn.hidden = true;
     statusEl.textContent = "Gang läuft. Klicke so schnell du kannst.";
     arena.focus({ preventScroll: true });
     loop();
@@ -402,7 +403,8 @@
     }
     statusEl.textContent = ovTitle.textContent + " " + ovText.textContent;
     showBest();
-    setTimeout(function () { overlay.hidden = false; }, won ? 1500 : 900);
+    overlay.classList.remove("is-play");
+    startBtn.hidden = false;
   }
 
   function tap() {
@@ -421,7 +423,7 @@
     if (e.key === " " || e.key === "Enter") {
       if (e.target.closest("button")) return;
       e.preventDefault();
-      if (state === "play") tap(); else if (!overlay.hidden) start();
+      if (state === "play") tap(); else start();
     }
   });
   startBtn.addEventListener("click", start);

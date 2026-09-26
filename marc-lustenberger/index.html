@@ -143,19 +143,21 @@
     </div>
 
     <div class="arena" id="arena" tabindex="0" role="application" aria-label="Mini-Spiel: Klicken, tippen oder Leertaste drücken, um Marc Kraft zu geben">
-      <canvas id="ring" width="1280" height="720"></canvas>
-      <div class="arena__hud" aria-hidden="true">
-        <span>Marc</span>
-        <span class="arena__timer" id="timer">12.0 s</span>
-        <span id="foe-name">Jungschwinger</span>
-      </div>
-      <span class="arena__tap" id="tap-hint" hidden>Klick! Klick! Klick!</span>
-      <div class="arena__overlay" id="overlay">
-        <div class="arena__card">
-          <p class="arena__title" id="ov-title">Bereit zum Anschwingen?</p>
-          <p class="arena__text" id="ov-text">Zwölf Sekunden. Klicken, tippen oder Leertaste.</p>
-          <button type="button" class="btn btn--blue" id="start">Gang starten</button>
+      <div class="arena__stage">
+        <canvas id="ring" width="1280" height="720"></canvas>
+        <div class="arena__hud" aria-hidden="true">
+          <span>Marc</span>
+          <span class="arena__timer" id="timer">12.0 s</span>
+          <span id="foe-name">Jungschwinger</span>
         </div>
+        <span class="arena__tap" id="tap-hint" hidden>Klick! Klick! Klick!</span>
+      </div>
+      <div class="arena__panel" id="overlay">
+        <div class="arena__msg">
+          <p class="arena__ptitle" id="ov-title">Bereit zum Anschwingen?</p>
+          <p class="arena__ptext" id="ov-text">Zwölf Sekunden. Klicken, tippen oder Leertaste.</p>
+        </div>
+        <button type="button" class="btn btn--blue arena__btn" id="start">Gang starten</button>
       </div>
       <p class="sr" id="game-status" role="status"></p>
     </div>

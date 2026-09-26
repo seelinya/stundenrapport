@@ -842,3 +842,48 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
   .arena__overlay.is-result .btn { font-size: 14px; padding: 0 12px; min-height: 38px; }
   .arena__overlay.is-result .arena__title { font-size: 18px; }
 }
+
+/* ==========================================================================
+   Spiel-Leiste unter dem Spielfeld (passt sich der Arena-Breite an)
+   ========================================================================== */
+
+.arena { container-type: inline-size; display: flex; flex-direction: column; }
+.arena__stage { position: relative; }
+.arena__hud { font-size: clamp(12px, 2.3cqw, 18px); top: clamp(8px, 2cqw, 16px); left: clamp(10px, 2.4cqw, 18px); right: clamp(10px, 2.4cqw, 18px); }
+
+.arena__panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: clamp(14px, 3.2cqw, 26px) clamp(16px, 3.6cqw, 30px);
+  background: #fff;
+  border-top: 1px solid var(--sand-line);
+  cursor: default;
+}
+.arena__msg { flex: 1 1 280px; min-width: 0; display: grid; gap: 4px; }
+.arena__ptitle {
+  font-family: var(--f-head);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(20px, 4cqw, 36px);
+  line-height: 1;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.arena__ptext { font-size: clamp(14px, 1.9cqw, 17px); line-height: 1.45; color: var(--ink-soft); }
+.arena__btn { flex: 0 0 auto; white-space: nowrap; min-height: clamp(42px, 7cqw, 52px); font-size: clamp(15px, 2.4cqw, 18px); padding-inline: clamp(16px, 3cqw, 26px); }
+.arena__btn[hidden] { display: none !important; }
+.arena__panel.is-play .arena__ptitle { color: var(--blue); }
+.arena__panel.is-play { cursor: pointer; }
+
+/* Schmale Arena: Button unter den Text, volle Breite */
+@container (max-width: 460px) {
+  .arena__panel { flex-direction: column; align-items: stretch; }
+  .arena__msg { flex-basis: auto; }
+  .arena__btn { width: 100%; }
+}
+
+/* Leiste springt nicht, wenn der Ergebnistext länger ist */
+.arena__msg { min-height: calc(clamp(20px, 4cqw, 36px) + 3 * 1.45 * clamp(14px, 1.9cqw, 17px) + 4px); align-content: center; }
