@@ -195,6 +195,89 @@
     window.location.href = href;
   });
 
+
+  // --- Eye-Catcher -----------------------------------------------------
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Laufbänder nahtlos machen: Inhalt verdoppeln
+  var ticker = document.querySelector(".ticker__track");
+  if (ticker) ticker.innerHTML += ticker.innerHTML;
+
+  var marquee = document.getElementById("marquee");
+  if (marquee) {
+    var seen = {};
+    SPONSORS.forEach(function (g) { g.items.forEach(function (s) {
+      if (seen[s.logo]) return; seen[s.logo] = true;
+      var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = ""; marquee.appendChild(img);
+    }); });
+    marquee.innerHTML += marquee.innerHTML;
+  }
+
+  // Zahlen hochzählen
+  function countUp(node) {
+    var target = parseInt(node.getAttribute("data-count"), 10);
+    if (reduce || !target) return;
+    var start = null, dur = 1400;
+    function step(t) {
+      if (start === null) start = t;
+      var k = Math.min(1, (t - start) / dur);
+      node.textContent = String(Math.round(target * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    node.textContent = "0";
+    requestAnimationFrame(step);
+  }
+
+  // Reveals: nur Elemente, die beim Laden noch unterhalb des Bildschirms liegen
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var t = en.target;
+        t.classList.add("is-in");
+        t.classList.remove("is-armed");
+        if (t.classList.contains("numbers")) {
+          t.querySelectorAll("[data-count]").forEach(countUp);
+          t.querySelectorAll(".num").forEach(function (n) { n.classList.add("is-in"); });
+        }
+        io.unobserve(t);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+
+    document.querySelectorAll(".rv, .rv-group, .band").forEach(function (n) {
+      if (n.getBoundingClientRect().top > window.innerHeight && !reduce) n.classList.add("is-armed");
+      io.observe(n);
+    });
+  } else {
+    document.querySelectorAll(".rv, .rv-group, .band, .num").forEach(function (n) { n.classList.add("is-in"); });
+  }
+
+  // Parallax & Scroll-Fortschritt
+  var bandImg = document.querySelector(".band__img");
+  var band = document.querySelector(".band");
+  var aboutImg = document.querySelector(".about__photo img");
+  var heroImg = document.querySelector(".hero__img");
+  var raf = false;
+  function parallax() {
+    raf = false;
+    var vh = window.innerHeight;
+    var y = window.scrollY || 0;
+    var max = document.documentElement.scrollHeight - vh;
+    head.style.setProperty("--progress", (max > 0 ? (y / max) * 100 : 0) + "%");
+    if (reduce) return;
+    if (heroImg && y < vh * 1.2) heroImg.style.transform = "translateY(" + (y * 0.25) + "px) scale(1.05)";
+    if (band && bandImg) {
+      var r = band.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < vh) bandImg.style.transform = "translateY(" + ((r.top + r.height / 2 - vh / 2) * -0.12) + "px)";
+    }
+    if (aboutImg) {
+      var a = aboutImg.getBoundingClientRect();
+      if (a.bottom > 0 && a.top < vh) aboutImg.style.transform = "translateY(" + ((a.top + a.height / 2 - vh / 2) * -0.06) + "px)";
+    }
+  }
+  window.addEventListener("scroll", function () { if (!raf) { raf = true; requestAnimationFrame(parallax); } }, { passive: true });
+  parallax();
+
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
 })();

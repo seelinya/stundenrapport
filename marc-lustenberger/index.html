@@ -50,14 +50,29 @@
   <div class="hero__shade" aria-hidden="true"></div>
   <div class="hero__content wrap">
     <p class="hero__eyebrow"><span class="dot" aria-hidden="true"></span>Eidgenosse · ESAF 2025 Mollis</p>
-    <h1 class="hero__title">Marc<br>Lustenberger</h1>
+    <h1 class="hero__title"><span class="ln"><span class="outline outline--light">Marc</span></span><span class="ln"><span>Lustenberger</span></span></h1>
     <p class="hero__sub">Schwinger aus Hasle im Entlebuch. Kompromisslos im Sägemehl, bodenständig daneben.</p>
     <div class="hero__cta">
       <a class="btn btn--white" href="#ueber-mich">Mehr über Marc</a>
       <a class="btn btn--ghost" href="#sponsoren">Partner werden</a>
     </div>
   </div>
+
+  <div class="badge" aria-hidden="true">
+    <svg viewBox="0 0 200 200" class="badge__ring">
+      <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+      <text><textPath href="#circ" startOffset="0">EIDGENOSSE · ESAF 2025 · HASLE LU · FESTSIEGER ·</textPath></text>
+    </svg>
+    <svg class="badge__mark"><use href="#ml"/></svg>
+  </div>
 </section>
+
+<!-- ============ LAUFBAND ============ -->
+<div class="ticker" aria-label="Erfolge in Kürze">
+  <div class="ticker__track">
+    <span>Eidgenosse 2025</span><i></i><span>Festsieg Innerschweizer 2026</span><i></i><span>8 Kränze 2025</span><i></i><span>31 Kränze</span><i></i><span>Erster Kranzfestsieg Sachseln</span><i></i><span>Hasle LU</span><i></i>
+  </div>
+</div>
 
 <!-- ============ STECKBRIEF ============ -->
 <section class="facts" aria-label="Steckbrief">
@@ -74,14 +89,14 @@
 <!-- ============ ÜBER MICH ============ -->
 <section class="about sec" id="ueber-mich">
   <div class="wrap about__grid">
-    <figure class="about__photo">
+    <figure class="about__photo rv">
       <img src="assets/img/portrait-kranz.jpg" alt="Marc Lustenberger mit dem eidgenössischen Kranz und in der Tracht" loading="lazy">
       <figcaption>Mit dem Eichenlaub am ESAF 2025</figcaption>
     </figure>
 
     <div class="about__text">
       <p class="eyebrow">Über mich</p>
-      <h2 class="h2">Vom Wohnzimmer<br>ins Sägemehl.</h2>
+      <h2 class="h2 rv">Vom Wohnzimmer<br><span class="outline">ins Sägemehl.</span></h2>
       <blockquote class="story">
         <p>«Als kleiner Junge wollte ich nach meinem ersten Schnuppertraining unbedingt in die Schwinghalle. Obwohl ich noch zu jung war, verfolgte ich den Schwingsport weiterhin begeistert vor dem Fernseher und raufte mich zu Hause mit meinem Vater und meinen älteren Cousins.»</p>
         <p>«Mit sieben Jahren durfte ich endlich mit dem Schwingtraining beginnen – die Aufregung war riesig.»</p>
@@ -95,7 +110,7 @@
         </div>
         <div>
           <h3>Daneben</h3>
-          <p>Bodenständig, humorvoll, nahbar. Einer, mit dem man nach dem Fest gerne noch ein Bier trinkt.</p>
+          <p>Bodenständig, humorvoll, nahbar. Einer, mit dem man nach dem Fest gerne noch zusammensitzt.</p>
         </div>
       </div>
     </div>
@@ -107,16 +122,16 @@
   <div class="wrap">
     <div class="sec__head">
       <p class="eyebrow">Erfolge</p>
-      <h2 class="h2">Kranz um Kranz.</h2>
+      <h2 class="h2 rv">Kranz um <span class="outline">Kranz.</span></h2>
     </div>
 
-    <div class="numbers">
-      <div class="num"><span class="num__v">1</span><span class="num__l">Eidgenössischer Kranz<small>ESAF 2025 Glarnerland+</small></span></div>
-      <div class="num"><span class="num__v">8</span><span class="num__l">Kränze<small>Saison 2025</small></span></div>
-      <div class="num"><span class="num__v">31</span><span class="num__l">Kränze total<small>Stand ESV-Portrait 2026</small></span></div>
+    <div class="numbers rv-group">
+      <div class="num"><span class="num__v" data-count="1">1</span><span class="num__l">Eidgenössischer Kranz<small>ESAF 2025 Glarnerland+</small></span></div>
+      <div class="num"><span class="num__v" data-count="8">8</span><span class="num__l">Kränze<small>Saison 2025</small></span></div>
+      <div class="num"><span class="num__v" data-count="31">31</span><span class="num__l">Kränze total<small>Stand ESV-Portrait 2026</small></span></div>
     </div>
 
-    <ol class="miles">
+    <ol class="miles rv-group">
       <li class="mile">
         <img src="assets/img/action-2.jpg" alt="" loading="lazy">
         <div class="mile__body">
@@ -150,7 +165,7 @@
   <img class="band__img" src="assets/img/sponsor-hero.jpg" alt="" loading="lazy">
   <div class="band__shade" aria-hidden="true"></div>
   <div class="wrap band__inner">
-    <h2 class="band__title" id="band-title">Kraft. Technik. Kopf.</h2>
+    <h2 class="band__title" id="band-title"><span>Kraft.</span> <span>Technik.</span> <span>Kopf.</span></h2>
     <div class="band__cols">
       <p><strong>Kraft</strong> Ein Körper, der acht Gänge an zwei Tagen trägt. Aufgebaut über Jahre.</p>
       <p><strong>Technik</strong> Griffe und Schwünge, tausendfach wiederholt – bis sie im Schlussgang sitzen.</p>
@@ -165,11 +180,11 @@
     <div class="sec__head sec__head--row">
       <div>
         <p class="eyebrow">News</p>
-        <h2 class="h2">Aus der Saison.</h2>
+        <h2 class="h2 rv">Aus der <span class="outline">Saison.</span></h2>
       </div>
     </div>
 
-    <div class="news__grid">
+    <div class="news__grid rv-group">
       <article class="card">
         <p class="card__meta"><time datetime="2026-07-05">Juli 2026</time> · Festsieg</p>
         <h3>Doppelsieg am Innerschweizer in Arth</h3>
@@ -204,10 +219,12 @@
     <div class="sponsors__intro">
       <div>
         <p class="eyebrow">Sponsoren</p>
-        <h2 class="h2">Gemeinsam<br>im Sägemehl.</h2>
+        <h2 class="h2 rv">Gemeinsam<br><span class="outline">im Sägemehl.</span></h2>
       </div>
       <p class="lead">Ohne Partner kein Kranz. Diese Betriebe, Marken und Institutionen tragen Marcs Weg mit – vom Entlebuch bis ans Eidgenössische.</p>
     </div>
+
+    <div class="logo-marquee" aria-hidden="true"><div class="logo-marquee__track" id="marquee"></div></div>
 
     <!-- wird aus main.js (SPONSORS) befüllt -->
     <div class="tiers" id="tiers"></div>
@@ -233,12 +250,12 @@
     <div class="sec__head sec__head--row">
       <div>
         <p class="eyebrow">Fanartikel</p>
-        <h2 class="h2">Team Lustenberger.</h2>
+        <h2 class="h2 rv">Team <span class="outline">Lustenberger.</span></h2>
       </div>
       <p class="fan__info">Zahlung mit TWINT, bar oder per Einzahlungsschein. Abholung möglich.</p>
     </div>
     <!-- wird aus main.js (PRODUCTS) befüllt -->
-    <ul class="products" id="products"></ul>
+    <ul class="products rv-group" id="products"></ul>
   </div>
 </section>
 
@@ -249,7 +266,7 @@
   <div class="wrap contact__grid">
     <div class="contact__text">
       <p class="eyebrow eyebrow--light">Kontakt</p>
-      <h2 class="h2">Auf ein Bier?<br>Oder mehr.</h2>
+      <h2 class="h2 rv">Bereit für den<br><span class="outline outline--light">nächsten Gang?</span></h2>
       <p>Möchtest du Marc als Sponsor unterstützen, ihn für eine Autogrammstunde buchen oder Fanartikel bestellen? Melde dich unverbindlich.</p>
       <div class="mail">
         <span class="mail__addr" id="mail">kontakt@marc-lustenberger.ch</span>
