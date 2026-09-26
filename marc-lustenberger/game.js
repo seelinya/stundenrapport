@@ -8,6 +8,7 @@
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext("2d");
   var W = canvas.width, H = canvas.height, GROUND = 618, CX = W / 2, S = 1.45;
+  var WIDE = 1280, NARROW = 960;
 
   var arena = document.getElementById("arena");
   var overlay = document.getElementById("overlay");
@@ -45,7 +46,8 @@
 
   // Zuschauer und Sägemehl-Körner einmalig erzeugen
   var crowd = [], dust = [];
-  (function () {
+  function buildScene() {
+    crowd = []; dust = [];
     var rows = 5;
     for (var r = 0; r < rows; r++) {
       for (var x = 30 + (r % 2) * 22; x < W; x += 44) {
@@ -54,9 +56,19 @@
     }
     for (var i = 0; i < 420; i++) {
       var a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random());
-      dust.push({ x: CX + Math.cos(a) * d * 600, y: 640 + Math.sin(a) * d * 72, l: 2 + Math.random() * 5, a: Math.random() * Math.PI, c: Math.random() < 0.5 ? C.sawDark : "#F3E6C6" });
+      dust.push({ x: CX + Math.cos(a) * d * W * 0.47, y: 640 + Math.sin(a) * d * 72, l: 2 + Math.random() * 5, a: Math.random() * Math.PI, c: Math.random() < 0.5 ? C.sawDark : "#F3E6C6" });
     }
-  })();
+  }
+  buildScene();
+
+  // Auf schmalen Bildschirmen ein höheres Spielfeld (4:3 statt 16:9)
+  function fit() {
+    var target = arena.clientWidth < 620 ? NARROW : WIDE;
+    if (canvas.width === target) return;
+    canvas.width = target; W = target; CX = W / 2;
+    buildScene();
+    render(0);
+  }
 
   function best(lv) {
     try { var v = localStorage.getItem("ml-best-" + lv); return v ? parseFloat(v) : null; } catch (e) { return null; }
@@ -103,9 +115,9 @@
 
     // Sägemehlring
     ctx.fillStyle = "#CDB483";
-    ctx.beginPath(); ctx.ellipse(CX, 646, 624, 88, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(CX, 646, W * 0.488, 88, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = C.saw;
-    ctx.beginPath(); ctx.ellipse(CX, 640, 610, 80, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(CX, 640, W * 0.477, 80, 0, 0, Math.PI * 2); ctx.fill();
     dust.forEach(function (d) {
       ctx.save(); ctx.translate(d.x, d.y); ctx.rotate(d.a);
       ctx.fillStyle = d.c; ctx.fillRect(-d.l / 2, -1, d.l, 2); ctx.restore();
@@ -166,7 +178,7 @@
   function shade(hex) { return hex === C.blue ? C.blueDark : "#B7C1C9"; }
 
   function drawBar() {
-    var bw = 560, bx = CX - bw / 2, by = 686;
+    var bw = Math.min(560, W * 0.6), bx = CX - bw / 2, by = 686;
     rrect(bx, by, bw, 16, 8, "rgba(255,255,255,.85)");
     var f = (shown + 1) / 2;
     rrect(bx, by, Math.max(16, bw * f), 16, 8, C.blue);
@@ -207,7 +219,7 @@
       foe.lift = Math.sin(Math.min(1, u * 1.4) * Math.PI) * 130;
       foe.rot = e * (Math.PI / 2 + 0.06);
       foe.lean = 1.0 * (1 - e);
-      foe.x += (CX + 20 - foe.x) * e;
+      foe.x += (CX + 20 - (WIDE - W) * 0.22 - foe.x) * e;
       foe.arms = u > 0.3 ? "none" : "grip";
       if (u >= 1) { foe.lift = -46; }
       marc.lean = 0.8 - e * 0.75;
@@ -335,6 +347,8 @@
     onScroll();
   }
 
+  fit();
+  window.addEventListener("resize", fit);
   showBest();
   render(0);
   loop();
