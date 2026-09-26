@@ -6,234 +6,189 @@
      INHALTE ZUM PFLEGEN
      ------------------------------------------------------------------ */
 
-  // Kontaktadresse – vor dem Livegang mit der Adresse von marc-lustenberger.ch abgleichen.
-  var CONTACT_EMAIL = "info@marc-lustenberger.ch";
+  var CONTACT_EMAIL = "kontakt@marc-lustenberger.ch";
 
-  // Partner & Sponsoren – aus der bestehenden Website übernehmen.
-  // tier: z. B. "Hauptpartner", "Co-Partner", "Ausrüster", "Gönner"
-  // logo: Pfad zu einer Logodatei in assets/partner/ (SVG oder PNG, idealerweise einfarbig)
-  // note: ein Satz, was die Partnerschaft ausmacht (optional)
-  var PARTNERS = [
-    // { name: "Firmenname", tier: "Hauptpartner", logo: "assets/partner/firma.svg", url: "https://…", note: "…" },
+  // Sponsoren nach Kategorie, wie auf marc-lustenberger.ch.
+  // url ist optional – ist sie gesetzt, wird das Logo verlinkt.
+  var SPONSORS = [
+    { tier: "Hauptsponsoren", main: true, items: [
+      { name: "Convicta Treuhand AG", logo: "convicta.png" },
+      { name: "Lehner Versand", logo: "lehner.png" }
+    ]},
+    { tier: "Co-Sponsoren", items: [
+      { name: "Bucher Hasle", logo: "bucher.png" },
+      { name: "Kia Bucher Hasle", logo: "kia-bucher.png" },
+      { name: "Lehn Brennholz Service Entlebuch", logo: "lehn-holz.png" },
+      { name: "Kunz Sportshop Willisau", logo: "kunz.png" },
+      { name: "Bacher", logo: "bacher.png" },
+      { name: "Transport AG Entlebuch", logo: "transport-entlebuch.png" }
+    ]},
+    { tier: "Ausrüster", items: [
+      { name: "Syform Advanced Nutrition", logo: "syform.png" },
+      { name: "Kunz Sportshop Willisau", logo: "kunz.png" },
+      { name: "Alltex – bestickt.ch, bedruckt.ch", logo: "alltex.png" }
+    ]},
+    { tier: "Partner", items: [
+      { name: "MedX Athletics", logo: "medx.png" },
+      { name: "die Mobiliar, Generalagentur Willisau-Entlebuch", logo: "mobiliar.png" }
+    ]},
+    { tier: "Begleiter", items: [
+      { name: "Kanton Luzern", logo: "kanton-luzern.png" },
+      { name: "Spitzensport Schweizer Armee", logo: "spitzensport-armee.png" },
+      { name: "In & Out Cross Athletics", logo: "cross-athletics.png" }
+    ]},
+    { tier: "Verbände", items: [
+      { name: "Innerschweizer Schwingerverband", logo: "isv.png" },
+      { name: "Entlebucher Schwingerverband", logo: "entlebucher-sv.png" },
+      { name: "Luzerner Kantonaler Schwingerverband", logo: "lksv.png" }
+    ]}
+  ];
+
+  // Fanartikel, wie auf marc-lustenberger.ch.
+  var PRODUCTS = [
+    { name: "T-Shirt", img: "fan-shirt.jpg", text: "Hochwertiges T-Shirt aus 100 % Baumwolle.", price: "CHF 45.00", ship: "Versand CHF 5.00 bei 1 Shirt, ab 2 Shirts CHF 12.00" },
+    { name: "Cap Team Lustenberger", img: "fan-cap-team.jpg", text: "Sehr hochwertiges Cap mit braunem Stick. Einheitsgrösse.", price: "CHF 30.00", ship: "Versand CHF 12.00" },
+    { name: "Cap", img: "fan-cap.jpg", text: "Sehr hochwertiges Cap mit beigem Stick. Einheitsgrösse.", price: "CHF 30.00", ship: "Versand CHF 12.00" },
+    { name: "Jahreskalender 2026", img: "fan-kalender.jpg", text: "12 Bilder der Saison 2025, Frontseite handsigniert. A3.", price: "CHF 25.00", ship: "Versand CHF 12.00" },
+    { name: "Autogrammkarte", img: "fan-autogramm.jpg", text: "Frankiertes, adressiertes C5-Kuvert senden an: Marc Lustenberger, Buechmatt 2, 6166 Hasle.", price: "Gratis", ship: "gegen frankiertes Rückkuvert", noOrder: true }
   ];
 
   /* ------------------------------------------------------------------ */
 
-  var root = document.documentElement;
-  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // --- Generierte Texturen: Sägemehl und Filmkörnung --------------------
-  function makeCanvas(w, h) {
-    var c = document.createElement("canvas");
-    c.width = w; c.height = h;
-    return c;
-  }
-
-  function sawdustTexture() {
-    var size = 420, c = makeCanvas(size, size), g = c.getContext("2d");
-    if (!g) return null;
-    var tones = ["#f3e6c2", "#e2cc93", "#c9a868", "#b08a4c", "#fff4d8", "#9c7a44"];
-    for (var i = 0; i < 2600; i++) {
-      var x = Math.random() * size, y = Math.random() * size;
-      var len = 1 + Math.random() * Math.random() * 9;
-      var wid = .6 + Math.random() * 1.8;
-      g.save();
-      g.translate(x, y);
-      g.rotate(Math.random() * Math.PI);
-      g.globalAlpha = .25 + Math.random() * .6;
-      g.fillStyle = tones[(Math.random() * tones.length) | 0];
-      g.beginPath();
-      g.ellipse(0, 0, len, wid, 0, 0, Math.PI * 2);
-      g.fill();
-      g.restore();
-    }
-    return c.toDataURL("image/png");
-  }
-
-  function grainTexture() {
-    var size = 180, c = makeCanvas(size, size), g = c.getContext("2d");
-    if (!g) return null;
-    var img = g.createImageData(size, size), d = img.data;
-    for (var i = 0; i < d.length; i += 4) {
-      var v = (Math.random() * 255) | 0;
-      d[i] = d[i + 1] = d[i + 2] = v;
-      d[i + 3] = 255;
-    }
-    g.putImageData(img, 0, 0);
-    return c.toDataURL("image/png");
-  }
-
-  try {
-    var saw = sawdustTexture(), grain = grainTexture();
-    if (saw) root.style.setProperty("--saw-tex", "url(" + saw + ")");
-    if (grain) root.style.setProperty("--grain", "url(" + grain + ")");
-  } catch (e) { /* Texturen sind Dekoration */ }
-
-  // --- Bilder: fehlt eine Datei, bleibt der Sägemehl-Rahmen sichtbar ----
-  document.querySelectorAll(".shot").forEach(function (fig) {
-    var img = fig.querySelector("img");
-    if (!img) return;
-    var fail = function () { fig.classList.add("is-empty"); };
-    if (img.complete && img.naturalWidth === 0) fail();
-    img.addEventListener("error", fail);
-  });
-
-  // --- Navigation ------------------------------------------------------
-  var nav = document.getElementById("nav");
-  var toggle = document.getElementById("navtoggle");
-  var links = document.getElementById("navlinks");
-
-  function setMenu(open) {
-    toggle.setAttribute("aria-expanded", String(open));
-    links.classList.toggle("is-open", open);
-    document.body.style.overflow = open ? "hidden" : "";
-  }
-  toggle.addEventListener("click", function () {
-    setMenu(toggle.getAttribute("aria-expanded") !== "true");
-  });
-  links.addEventListener("click", function (e) {
-    if (e.target.closest("a")) setMenu(false);
-  });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") setMenu(false);
-  });
-
-  // --- Gang-Anzeige & Scroll-Zustand -----------------------------------
-  var gang = document.getElementById("gang");
-  var gangNo = document.getElementById("gangno");
-  var gangBar = document.getElementById("gangbar");
-  var sections = Array.prototype.slice.call(document.querySelectorAll("[data-gang]"));
-  var navAnchors = Array.prototype.slice.call(links.querySelectorAll("a[href^='#']"));
-  var ticking = false;
-
-  function onScroll() {
-    ticking = false;
-    var y = window.scrollY || window.pageYOffset;
-    var vh = window.innerHeight;
-    nav.classList.toggle("is-solid", y > 40);
-    gang.classList.toggle("is-visible", y > vh * .6);
-
-    var current = sections[0];
-    for (var i = 0; i < sections.length; i++) {
-      if (sections[i].getBoundingClientRect().top <= vh * .45) current = sections[i];
-    }
-    var label = current.getAttribute("data-gang");
-    if (gangNo.textContent !== label) gangNo.textContent = label;
-
-    var max = document.documentElement.scrollHeight - vh;
-    gangBar.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + "%";
-
-    var id = current.id || (current.previousElementSibling && current.previousElementSibling.id);
-    navAnchors.forEach(function (a) {
-      a.classList.toggle("is-active", a.getAttribute("href") === "#" + id);
-    });
-  }
-  window.addEventListener("scroll", function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
-  }, { passive: true });
-  window.addEventListener("resize", onScroll);
-  onScroll();
-
-  // --- Leichter Parallax auf dem Hero-Bild -----------------------------
-  var heroImg = document.querySelector(".shot--hero img");
-  if (heroImg && !reduceMotion) {
-    window.addEventListener("scroll", function () {
-      var y = window.scrollY || 0;
-      if (y < window.innerHeight * 1.2) heroImg.style.transform = "translateY(" + (y * 0.08) + "px) scale(1.04)";
-    }, { passive: true });
-  }
-
-  // --- Partner ----------------------------------------------------------
-  var list = document.getElementById("partners");
   function el(tag, cls, text) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
     if (text) n.textContent = text;
     return n;
   }
-  PARTNERS.forEach(function (p) {
-    var li = el("li");
-    var card = el(p.url ? "a" : "div", "partner-card");
-    if (p.url) { card.href = p.url; card.target = "_blank"; card.rel = "noopener"; }
-    card.appendChild(el("span", "partner-card__tier", p.tier || "Partner"));
-    var logo = el("span", "partner-card__logo");
-    if (p.logo) {
+
+  // --- Header & Menü ----------------------------------------------------
+  var head = document.getElementById("head");
+  var burger = document.getElementById("burger");
+  var menu = document.getElementById("menu");
+
+  function setMenu(open) {
+    burger.setAttribute("aria-expanded", String(open));
+    menu.classList.toggle("is-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function () { setMenu(burger.getAttribute("aria-expanded") !== "true"); });
+  menu.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+
+  var links = Array.prototype.slice.call(menu.querySelectorAll("a[href^='#']"));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY || window.pageYOffset;
+    head.classList.toggle("is-solid", y > 60);
+    var active = -1;
+    targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top < window.innerHeight * .4) active = i; });
+    links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  // --- Sponsoren --------------------------------------------------------
+  var tiers = document.getElementById("tiers");
+  SPONSORS.forEach(function (group) {
+    var tier = el("div", "tier" + (group.main ? " tier--main" : ""));
+    tier.appendChild(el("h3", "tier__name", group.tier));
+    var ul = el("ul", "tier__logos");
+    group.items.forEach(function (s) {
+      var li = el("li");
+      var tile = el(s.url ? "a" : "div", "logo-tile");
+      if (s.url) { tile.href = s.url; tile.target = "_blank"; tile.rel = "noopener"; }
       var img = el("img");
-      img.src = p.logo; img.alt = p.name; img.loading = "lazy";
-      logo.appendChild(img);
-    } else {
-      logo.appendChild(el("span", "partner-card__name", p.name));
-    }
-    card.appendChild(logo);
-    card.appendChild(el("span", "partner-card__note", p.note || (p.logo ? p.name : "")));
-    li.appendChild(card);
-    list.appendChild(li);
+      img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
+      tile.title = s.name;
+      tile.appendChild(img);
+      li.appendChild(tile);
+      ul.appendChild(li);
+    });
+    tier.appendChild(ul);
+    tiers.appendChild(tier);
   });
-  // Immer am Schluss: der offene Platz
-  (function () {
-    var li = el("li");
-    var card = el("a", "partner-card partner-card--open");
-    card.href = "#kontakt";
-    card.setAttribute("data-topic", "Partnerschaft");
-    card.appendChild(el("span", "partner-card__tier", "Platz im Team"));
-    var logo = el("span", "partner-card__logo");
-    logo.appendChild(el("span", "partner-card__name", PARTNERS.length ? "Ihr Betrieb?" : "Partner werden"));
-    card.appendChild(logo);
-    card.appendChild(el("span", "partner-card__note", "Für die Saison 2027 und darüber hinaus."));
-    li.appendChild(card);
-    list.appendChild(li);
-  })();
+
+  // --- Fanartikel -------------------------------------------------------
+  var products = document.getElementById("products");
+  PRODUCTS.forEach(function (p) {
+    var li = el("li", "product");
+    var img = el("img");
+    img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
+    li.appendChild(img);
+    var body = el("div", "product__body");
+    body.appendChild(el("h3", null, p.name));
+    body.appendChild(el("p", null, p.text));
+    var price = el("p", "product__price", p.price);
+    price.appendChild(el("small", null, p.ship));
+    body.appendChild(price);
+    if (!p.noOrder) {
+      var a = el("a", "product__order", "Bestellen");
+      a.href = "#kontakt";
+      a.setAttribute("data-topic", "Fanartikel");
+      a.setAttribute("data-message", "Ich möchte bestellen: 1× " + p.name + "\nLieferung oder Abholung: \nZahlung (TWINT, bar, Einzahlungsschein): \nAdresse: ");
+      body.appendChild(a);
+    } else {
+      body.appendChild(el("span"));
+    }
+    li.appendChild(body);
+    products.appendChild(li);
+  });
 
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");
   mail.textContent = CONTACT_EMAIL;
+  var msgField = document.getElementById("f-msg");
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-topic]");
+    if (!a) return;
+    var radio = document.querySelector(".form__topics input[value='" + a.getAttribute("data-topic") + "']");
+    if (radio) radio.checked = true;
+    var m = a.getAttribute("data-message");
+    if (m && !msgField.value.trim()) msgField.value = m;
+  });
 
   document.getElementById("copy").addEventListener("click", function (e) {
     var btn = e.currentTarget;
-    var done = function () { btn.textContent = "Kopiert"; setTimeout(function () { btn.textContent = "Kopieren"; }, 1800); };
     var fallback = function () {
       var r = document.createRange(); r.selectNodeContents(mail);
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
       btn.textContent = "Markiert";
     };
     try {
-      navigator.clipboard.writeText(CONTACT_EMAIL).then(done, fallback);
+      navigator.clipboard.writeText(CONTACT_EMAIL).then(function () {
+        btn.textContent = "Kopiert";
+        setTimeout(function () { btn.textContent = "Kopieren"; }, 1800);
+      }, fallback);
     } catch (err) { fallback(); }
-  });
-
-  // Links mit data-topic wählen im Formular gleich das passende Anliegen
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest("[data-topic]");
-    if (!a) return;
-    var topic = a.getAttribute("data-topic");
-    var radio = document.querySelector(".form__topics input[value='" + topic + "']");
-    if (radio) radio.checked = true;
   });
 
   var form = document.getElementById("form");
   var status = document.getElementById("status");
+  var emailOk = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); };
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var data = new FormData(form);
-    var name = String(data.get("name") || "").trim();
-    var from = String(data.get("mail") || "").trim();
-    var msg = String(data.get("msg") || "").trim();
-    var org = String(data.get("org") || "").trim();
-    var topic = String(data.get("topic") || "Anfrage");
+    var d = new FormData(form);
+    var name = String(d.get("name") || "").trim();
+    var from = String(d.get("mail") || "").trim();
+    var msg = String(d.get("msg") || "").trim();
+    var topic = String(d.get("topic") || "Anfrage");
 
-    if (!name || !msg || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from)) {
+    if (!name || !emailOk(from) || !msg) {
       status.textContent = "Bitte Name, eine gültige E-Mail-Adresse und eine Nachricht angeben.";
-      var first = !name ? "f-name" : (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from) ? "f-mail" : "f-msg");
-      document.getElementById(first).focus();
+      document.getElementById(!name ? "f-name" : !emailOk(from) ? "f-mail" : "f-msg").focus();
       return;
     }
 
-    var subject = topic + " – " + name + (org ? " (" + org + ")" : "");
-    var body = msg + "\n\n" + name + (org ? "\n" + org : "") + "\n" + from;
-    var href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    var href = "mailto:" + CONTACT_EMAIL +
+      "?subject=" + encodeURIComponent(topic + " – " + name) +
+      "&body=" + encodeURIComponent(msg + "\n\n" + name + "\n" + from);
 
-    status.textContent = "";
-    status.append("Dein E-Mail-Programm öffnet sich mit der fertigen Nachricht. Falls nicht, sende sie direkt an ");
+    status.textContent = "Dein E-Mail-Programm öffnet sich mit der fertigen Nachricht. Falls nicht, schreib direkt an ";
     var a = el("a", null, CONTACT_EMAIL);
     a.href = href;
     status.append(a, ".");
