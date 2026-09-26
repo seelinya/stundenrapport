@@ -33,7 +33,7 @@
 
   var C = {
     blue: "#5A7A92", blueDark: "#3F5B70", ink: "#151A1F",
-    foe: "#EEF0F1", foeShirt: "#C9D1D8", trouser: "#2A2F35", zwilch: "#D8C197", zwilchDark: "#B3965F",
+    foe: "#EEF0F1", foeShirt: "#C9D1D8", trouser: "#2A2F35", zwilch: "#E3CFA6", zwilchDark: "#CDB488",
     skin: "#EBC6A2", skin2: "#E3BA94", hairMarc: "#C9A66E", hairFoe: "#4A3527",
     saw: "#E6D3A8", sawDark: "#CDB483"
   };
@@ -251,7 +251,7 @@
     seg(P(kf.end.x - 2, -6), P(kf.end.x + 16, -6), 12, "#F2F4F6");
     // Zwilchhose über den Oberschenkeln
     var zb = lerpP(H, kb.j, 0.5), zf = lerpP(H, kf.j, 0.5);
-    seg(H, zb, 32, mix(C.zwilch, -0.1));
+    seg(H, zb, 32, mix(C.zwilch, -0.04));
     seg(H, zf, 32, C.zwilch);
     [[kb.j, zb], [kf.j, zf]].forEach(function (pair) {             // umgeschlagener Saum
       var K = pair[0], c = pair[1], dx = K.x - H.x, dy = K.y - H.y, l = Math.sqrt(dx * dx + dy * dy) || 1;

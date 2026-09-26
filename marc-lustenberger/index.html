@@ -18,6 +18,16 @@
 <a class="skip" href="#inhalt">Zum Inhalt</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="wrestle" viewBox="0 0 40 30">
+    <g fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 18 L18 11.5"/><path d="M29 18 L22 11.5"/>
+      <path d="M11 18 L6 27"/><path d="M11 18 L14.5 27"/>
+      <path d="M29 18 L25.5 27"/><path d="M29 18 L34 27"/>
+      <path d="M17 12.5 L26 16"/><path d="M23 12.5 L14 16"/>
+    </g>
+    <circle cx="16.5" cy="6.2" r="3.6" fill="currentColor"/>
+    <circle cx="23.5" cy="6.2" r="3.6" fill="currentColor"/>
+  </symbol>
   <symbol id="ml" viewBox="0 0 160 125">
     <path d="M0 0H40V73H0Z M0 0H40L60 32L85 0V52L58 90L22 40Z M85 0H125V95H160L138 125H85Z"/>
   </symbol>
@@ -491,7 +501,7 @@
   </div>
 </footer>
 
-<a class="play-fab" id="fab" href="#mitschwingen"><svg aria-hidden="true"><use href="#ml"/></svg>Schwing gegen Marc</a>
+<a class="play-fab" id="fab" href="#mitschwingen" aria-label="Mini-Spiel: Schwing gegen Marc"><svg aria-hidden="true" viewBox="0 0 40 30"><use href="#wrestle"/></svg><span class="fab__long">Schwing gegen Marc</span><span class="fab__short">Mitschwingen</span></a>
 
 <!-- @artifact-body-end -->
 <script src="main.js"></script>

@@ -1104,3 +1104,13 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
 @media (max-width: 600px) and (min-height: 700px) {
   .hero { min-height: clamp(560px, 86svh, 760px); }
 }
+
+/* Spiel-Button: Schwinger-Piktogramm, auf dem Handy mit kurzer Beschriftung */
+.play-fab svg { width: 30px; height: 23px; fill: currentColor; }
+.fab__short { display: none; }
+@media (max-width: 600px) {
+  .play-fab { width: auto; height: 50px; padding: 0 16px 0 12px; font-size: 15px; gap: 8px; justify-content: flex-start; }
+  .play-fab svg { width: 30px; height: 23px; }
+  .fab__long { display: none; }
+  .fab__short { display: inline; }
+}
