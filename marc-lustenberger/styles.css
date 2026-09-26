@@ -688,7 +688,7 @@ a.logo-tile:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,
   .arena__overlay.is-result .arena__card { max-width: 52%; padding: 10px 12px 12px; }
   .arena__overlay.is-result .arena__text { display: none; }
 }
-.arena__tap { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); font-family: var(--f-head); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 15px; color: var(--blue-dark); background: #fff; padding: 6px 14px; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,.08); pointer-events: none; }
+.arena__tap { position: absolute; left: 50%; top: 16%; bottom: auto; transform: translateX(-50%); font-family: var(--f-head); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 15px; color: var(--blue-dark); background: #fff; padding: 6px 14px; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,.08); pointer-events: none; }
 @media (max-width: 900px) { .game__grid { grid-template-columns: 1fr; } }
 
 /* Schwebender Spiel-Button */
@@ -834,3 +834,11 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
 
 /* Steckbrief mit dem Inhalt ausrichten */
 .facts__grid { margin-inline: auto; }
+
+/* Spiel: Texte auf dem Handy nicht umbrechen */
+.arena__tap, .arena__overlay .btn { white-space: nowrap; }
+@media (max-width: 520px) {
+  .arena__tap { font-size: 12px; padding: 5px 10px; top: 18%; }
+  .arena__overlay.is-result .btn { font-size: 14px; padding: 0 12px; min-height: 38px; }
+  .arena__overlay.is-result .arena__title { font-size: 18px; }
+}
