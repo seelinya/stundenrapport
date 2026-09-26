@@ -322,29 +322,153 @@
     </div>
 
     <form class="form" id="form" novalidate>
-      <fieldset class="form__topics">
+      <fieldset class="form__topics chips">
         <legend>Worum geht es?</legend>
         <label><input type="radio" name="topic" id="t-spons" value="Sponsoring" checked><span>Sponsoring</span></label>
-        <label><input type="radio" name="topic" id="t-auto" value="Autogrammstunde / Event"><span>Autogrammstunde / Event</span></label>
-        <label><input type="radio" name="topic" id="t-fan" value="Fanartikel"><span>Fanartikel</span></label>
+        <label><input type="radio" name="topic" id="t-event" value="Autogrammstunde / Event"><span>Autogrammstunde / Event</span></label>
+        <label><input type="radio" name="topic" id="t-fan" value="Fanartikel"><span>Fanartikel bestellen</span></label>
         <label><input type="radio" name="topic" id="t-other" value="Anderes"><span>Anderes</span></label>
       </fieldset>
+
+      <!-- Sponsoring -->
+      <div class="form__part" data-for="Sponsoring">
+        <div class="form__row">
+          <label for="f-company">Firma / Organisation *</label>
+          <input id="f-company" name="company" type="text" autocomplete="organization" data-req="Sponsoring">
+          <p class="form__err" data-err="f-company"></p>
+        </div>
+        <fieldset class="chips chips--multi">
+          <legend>Interesse an</legend>
+          <label><input type="checkbox" name="interest" id="i-spons" value="Sponsoring"><span>Sponsoring</span></label>
+          <label><input type="checkbox" name="interest" id="i-ambassador" value="Markenbotschafter"><span>Markenbotschafter</span></label>
+          <label><input type="checkbox" name="interest" id="i-event" value="Auftritt an Anlass"><span>Auftritt an Anlass</span></label>
+          <label><input type="checkbox" name="interest" id="i-media" value="Medien &amp; Content"><span>Medien &amp; Content</span></label>
+        </fieldset>
+      </div>
+
+      <!-- Autogrammstunde / Event -->
+      <div class="form__part" data-for="Autogrammstunde / Event" hidden>
+        <div class="form__row">
+          <label for="f-occasion">Anlass *</label>
+          <input id="f-occasion" name="occasion" type="text" placeholder="z. B. Firmenjubiläum, Vereinsfest, Autogrammstunde" data-req="Autogrammstunde / Event">
+          <p class="form__err" data-err="f-occasion"></p>
+        </div>
+        <div class="form__two">
+          <div class="form__row">
+            <label for="f-date">Datum</label>
+            <input id="f-date" name="date" type="date">
+          </div>
+          <div class="form__row">
+            <label for="f-place">Ort *</label>
+            <input id="f-place" name="place" type="text" data-req="Autogrammstunde / Event">
+            <p class="form__err" data-err="f-place"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fanartikel -->
+      <div class="form__part" data-for="Fanartikel" hidden>
+        <div class="order">
+          <p class="order__label">Artikel wählen *</p>
+          <ul class="order__list" id="order-list"></ul>
+          <button type="button" class="order__more" id="add-shirt">+ weiteres T-Shirt in anderer Grösse</button>
+          <p class="form__err" data-err="order"></p>
+          <p class="order__hint">Autogrammkarte: gratis gegen frankiertes, adressiertes C5-Kuvert an Marc Lustenberger, Buechmatt 2, 6166 Hasle.</p>
+        </div>
+
+        <fieldset class="chips">
+          <legend>Lieferung *</legend>
+          <label><input type="radio" name="delivery" id="d-post" value="Versand per Post" checked><span>Versand per Post</span></label>
+          <label><input type="radio" name="delivery" id="d-pickup" value="Abholung in Hasle"><span>Abholung in Hasle</span></label>
+        </fieldset>
+
+        <div class="form__address" id="address">
+          <div class="form__row">
+            <label for="f-street">Strasse und Nr. *</label>
+            <input id="f-street" name="street" type="text" autocomplete="street-address">
+            <p class="form__err" data-err="f-street"></p>
+          </div>
+          <div class="form__zip">
+            <div class="form__row">
+              <label for="f-zip">PLZ *</label>
+              <input id="f-zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5">
+              <p class="form__err" data-err="f-zip"></p>
+            </div>
+            <div class="form__row">
+              <label for="f-city">Ort *</label>
+              <input id="f-city" name="city" type="text" autocomplete="address-level2">
+              <p class="form__err" data-err="f-city"></p>
+            </div>
+          </div>
+        </div>
+
+        <fieldset class="pay">
+          <legend>Zahlung *</legend>
+          <label class="pay__opt">
+            <input type="radio" name="payment" id="p-twint" value="TWINT" checked>
+            <span class="pay__box"><strong>TWINT</strong><small>Zahlungsaufforderung an deine Handynummer</small></span>
+          </label>
+          <label class="pay__opt">
+            <input type="radio" name="payment" id="p-invoice" value="Rechnung">
+            <span class="pay__box"><strong>Rechnung</strong><small>Zahlbar nach Erhalt</small></span>
+          </label>
+        </fieldset>
+
+        <div class="summary" id="summary" aria-live="polite"></div>
+      </div>
+
+      <!-- Kontaktangaben (für alle) -->
       <div class="form__two">
         <div class="form__row">
-          <label for="f-name">Vorname / Name *</label>
-          <input id="f-name" name="name" type="text" autocomplete="name" required>
+          <label for="f-first">Vorname *</label>
+          <input id="f-first" name="first" type="text" autocomplete="given-name">
+          <p class="form__err" data-err="f-first"></p>
         </div>
         <div class="form__row">
-          <label for="f-mail">E-Mail-Adresse *</label>
-          <input id="f-mail" name="mail" type="email" autocomplete="email" required>
+          <label for="f-last">Nachname *</label>
+          <input id="f-last" name="last" type="text" autocomplete="family-name">
+          <p class="form__err" data-err="f-last"></p>
+        </div>
+      </div>
+      <div class="form__two">
+        <div class="form__row">
+          <label for="f-mail">E-Mail *</label>
+          <input id="f-mail" name="mail" type="email" autocomplete="email">
+          <p class="form__err" data-err="f-mail"></p>
+        </div>
+        <div class="form__row">
+          <label for="f-phone">Handynummer <span id="phone-req">(für TWINT) *</span><em id="phone-opt" hidden>optional</em></label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="079 123 45 67">
+          <p class="form__err" data-err="f-phone"></p>
         </div>
       </div>
       <div class="form__row">
-        <label for="f-msg">Deine Nachricht *</label>
-        <textarea id="f-msg" name="msg" rows="5" required></textarea>
+        <label for="f-msg" id="msg-label">Deine Nachricht *</label>
+        <textarea id="f-msg" name="msg" rows="4"></textarea>
+        <p class="form__err" data-err="f-msg"></p>
       </div>
-      <button class="btn btn--blue" type="submit">Nachricht senden</button>
-      <p class="form__status" id="status" role="status"></p>
+
+      <label class="consent" for="f-consent">
+        <input type="checkbox" id="f-consent" name="consent">
+        <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung dieser Anfrage verwendet werden. *</span>
+      </label>
+      <p class="form__err" data-err="f-consent"></p>
+
+      <div class="form__submit">
+        <button class="btn btn--blue" type="submit" id="submit">Anfrage senden</button>
+        <p class="form__note">* Pflichtfeld</p>
+      </div>
+
+      <div class="done" id="done" hidden tabindex="-1">
+        <p class="done__title" id="done-title">Fast geschafft</p>
+        <p class="done__text">Dein E-Mail-Programm öffnet sich mit der fertigen Nachricht an <strong id="done-mail"></strong>. Du musst sie dort nur noch absenden.</p>
+        <p class="done__text">Falls sich nichts öffnet, kopiere die Nachricht und sende sie selbst:</p>
+        <pre class="done__pre" id="done-text"></pre>
+        <div class="done__actions">
+          <button type="button" class="btn btn--blue" id="done-copy">Nachricht kopieren</button>
+          <a class="done__link" id="done-link" href="#">E-Mail nochmals öffnen</a>
+        </div>
+      </div>
     </form>
   </div>
 </section>
@@ -369,6 +493,7 @@
 
 <!-- @artifact-body-end -->
 <script src="main.js"></script>
+<script src="form.js"></script>
 <script src="game.js"></script>
 </body>
 </html>

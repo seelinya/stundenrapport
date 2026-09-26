@@ -45,13 +45,17 @@
   ];
 
   // Fanartikel, wie auf marc-lustenberger.ch.
+  // chf = Preis pro Stück; sizes = wählbare Grössen (leer = Einheitsgrösse).
   var PRODUCTS = [
-    { name: "T-Shirt", img: "fan-shirt.jpg", text: "Hochwertiges T-Shirt aus 100 % Baumwolle.", price: "CHF 45.00", ship: "Versand CHF 5.00 bei 1 Shirt, ab 2 Shirts CHF 12.00" },
-    { name: "Cap Team Lustenberger", img: "fan-cap-team.jpg", text: "Sehr hochwertiges Cap mit braunem Stick. Einheitsgrösse.", price: "CHF 30.00", ship: "Versand CHF 12.00" },
-    { name: "Cap", img: "fan-cap.jpg", text: "Sehr hochwertiges Cap mit beigem Stick. Einheitsgrösse.", price: "CHF 30.00", ship: "Versand CHF 12.00" },
-    { name: "Jahreskalender 2026", img: "fan-kalender.jpg", text: "12 Bilder der Saison 2025, Frontseite handsigniert. A3.", price: "CHF 25.00", ship: "Versand CHF 12.00" },
-    { name: "Autogrammkarte", img: "fan-autogramm.jpg", text: "Frankiertes, adressiertes C5-Kuvert senden an: Marc Lustenberger, Buechmatt 2, 6166 Hasle.", price: "Gratis", ship: "gegen frankiertes Rückkuvert", noOrder: true }
+    { id: "shirt", name: "T-Shirt", img: "fan-shirt.jpg", text: "Hochwertiges T-Shirt aus 100 % Baumwolle.", chf: 45, sizes: ["S", "M", "L", "XL", "XXL"], ship: "Versand CHF 5.00 bei 1 Shirt, ab 2 Shirts CHF 12.00" },
+    { id: "cap-team", name: "Cap Team Lustenberger", img: "fan-cap-team.jpg", text: "Sehr hochwertiges Cap mit braunem Stick. Einheitsgrösse.", chf: 30, ship: "Versand CHF 12.00" },
+    { id: "cap", name: "Cap", img: "fan-cap.jpg", text: "Sehr hochwertiges Cap mit beigem Stick. Einheitsgrösse.", chf: 30, ship: "Versand CHF 12.00" },
+    { id: "kalender", name: "Jahreskalender 2026", img: "fan-kalender.jpg", text: "12 Bilder der Saison 2025, Frontseite handsigniert. A3.", chf: 25, ship: "Versand CHF 12.00" },
+    { id: "autogramm", name: "Autogrammkarte", img: "fan-autogramm.jpg", text: "Frankiertes, adressiertes C5-Kuvert senden an: Marc Lustenberger, Buechmatt 2, 6166 Hasle.", chf: 0, ship: "gegen frankiertes Rückkuvert", noOrder: true }
   ];
+
+  // Für das Bestellformular (form.js)
+  window.MARC = { CONTACT_EMAIL: CONTACT_EMAIL, PRODUCTS: PRODUCTS };
 
   /* ------------------------------------------------------------------ */
 
@@ -121,14 +125,13 @@
     var body = el("div", "product__body");
     body.appendChild(el("h3", null, p.name));
     body.appendChild(el("p", null, p.text));
-    var price = el("p", "product__price", p.price);
+    var price = el("p", "product__price", p.chf ? "CHF " + p.chf.toFixed(2) : "Gratis");
     price.appendChild(el("small", null, p.ship));
     body.appendChild(price);
     if (!p.noOrder) {
       var a = el("a", "product__order", "Bestellen");
       a.href = "#kontakt";
-      a.setAttribute("data-topic", "Fanartikel");
-      a.setAttribute("data-message", "Ich möchte bestellen: 1× " + p.name + "\nLieferung oder Abholung: \nZahlung (TWINT, bar, Einzahlungsschein): \nAdresse: ");
+      a.setAttribute("data-product", p.id);
       body.appendChild(a);
     } else {
       body.appendChild(el("span"));
@@ -140,17 +143,6 @@
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");
   mail.textContent = CONTACT_EMAIL;
-  var msgField = document.getElementById("f-msg");
-
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest("[data-topic]");
-    if (!a) return;
-    var radio = document.querySelector(".form__topics input[value='" + a.getAttribute("data-topic") + "']");
-    if (radio) radio.checked = true;
-    var m = a.getAttribute("data-message");
-    if (m && !msgField.value.trim()) msgField.value = m;
-  });
-
   document.getElementById("copy").addEventListener("click", function (e) {
     var btn = e.currentTarget;
     var fallback = function () {
@@ -164,35 +156,6 @@
         setTimeout(function () { btn.textContent = "Kopieren"; }, 1800);
       }, fallback);
     } catch (err) { fallback(); }
-  });
-
-  var form = document.getElementById("form");
-  var status = document.getElementById("status");
-  var emailOk = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); };
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var d = new FormData(form);
-    var name = String(d.get("name") || "").trim();
-    var from = String(d.get("mail") || "").trim();
-    var msg = String(d.get("msg") || "").trim();
-    var topic = String(d.get("topic") || "Anfrage");
-
-    if (!name || !emailOk(from) || !msg) {
-      status.textContent = "Bitte Name, eine gültige E-Mail-Adresse und eine Nachricht angeben.";
-      document.getElementById(!name ? "f-name" : !emailOk(from) ? "f-mail" : "f-msg").focus();
-      return;
-    }
-
-    var href = "mailto:" + CONTACT_EMAIL +
-      "?subject=" + encodeURIComponent(topic + " – " + name) +
-      "&body=" + encodeURIComponent(msg + "\n\n" + name + "\n" + from);
-
-    status.textContent = "Dein E-Mail-Programm öffnet sich mit der fertigen Nachricht. Falls nicht, schreib direkt an ";
-    var a = el("a", null, CONTACT_EMAIL);
-    a.href = href;
-    status.append(a, ".");
-    window.location.href = href;
   });
 
 

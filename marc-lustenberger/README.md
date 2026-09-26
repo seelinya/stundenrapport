@@ -16,7 +16,14 @@ Alles Wiederkehrende steht oben in `main.js`:
 
 - `CONTACT_EMAIL` – Kontaktadresse
 - `SPONSORS` – Sponsoren nach Kategorie (Logos in `assets/partner/`, optional mit `url`)
-- `PRODUCTS` – Fanartikel mit Preis und Versand (Bilder in `assets/img/`)
+- `PRODUCTS` – Fanartikel mit Preis (`chf`), Grössen und Versandhinweis (Bilder in `assets/img/`)
+
+Das Kontakt- und Bestellformular steckt in `form.js`: Felder je Anliegen, Warenkorb mit
+Mengen und T-Shirt-Grössen, Lieferung (Post oder Abholung), Zahlung (TWINT oder Rechnung).
+Versandkosten: Abholung gratis, genau 1 T-Shirt CHF 5, sonst CHF 12 (Funktion `shipping`).
+Die Website hat kein Backend: Beim Absenden öffnet sich das E-Mail-Programm mit der fertigen
+Nachricht an `CONTACT_EMAIL`. Für echten Versand ohne E-Mail-Programm braucht es später einen
+Formulardienst beim Hosting.
 
 ## Bilder
 

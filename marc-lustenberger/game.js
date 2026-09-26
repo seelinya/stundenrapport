@@ -33,7 +33,7 @@
 
   var C = {
     blue: "#5A7A92", blueDark: "#3F5B70", ink: "#151A1F",
-    foe: "#EEF0F1", trouser: "#2A2F35", zwilch: "#D8C197", zwilchDark: "#B3965F",
+    foe: "#EEF0F1", foeBody: "#2E3943", trouser: "#2A2F35", zwilch: "#D8C197", zwilchDark: "#B3965F",
     skin: "#EBC6A2", skin2: "#E3BA94", hairMarc: "#C9A66E", hairFoe: "#4A3527",
     saw: "#E6D3A8", sawDark: "#CDB483"
   };
@@ -164,34 +164,28 @@
     ctx.beginPath(); ctx.arc(q.x, q.y, w2 / 2, 0, Math.PI * 2); ctx.fill();
   }
 
-  function drawLeg(H, F, pal, back) {
-    var k = joint(H, F, 62, 60, -1);
-    var trouser = back ? mix(C.trouser, -0.25) : C.trouser;
-    limb(H, k.j, 34, 27, trouser);                 // Oberschenkel
-    limb(k.j, k.end, 25, 19, trouser);             // Unterschenkel
-    // Schuh
-    ctx.fillStyle = back ? "#DADFE3" : "#F4F6F7";
-    ctx.beginPath(); ctx.ellipse(k.end.x + 9, -6, 17, 7.5, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#9AA5AE"; ctx.fillRect(k.end.x - 6, -2.5, 32, 2.5);
-    // Zwilchhose: kurzes Bein mit umgeschlagenem Saum
-    var mid = lerpP(H, k.j, 0.58);
-    var z = back ? mix(C.zwilch, -0.12) : C.zwilch;
-    limb(H, mid, 40, 36, z);
-    var cuffA = lerpP(H, k.j, 0.5), cuffB = lerpP(H, k.j, 0.66);
-    limb(cuffA, cuffB, 39, 37, back ? mix(C.zwilchDark, -0.1) : C.zwilchDark);
-    return k;
+  // Gelenk mit bevorzugter Richtung: "down" = Gelenk unten, "out" = vom Körper weg
+  function bend(a, b, l1, l2, prefer, awayX) {
+    var j1 = joint(a, b, l1, l2, 1), j2 = joint(a, b, l1, l2, -1);
+    if (prefer === "down") return j1.j.y > j2.j.y ? j1 : j2;
+    if (prefer === "fwd") return j1.j.x > j2.j.x ? j1 : j2;
+    return Math.abs(j1.j.x - awayX) > Math.abs(j2.j.x - awayX) ? j1 : j2;
   }
 
-  function drawArm(Sh, target, shirt, skin, back, up) {
-    var k = joint(Sh, target, 58, 56, up ? -1 : 1);
-    var sl = back ? mix(shirt, -0.18) : shirt;
-    var sk = back ? mix(skin, -0.12) : skin;
-    var elbowSleeve = lerpP(Sh, k.j, 0.78);
-    limb(Sh, k.j, 25, 21, sk);          // Oberarm (Haut)
-    limb(Sh, elbowSleeve, 29, 26, sl);  // halblanger Ärmel
-    limb(k.j, k.end, 20, 16, sk);       // Unterarm
-    ctx.fillStyle = sk;
-    ctx.beginPath(); ctx.ellipse(k.end.x, k.end.y, 11, 9.5, Math.atan2(k.end.y - k.j.y, k.end.x - k.j.x), 0, Math.PI * 2); ctx.fill();
+  // --- Piktogramm-Schwinger ------------------------------------------------
+  // Einfarbige Körper mit runden Gliedern und hellen Trennfugen (wie Sportpiktogramme).
+  var GAPC = "#EEF2F5";   // Farbe der Trennfugen
+  function seg(p, q, w, col) {
+    ctx.lineCap = "round";
+    ctx.strokeStyle = GAPC; ctx.lineWidth = w + 7;
+    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+    ctx.strokeStyle = col; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+  }
+  function seg2(a, j, b, w1, w2, col) { seg(a, j, w1, col); seg(j, b, w2, col); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(j.x, j.y, Math.min(w1, w2) / 2, 0, Math.PI * 2); ctx.fill(); }
+  function dot(p, r, col) {
+    ctx.fillStyle = GAPC; ctx.beginPath(); ctx.arc(p.x, p.y, r + 3.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
   }
 
   function drawWrestler(o) {
@@ -200,78 +194,67 @@
     ctx.rotate(o.rot || 0);
     ctx.scale(o.facing * S, S);
 
+    var col = o.body, dark = mix(o.body, -0.2);
     var lean = o.lean, crouch = o.crouch == null ? 1 : o.crouch;
-    var hipY = -96 - (1 - crouch) * 20;
-    var H = P(-8, hipY);
-    var F1 = P(-54 + (1 - crouch) * 26, 0), F2 = P(34 - (1 - crouch) * 12, 0);
-    var dir = P(Math.sin(lean), -Math.cos(lean));   // Rumpfachse
-    var back = P(-dir.y, dir.x);                    // Rückenseite (oben)
-    back = P(-back.x, -back.y);
-    var N = along(H, dir, 106);                      // Nacken
-    var Sf = along(along(N, dir, -12), back, -4);    // vordere Schulter
-    var Sb = along(along(N, dir, -8), back, 6);      // hintere Schulter
-    var reach = o.reach || 160;
+    var hipY = -92 - (1 - crouch) * 16;
+    var H = P(-4, hipY);
+    var F1 = P(-78 + (1 - crouch) * 50, -9), F2 = P(24 - (1 - crouch) * 8, -9);
+    var dir = P(Math.sin(lean), -Math.cos(lean));
+    var N = along(H, dir, 82);
+    var Sh = along(N, dir, -6);
+    var head = along(N, dir, 32);
+    var reach = o.reach || 150;
+    if (o.headOnly) { dot(head, 19, col); ctx.restore(); return; }
 
-    // Ziele der Hände
-    var tf, tb, up = false;
+    var tf, tb, prefer = "down";
     if (o.arms === "grip") {
-      tf = P(reach - 4, hipY - 16);    // Gurt des Gegners
-      tb = P(reach - 42, hipY + 26);   // umgeschlagenes Hosenbein des Gegners
+      tf = P(reach + 6, hipY - 26);    // über den Rücken an den Gurt
+      tb = P(reach - 26, hipY + 26);   // umgeschlagenes Hosenbein
     } else if (o.arms === "up") {
-      up = true;
-      tf = P(Sf.x + 30, Sf.y - 92); tb = P(Sb.x - 26, Sb.y - 96);
+      tf = P(Sh.x + 30, Sh.y - 80); tb = P(Sh.x - 30, Sh.y - 78); prefer = "out";
     } else {
-      tf = P(Sf.x + 16, Sf.y + 88); tb = P(Sb.x - 6, Sb.y + 90);
+      tf = P(Sh.x + 12, Sh.y + 76); tb = P(Sh.x - 8, Sh.y + 76);
     }
 
-    // Schatten
-    if (!o.rot) { ctx.fillStyle = "rgba(90,70,40,.2)"; ctx.beginPath(); ctx.ellipse(-8, 3, 82, 11, 0, 0, Math.PI * 2); ctx.fill(); }
+    if (!o.rot) { ctx.fillStyle = "rgba(90,70,40,.2)"; ctx.beginPath(); ctx.ellipse(-24, 0, 90, 10, 0, 0, Math.PI * 2); ctx.fill(); }
 
-    drawArm(Sb, tb, o.shirt, o.skin, true, up);   // hinterer Arm
-    drawLeg(H, F1, o, true);                        // hinteres Bein
-    drawLeg(H, F2, o, false);                       // vorderes Bein
-
-    // Becken der Zwilchhose
-    ctx.save(); ctx.translate(H.x, H.y); ctx.rotate(lean * 0.35);
-    rrect(-27, -20, 54, 40, 12, C.zwilch);
-    rrect(-27, -21, 54, 10, 4, C.zwilchDark);       // Gurt
-    ctx.restore();
-
-    // Rumpf mit Licht von oben
-    var chest = along(H, dir, 66);
-    var g = ctx.createLinearGradient(chest.x + back.x * 36, chest.y + back.y * 36, chest.x - back.x * 36, chest.y - back.y * 36);
-    g.addColorStop(0, mix(o.shirt, 0.18)); g.addColorStop(0.55, o.shirt); g.addColorStop(1, mix(o.shirt, -0.22));
-    limb(along(H, dir, 10), N, 50, 62, g);
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.ellipse(chest.x, chest.y, 40, 33, Math.atan2(dir.y, dir.x), 0, Math.PI * 2); ctx.fill();
-    // Knopfleiste / Falte
-    ctx.strokeStyle = mix(o.shirt, -0.15); ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(along(H, dir, 28).x - back.x * 20, along(H, dir, 28).y - back.y * 20);
-    ctx.lineTo(N.x - back.x * 24, N.y - back.y * 24); ctx.stroke();
-    // Sägemehl auf dem Rücken nach dem Wurf
+    // hinterer Arm
+    var ab = bend(Sh, tb, 46, 44, prefer, Sh.x);
+    seg2(Sh, ab.j, ab.end, 19, 17, dark);
+    // Beine: hinteres lang gestreckt, vorderes gebeugt
+    var kb = bend(H, F1, 56, 54, "down");
+    seg2(H, kb.j, kb.end, 26, 21, dark);
+    seg(P(kb.end.x - 4, -6), P(kb.end.x + 14, -6), 12, dark);
+    var kf = bend(H, F2, 56, 54, "fwd");
+    seg2(H, kf.j, kf.end, 26, 21, col);
+    seg(P(kf.end.x - 2, -6), P(kf.end.x + 16, -6), 12, col);
+    // Zwilchhose über den Oberschenkeln
+    var zb = lerpP(H, kb.j, 0.5), zf = lerpP(H, kf.j, 0.5);
+    seg(H, zb, 32, mix(C.zwilch, -0.1));
+    seg(H, zf, 32, C.zwilch);
+    [[kb.j, zb], [kf.j, zf]].forEach(function (pair) {             // umgeschlagener Saum
+      var K = pair[0], c = pair[1], dx = K.x - H.x, dy = K.y - H.y, l = Math.sqrt(dx * dx + dy * dy) || 1;
+      ctx.strokeStyle = C.zwilchDark; ctx.lineWidth = 7; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(c.x - dy / l * 15, c.y + dx / l * 15); ctx.lineTo(c.x + dy / l * 15, c.y - dx / l * 15); ctx.stroke();
+    });
+    // Rumpf
+    seg(along(H, dir, 4), N, 46, col);
+    // Gurt der Zwilchhose
+    ctx.fillStyle = C.zwilch; ctx.beginPath(); ctx.arc(H.x, H.y, 21, 0, Math.PI * 2); ctx.fill();
+    var g1 = along(H, dir, 10), gp = P(-dir.y, dir.x);
+    ctx.strokeStyle = C.zwilchDark; ctx.lineWidth = 8; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(g1.x + gp.x * 21, g1.y + gp.y * 21); ctx.lineTo(g1.x - gp.x * 21, g1.y - gp.y * 21); ctx.stroke();
     if (o.dusty) {
-      for (var i = 0; i < 26; i++) {
-        var q = along(along(H, dir, 20 + (i * 37) % 80), back, 12 + (i * 13) % 14);
-        ctx.fillStyle = i % 2 ? C.sawDark : "#F1E2BD"; ctx.fillRect(q.x, q.y, 3, 2);
+      for (var i = 0; i < 24; i++) {
+        var q = along(H, dir, 20 + (i * 31) % 60);
+        ctx.fillStyle = i % 2 ? C.sawDark : "#F1E2BD"; ctx.fillRect(q.x - 16 + (i * 7) % 30, q.y - 22, 3, 2);
       }
     }
-
-    // Hals & Kopf
-    var neckTop = along(N, dir, 12);
-    limb(N, neckTop, 24, 22, mix(o.skin, -0.05));
-    var head = along(neckTop, dir, 18);
-    var tilt = Math.atan2(dir.y, dir.x) + Math.PI / 2;
-    ctx.save(); ctx.translate(head.x, head.y); ctx.rotate(tilt * 0.55);
-    ctx.fillStyle = o.skin; ctx.beginPath(); ctx.ellipse(0, 0, 19, 22, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(15, -4); ctx.lineTo(24, 4); ctx.lineTo(15, 8); ctx.fill();          // Nase
-    ctx.fillStyle = mix(o.skin, -0.12); ctx.beginPath(); ctx.ellipse(-4, 2, 5, 7, 0, 0, Math.PI * 2); ctx.fill(); // Ohr
-    ctx.fillStyle = o.hair;
-    ctx.beginPath(); ctx.ellipse(-3, -8, 20, 16, -0.25, Math.PI * 0.95, Math.PI * 2.08); ctx.fill();   // Haare
-    ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(11, -2, 2.4, 0, Math.PI * 2); ctx.fill();          // Auge
-    ctx.strokeStyle = mix(o.skin, -0.3); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(9, -8); ctx.lineTo(16, -7); ctx.stroke(); // Braue
-    ctx.restore();
-
-    drawArm(Sf, tf, o.shirt, o.skin, false, up);  // vorderer Arm
+    // Kopf (freistehend)
+    dot(head, 19, col);
+    // vorderer Arm
+    var af = bend(Sh, tf, 46, 44, prefer, Sh.x);
+    seg2(Sh, af.j, af.end, 20, 18, col);
     ctx.restore();
   }
 
@@ -308,37 +291,38 @@
   function render(dt) {
     var sway = reduce ? 0 : Math.sin(t * 3.1) * 0.03;
     var push = shown * 120;
-    var gap = 146;
+    var gap = 122;
     var reach = (gap * 2) / S;
-    var marc = { x: CX - gap + push, facing: 1, lean: 1.0 + sway + jolt * 0.06, crouch: 1, shirt: C.blue, skin: C.skin, hair: C.hairMarc, arms: "grip", reach: reach };
-    var foe  = { x: CX + gap + push, facing: -1, lean: 1.04 - sway, crouch: 1, shirt: C.foe, skin: C.skin2, hair: C.hairFoe, arms: "grip", reach: reach };
+    var marc = { x: CX - gap + push, facing: 1, lean: 0.98 + sway + jolt * 0.06, crouch: 1, body: C.blue, arms: "grip", reach: reach };
+    var foe  = { x: CX + gap + push, facing: -1, lean: 1.12 - sway, crouch: 1, body: C.foeBody, arms: "grip", reach: reach };
 
     if (state === "win") {
       var u = Math.min(1, (t - endT) / 1.3);
       var e = ease(u);
       foe.lift = Math.sin(Math.min(1, u * 1.4) * Math.PI) * 130;
       foe.rot = e * (Math.PI / 2 + 0.04);
-      foe.lean = 1.04 * (1 - e);
+      foe.lean = 1.1 * (1 - e);
       foe.crouch = 1 - e;
       foe.x += (CX - 20 - (WIDE - W) * 0.22 - foe.x) * e;
       foe.arms = u > 0.25 ? "none" : "grip";
       if (u >= 1) { foe.lift = -44; foe.dusty = true; }
-      marc.lean = 1.0 - e * 0.95;
+      marc.lean = 0.95 - e * 0.9;
       marc.crouch = 1 - e * 0.8;
       marc.x += e * 20;
       marc.arms = u > 0.75 ? "up" : (u > 0.25 ? "none" : "grip");
       if (u > 0.82 && !landed) { landed = true; spawn(foe.x + 200, GROUND - 10, 110, 1.3); }
     } else if (state === "draw") {
       var d = Math.min(1, (t - endT) / 0.8);
-      marc.lean = 1.0 - d * 0.7; foe.lean = 1.04 - d * 0.75;
+      marc.lean = 0.95 - d * 0.65; foe.lean = 1.1 - d * 0.8;
       marc.crouch = foe.crouch = 1 - d * 0.7;
-      marc.x -= d * 60; foe.x += d * 60;
+      marc.x -= d * 80; foe.x += d * 80;
       marc.arms = foe.arms = d > 0.4 ? "none" : "grip";
     }
 
     drawBackground(state === "win" && t - endT > 0.9);
     drawWrestler(foe);
     drawWrestler(marc);
+    if (foe.arms === "grip" && !foe.rot) { foe.headOnly = true; drawWrestler(foe); }
     drawParticles(dt);
     if (state === "play" || state === "idle") drawBar();
   }
