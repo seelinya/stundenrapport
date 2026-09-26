@@ -1079,3 +1079,18 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
 
 /* Schwebender Spiel-Button nicht über dem Kontaktformular */
 .play-fab.is-hidden-zone { opacity: 0; visibility: hidden; transform: translateY(120px); }
+
+/* ==========================================================================
+   Zeilenabstand: genug Platz für Umlaut-Punkte (Ä, Ö, Ü) bei Grossbuchstaben
+   ========================================================================== */
+
+.h2 { line-height: 1.04; }
+.hero__title { line-height: 1; }
+.hero__title .ln { padding-top: .06em; padding-bottom: .02em; margin-top: -.06em; }
+.hero__title .ln + .ln { margin-top: -.02em; }
+.hero__eyebrow { margin-bottom: clamp(16px, 1.4vw, 30px); }
+.band__title { line-height: 1.04; }
+.statement__text { line-height: 1.12; }
+.h3, .mile h3, .card h3, .product h3, .duo h3, .arena__ptitle, .collab__list strong, .done__title, .summary__title { line-height: 1.08; }
+.ms h3, .post h3, .display { line-height: 1.04; }
+.num__l { line-height: 1.3; }
