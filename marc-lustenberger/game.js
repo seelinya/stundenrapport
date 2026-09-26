@@ -33,7 +33,7 @@
 
   var C = {
     blue: "#5A7A92", blueDark: "#3F5B70", ink: "#151A1F",
-    foe: "#EEF0F1", foeShirt: "#C9D1D8", trouser: "#2A2F35", zwilch: "#E3CFA6", zwilchDark: "#CDB488",
+    foe: "#EEF0F1", foeShirt: "#C9D1D8", trouser: "#2A2F35", zwilch: "#E3CFA6", zwilchDark: "#CDB488", zwilchFoe: "#6E4A2C", zwilchFoeDark: "#4F331D",
     skin: "#EBC6A2", skin2: "#E3BA94", hairMarc: "#C9A66E", hairFoe: "#4A3527",
     saw: "#E6D3A8", sawDark: "#CDB483"
   };
@@ -249,21 +249,22 @@
     var kf = bend(H, F2, 56, 54, "fwd");
     seg2(H, kf.j, kf.end, 26, 21, pants);
     seg(P(kf.end.x - 2, -6), P(kf.end.x + 16, -6), 12, "#F2F4F6");
-    // Zwilchhose über den Oberschenkeln
+    // Zwilchhose über den Oberschenkeln (Farbe je Schwinger)
+    var z = o.zwilch || C.zwilch, zd = o.zwilchDark || C.zwilchDark;
     var zb = lerpP(H, kb.j, 0.5), zf = lerpP(H, kf.j, 0.5);
-    seg(H, zb, 32, mix(C.zwilch, -0.04));
-    seg(H, zf, 32, C.zwilch);
+    seg(H, zb, 32, mix(z, -0.04));
+    seg(H, zf, 32, z);
     [[kb.j, zb], [kf.j, zf]].forEach(function (pair) {             // umgeschlagener Saum
       var K = pair[0], c = pair[1], dx = K.x - H.x, dy = K.y - H.y, l = Math.sqrt(dx * dx + dy * dy) || 1;
-      ctx.strokeStyle = C.zwilchDark; ctx.lineWidth = 7; ctx.lineCap = "round";
+      ctx.strokeStyle = zd; ctx.lineWidth = 7; ctx.lineCap = "round";
       ctx.beginPath(); ctx.moveTo(c.x - dy / l * 15, c.y + dx / l * 15); ctx.lineTo(c.x + dy / l * 15, c.y - dx / l * 15); ctx.stroke();
     });
     // Rumpf
     seg(along(H, dir, 4), N, 46, col);
     // Gurt der Zwilchhose
-    ctx.fillStyle = C.zwilch; ctx.beginPath(); ctx.arc(H.x, H.y, 21, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = z; ctx.beginPath(); ctx.arc(H.x, H.y, 21, 0, Math.PI * 2); ctx.fill();
     var g1 = along(H, dir, 10), gp = P(-dir.y, dir.x);
-    ctx.strokeStyle = C.zwilchDark; ctx.lineWidth = 8; ctx.lineCap = "round";
+    ctx.strokeStyle = zd; ctx.lineWidth = 8; ctx.lineCap = "round";
     ctx.beginPath(); ctx.moveTo(g1.x + gp.x * 21, g1.y + gp.y * 21); ctx.lineTo(g1.x - gp.x * 21, g1.y - gp.y * 21); ctx.stroke();
     if (o.dusty) {
       for (var i = 0; i < 24; i++) {
@@ -316,7 +317,7 @@
     var gap = 122;
     var reach = (gap * 2) / S;
     var marc = { x: CX - gap + push, facing: 1, lean: 0.98 + sway + jolt * 0.06, crouch: 1, body: C.blue, pants: C.blueDark, skin: C.skin, hair: C.hairMarc, arms: "grip", reach: reach };
-    var foe  = { x: CX + gap + push, facing: -1, lean: 1.12 - sway, crouch: 1, body: C.foeShirt, pants: C.trouser, skin: C.skin2, hair: C.hairFoe, arms: "grip", reach: reach };
+    var foe  = { x: CX + gap + push, facing: -1, lean: 1.12 - sway, crouch: 1, body: C.foeShirt, pants: C.trouser, zwilch: C.zwilchFoe, zwilchDark: C.zwilchFoeDark, skin: C.skin2, hair: C.hairFoe, arms: "grip", reach: reach };
 
     if (state === "win") {
       var u = Math.min(1, (t - endT) / 1.3);
