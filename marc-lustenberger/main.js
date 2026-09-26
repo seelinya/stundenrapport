@@ -278,6 +278,25 @@
   window.addEventListener("scroll", function () { if (!raf) { raf = true; requestAnimationFrame(parallax); } }, { passive: true });
   parallax();
 
+
+  // Statement: Wörter werden beim Scrollen nacheinander weiss
+  var statement = document.getElementById("statement");
+  if (statement && !reduce) {
+    statement.innerHTML = statement.textContent.split(" ").map(function (w) {
+      return '<span class="w">' + w + '</span>';
+    }).join(" ");
+    var words = statement.querySelectorAll(".w");
+    statement.classList.add("is-live");
+    var paintWords = function () {
+      var r = statement.getBoundingClientRect(), vh = window.innerHeight;
+      var k = Math.max(0, Math.min(1, (vh * .9 - r.top) / (r.height * .75)));
+      var n = Math.round(k * words.length);
+      for (var i = 0; i < words.length; i++) words[i].classList.toggle("on", i < n);
+    };
+    window.addEventListener("scroll", paintWords, { passive: true });
+    paintWords();
+  }
+
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
 })();
