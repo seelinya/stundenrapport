@@ -33,7 +33,7 @@
 
   var C = {
     blue: "#5A7A92", blueDark: "#3F5B70", ink: "#151A1F",
-    foe: "#EEF0F1", foeBody: "#2E3943", trouser: "#2A2F35", zwilch: "#D8C197", zwilchDark: "#B3965F",
+    foe: "#EEF0F1", foeShirt: "#C9D1D8", trouser: "#2A2F35", zwilch: "#D8C197", zwilchDark: "#B3965F",
     skin: "#EBC6A2", skin2: "#E3BA94", hairMarc: "#C9A66E", hairFoe: "#4A3527",
     saw: "#E6D3A8", sawDark: "#CDB483"
   };
@@ -174,18 +174,37 @@
 
   // --- Piktogramm-Schwinger ------------------------------------------------
   // Einfarbige Körper mit runden Gliedern und hellen Trennfugen (wie Sportpiktogramme).
-  var GAPC = "#EEF2F5";   // Farbe der Trennfugen
   function seg(p, q, w, col) {
     ctx.lineCap = "round";
-    ctx.strokeStyle = GAPC; ctx.lineWidth = w + 7;
-    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
     ctx.strokeStyle = col; ctx.lineWidth = w;
     ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
   }
   function seg2(a, j, b, w1, w2, col) { seg(a, j, w1, col); seg(j, b, w2, col); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(j.x, j.y, Math.min(w1, w2) / 2, 0, Math.PI * 2); ctx.fill(); }
-  function dot(p, r, col) {
-    ctx.fillStyle = GAPC; ctx.beginPath(); ctx.arc(p.x, p.y, r + 3.5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+  // Kopf mit Gesicht (Blick nach +x, entlang der Rumpfachse geneigt)
+  function drawHead(p, dir, o) {
+    var tilt = Math.atan2(dir.y, dir.x) + Math.PI / 2;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(tilt * 0.55);
+    ctx.fillStyle = o.skin;
+    ctx.beginPath(); ctx.ellipse(0, 0, 18, 20, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(7, 11, 11, 8, 0.3, 0, Math.PI * 2); ctx.fill();           // Kinn
+    ctx.beginPath(); ctx.moveTo(15, -5); ctx.quadraticCurveTo(24, 2, 15, 6); ctx.fill();   // Nase
+    ctx.fillStyle = mix(o.skin, -0.14);
+    ctx.beginPath(); ctx.ellipse(-4, 2, 4.5, 6.5, 0, 0, Math.PI * 2); ctx.fill();         // Ohr
+    ctx.fillStyle = o.hair;                                                               // Haare
+    ctx.beginPath(); ctx.ellipse(-3, -6, 19.5, 15.5, -0.15, Math.PI * 0.9, Math.PI * 2.08); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-12, 0, 8, 12, 0, 0, Math.PI * 2); ctx.fill();            // Hinterkopf
+    ctx.fillStyle = mix(o.skin, -0.14);
+    ctx.beginPath(); ctx.ellipse(-4, 2, 4.5, 6.5, 0, 0, Math.PI * 2); ctx.fill();         // Ohr über den Haaren
+    ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(10, -2, 2.3, 0, Math.PI * 2); ctx.fill(); // Auge
+    ctx.strokeStyle = mix(o.hair, -0.1); ctx.lineWidth = 2.4; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(7, -8); ctx.lineTo(15, -7); ctx.stroke();                 // Braue
+    ctx.strokeStyle = mix(o.skin, -0.3); ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(11, 9); ctx.lineTo(16, 8); ctx.stroke();                  // Mund
+    ctx.restore();
+  }
+  function hand(p, o, back) {
+    ctx.fillStyle = back ? mix(o.skin, -0.14) : o.skin;
+    ctx.beginPath(); ctx.arc(p.x, p.y, 10.5, 0, Math.PI * 2); ctx.fill();
   }
 
   function drawWrestler(o) {
@@ -195,6 +214,7 @@
     ctx.scale(o.facing * S, S);
 
     var col = o.body, dark = mix(o.body, -0.2);
+    var pants = o.pants || col, pantsBack = mix(pants, -0.22);
     var lean = o.lean, crouch = o.crouch == null ? 1 : o.crouch;
     var hipY = -92 - (1 - crouch) * 16;
     var H = P(-4, hipY);
@@ -204,7 +224,7 @@
     var Sh = along(N, dir, -6);
     var head = along(N, dir, 32);
     var reach = o.reach || 150;
-    if (o.headOnly) { dot(head, 19, col); ctx.restore(); return; }
+    if (o.headOnly) { drawHead(head, dir, o); ctx.restore(); return; }
 
     var tf, tb, prefer = "down";
     if (o.arms === "grip") {
@@ -221,13 +241,14 @@
     // hinterer Arm
     var ab = bend(Sh, tb, 46, 44, prefer, Sh.x);
     seg2(Sh, ab.j, ab.end, 19, 17, dark);
+    hand(ab.end, o, true);
     // Beine: hinteres lang gestreckt, vorderes gebeugt
     var kb = bend(H, F1, 56, 54, "down");
-    seg2(H, kb.j, kb.end, 26, 21, dark);
-    seg(P(kb.end.x - 4, -6), P(kb.end.x + 14, -6), 12, dark);
+    seg2(H, kb.j, kb.end, 26, 21, pantsBack);
+    seg(P(kb.end.x - 4, -6), P(kb.end.x + 14, -6), 12, "#D5DBE0");
     var kf = bend(H, F2, 56, 54, "fwd");
-    seg2(H, kf.j, kf.end, 26, 21, col);
-    seg(P(kf.end.x - 2, -6), P(kf.end.x + 16, -6), 12, col);
+    seg2(H, kf.j, kf.end, 26, 21, pants);
+    seg(P(kf.end.x - 2, -6), P(kf.end.x + 16, -6), 12, "#F2F4F6");
     // Zwilchhose über den Oberschenkeln
     var zb = lerpP(H, kb.j, 0.5), zf = lerpP(H, kf.j, 0.5);
     seg(H, zb, 32, mix(C.zwilch, -0.1));
@@ -251,10 +272,11 @@
       }
     }
     // Kopf (freistehend)
-    dot(head, 19, col);
+    drawHead(head, dir, o);
     // vorderer Arm
     var af = bend(Sh, tf, 46, 44, prefer, Sh.x);
     seg2(Sh, af.j, af.end, 20, 18, col);
+    hand(af.end, o, false);
     ctx.restore();
   }
 
@@ -293,8 +315,8 @@
     var push = shown * 120;
     var gap = 122;
     var reach = (gap * 2) / S;
-    var marc = { x: CX - gap + push, facing: 1, lean: 0.98 + sway + jolt * 0.06, crouch: 1, body: C.blue, arms: "grip", reach: reach };
-    var foe  = { x: CX + gap + push, facing: -1, lean: 1.12 - sway, crouch: 1, body: C.foeBody, arms: "grip", reach: reach };
+    var marc = { x: CX - gap + push, facing: 1, lean: 0.98 + sway + jolt * 0.06, crouch: 1, body: C.blue, pants: C.blueDark, skin: C.skin, hair: C.hairMarc, arms: "grip", reach: reach };
+    var foe  = { x: CX + gap + push, facing: -1, lean: 1.12 - sway, crouch: 1, body: C.foeShirt, pants: C.trouser, skin: C.skin2, hair: C.hairFoe, arms: "grip", reach: reach };
 
     if (state === "win") {
       var u = Math.min(1, (t - endT) / 1.3);
