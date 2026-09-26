@@ -1114,3 +1114,40 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
   .fab__long { display: none; }
   .fab__short { display: inline; }
 }
+
+/* ==========================================================================
+   Formular mobil: Datumsfeld (iOS) und Spalten dürfen nicht überlaufen
+   ========================================================================== */
+
+.form__two { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.form__zip { grid-template-columns: minmax(0, 110px) minmax(0, 1fr); }
+.form__row, .form__part, .form fieldset { min-width: 0; }
+.form input, .form select, .form textarea { min-width: 0; max-width: 100%; box-sizing: border-box; }
+
+/* iOS Safari gibt Datumsfeldern sonst eine feste Mindestbreite und zentrierten Text */
+.form input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 50px;
+  line-height: 1.4;
+  text-align: left;
+}
+.form input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+.form input[type="date"]::-webkit-calendar-picker-indicator { opacity: .6; cursor: pointer; }
+.form input[type="date"]:not(:focus):invalid, .form input[type="date"]:in-range:not(:focus) { color: var(--ink); }
+
+@media (max-width: 520px) {
+  .form__two { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .form__part { gap: 14px; }
+  /* Chips als gleichmässiges 2×2-Raster */
+  .form .form__topics, .form .chips--multi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .form__topics legend, .chips--multi legend { grid-column: 1 / -1; }
+  .form .form__topics label, .form .chips--multi label { display: flex; }
+  .form .form__topics span, .form .chips--multi span {
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    min-height: 48px; padding: 8px 10px; border-radius: 12px;
+    text-align: center; line-height: 1.2; font-size: 14.5px;
+  }
+}
