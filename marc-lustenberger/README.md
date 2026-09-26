@@ -5,7 +5,10 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Hero · Steckbrief · Über mich · Erfolge · Kraft/Technik/Kopf · News · Sponsoren · Fanartikel · Kontakt
+Hero · Steckbrief · Über mich · Statement · Mini-Spiel «Schwing gegen Marc» · Erfolge · Kraft/Technik/Kopf · News · Sponsoren · Fanartikel · Kontakt
+
+Das Mini-Spiel steckt in `game.js` (Canvas, keine Abhängigkeiten). Schwierigkeit und Dauer
+stehen oben in der Datei (`LEVELS`, `DURATION`, `TAP`).
 
 ## Inhalte pflegen
 

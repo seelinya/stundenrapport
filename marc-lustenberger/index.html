@@ -32,6 +32,7 @@
   <nav class="menu" id="menu" aria-label="Hauptnavigation">
     <a href="#ueber-mich">Über mich</a>
     <a href="#erfolge">Erfolge</a>
+    <a href="#mitschwingen">Mitschwingen</a>
     <a href="#news">News</a>
     <a href="#sponsoren">Sponsoren</a>
     <a href="#fanartikel">Fanartikel</a>
@@ -54,7 +55,7 @@
     <p class="hero__sub">Schwinger aus Hasle im Entlebuch. Kompromisslos im Sägemehl, bodenständig daneben.</p>
     <div class="hero__cta">
       <a class="btn btn--white" href="#ueber-mich">Mehr über Marc</a>
-      <a class="btn btn--ghost" href="#sponsoren">Partner werden</a>
+      <a class="btn btn--ghost" href="#mitschwingen">Gegen Marc schwingen</a>
     </div>
   </div>
 
@@ -122,6 +123,42 @@
   <div class="wrap">
     <p class="statement__text" id="statement">Kein Kranz wird geschenkt. Jeder Gang wird erarbeitet. Im Training, im Kopf, im Sägemehl.</p>
     <p class="statement__sign">Marc Lustenberger · Eidgenosse</p>
+  </div>
+</section>
+
+<!-- ============ MINI-SPIEL ============ -->
+<section class="game sec" id="mitschwingen">
+  <div class="wrap game__grid">
+    <div class="game__intro">
+      <p class="eyebrow">Mitschwingen</p>
+      <h2 class="h2 rv">Schwing<br>gegen Marc.</h2>
+      <p>Klicke oder tippe in die Arena, so schnell du kannst – jeder Klick gibt Marc Kraft. Schafft er es vor Ablauf der Zeit, legt er den Gegner mit dem Wyberhaken ins Sägemehl. Sonst heisst es: gestellt.</p>
+      <fieldset class="game__levels">
+        <legend>Gegner</legend>
+        <label><input type="radio" name="level" id="lv-1" value="0" checked><span>Jungschwinger</span></label>
+        <label><input type="radio" name="level" id="lv-2" value="1"><span>Kranzschwinger</span></label>
+        <label><input type="radio" name="level" id="lv-3" value="2"><span>Eidgenosse</span></label>
+      </fieldset>
+      <p class="game__best" id="best">Deine Bestzeit: –</p>
+    </div>
+
+    <div class="arena" id="arena" tabindex="0" role="application" aria-label="Mini-Spiel: Klicken, tippen oder Leertaste drücken, um Marc Kraft zu geben">
+      <canvas id="ring" width="1280" height="720"></canvas>
+      <div class="arena__hud" aria-hidden="true">
+        <span>Marc</span>
+        <span class="arena__timer" id="timer">12.0 s</span>
+        <span id="foe-name">Jungschwinger</span>
+      </div>
+      <span class="arena__tap" id="tap-hint" hidden>Klick! Klick! Klick!</span>
+      <div class="arena__overlay" id="overlay">
+        <div class="arena__card">
+          <p class="arena__title" id="ov-title">Bereit zum Anschwingen?</p>
+          <p class="arena__text" id="ov-text">Zwölf Sekunden. Klicken, tippen oder Leertaste.</p>
+          <button type="button" class="btn btn--blue" id="start">Gang starten</button>
+        </div>
+      </div>
+      <p class="sr" id="game-status" role="status"></p>
+    </div>
   </div>
 </section>
 
@@ -326,7 +363,10 @@
   </div>
 </footer>
 
+<a class="play-fab" id="fab" href="#mitschwingen"><svg aria-hidden="true"><use href="#ml"/></svg>Schwing gegen Marc</a>
+
 <!-- @artifact-body-end -->
 <script src="main.js"></script>
+<script src="game.js"></script>
 </body>
 </html>

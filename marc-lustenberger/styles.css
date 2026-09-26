@@ -1,21 +1,21 @@
 /* ==========================================================================
    Marc Lustenberger – Website
-   Schwarz-Weiss, kontrastreich, fotogetrieben.
+   Hell und fotogetrieben: Schwarz-Weiss-Fotos, Marcs Blau als dezenter Akzent.
    ========================================================================== */
 
 :root {
   color-scheme: light;
 
-  --blue:       #0A0A0A;   /* Hauptfarbe: Schwarz */
-  --blue-dark:  #000000;
-  --blue-deep:  #000000;
-  --blue-soft:  #E6E6E6;
-  --ink:        #0A0A0A;
-  --ink-soft:   #4A4A4A;
+  --blue:       #5A7A92;   /* Markenblau der bestehenden Website */
+  --blue-dark:  #3F5B70;
+  --blue-deep:  #1F2F3C;
+  --blue-soft:  #E9EFF3;
+  --ink:        #151A1F;
+  --ink-soft:   #56616B;
   --paper:      #FFFFFF;
-  --sand:       #EFEFEF;   /* helles Grau */
-  --sand-line:  #D4D4D4;
-  --wood:       #8C8C8C;   /* Grau für Metadaten */
+  --sand:       #F3F5F7;   /* helles, kühles Grau */
+  --sand-line:  #DCE3E8;
+  --wood:       #7D94A6;   /* gedämpftes Blau für Metadaten */
   --tile:       #F6F6F6;   /* Hintergrund der Logo-Kacheln */
   --red:        #D52B1E;
 
@@ -533,104 +533,176 @@ a.logo-tile:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,
 .head.is-solid::after { opacity: 1; }
 
 /* ==========================================================================
-   Schwarz-Weiss & bold
+   Hell & Blau
    ========================================================================== */
 
-/* Fotos: Schwarz-Weiss mit hartem Kontrast */
+/* Fotos: Schwarz-Weiss, aber hell und weich */
 .hero__img, .about__photo img, .mile img, .band__img, .contact__img {
-  filter: grayscale(1) contrast(1.28) brightness(.92);
+  filter: grayscale(1) contrast(1.08) brightness(1.04);
 }
-.product img { filter: grayscale(1) contrast(1.15); transition: filter .5s, transform .8s cubic-bezier(.2,.7,.2,1); }
-.logo-tile img, .logo-marquee__track img { filter: grayscale(1) contrast(1.1); transition: filter .35s; }
+.product img { filter: grayscale(1) contrast(1.05); transition: filter .5s, transform .8s cubic-bezier(.2,.7,.2,1); }
+.logo-tile img, .logo-marquee__track img { filter: grayscale(1); opacity: .85; transition: filter .35s, opacity .35s; }
 @media (hover: hover) {
-  .product:hover img, .logo-tile:hover img, .logo-marquee__track img:hover { filter: none; }
+  .product:hover img, .logo-tile:hover img, .logo-marquee__track img:hover { filter: none; opacity: 1; }
 }
 
-/* Typo: fetter, grösser, dichter */
-.h2 { font-weight: 900; font-size: clamp(50px, 7.4vw, 124px); line-height: .88; letter-spacing: -.005em; }
-.hero__title { font-weight: 900; font-size: clamp(66px, 13vw, 210px); line-height: .84; }
-.band__title { font-weight: 900; font-size: clamp(56px, 9vw, 150px); line-height: .86; }
-.mile h3, .card h3, .product h3, .num__v, .h3 { font-weight: 900; }
-.eyebrow { color: var(--ink); }
-.eyebrow--light, .hero__eyebrow { color: #fff; }
-.dot { background: #fff; }
+/* Typo: kräftig, aber nicht übertrieben */
+.h2 { font-weight: 800; font-size: clamp(40px, 5vw, 80px); line-height: .92; }
+.hero__title { font-weight: 800; font-size: clamp(54px, 9.6vw, 152px); line-height: .88; }
+.band__title { font-weight: 800; font-size: clamp(42px, 5.8vw, 92px); line-height: .9; }
+.mile h3, .card h3, .product h3, .h3 { font-weight: 800; }
+.hero__eyebrow { color: #fff; }
+.dot { background: var(--blue-soft); box-shadow: 0 0 0 4px rgba(90,122,146,.55); }
 
-/* Hero dunkler, Schrift knallt */
+/* Hero: heller, blaue Tönung unten links */
 .hero__shade {
   background:
-    linear-gradient(180deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 28%),
-    linear-gradient(0deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.45) 48%, rgba(0,0,0,.05) 75%),
-    linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 62%);
+    linear-gradient(180deg, rgba(21,26,31,.4) 0%, rgba(21,26,31,0) 26%),
+    linear-gradient(0deg, rgba(31,47,60,.78) 0%, rgba(31,47,60,.28) 45%, rgba(31,47,60,0) 72%),
+    linear-gradient(90deg, rgba(31,47,60,.4) 0%, rgba(31,47,60,0) 60%);
 }
-.btn--white { background: #fff; color: #000; }
-.btn--white:hover { background: #000; color: #fff; box-shadow: inset 0 0 0 2px #fff; }
-.btn--blue:hover { background: #333; }
 
-/* Header, Steckbrief, Laufband, Badge in Schwarz */
-.head.is-solid { background: #000; }
-.menu { background: transparent; }
-@media (max-width: 920px) { .menu { background: #000; } }
-.facts { background: #000; border-top: 1px solid #222; }
-.facts__grid div { border-color: #2A2A2A !important; }
-.facts dd { font-size: 20px; }
-.ticker { background: #fff; color: #000; border-block: 2px solid #000; }
-.ticker__track span { font-weight: 900; }
-.ticker__track i { background: #000; }
-.badge::before { background: #000; box-shadow: 0 0 0 2px #fff inset, 0 10px 30px rgba(0,0,0,.4); }
-.head::after { background: #fff; }
+/* Header: wird beim Scrollen weiss */
+.head.is-solid { background: rgba(255,255,255,.96); color: var(--ink); box-shadow: 0 1px 0 var(--sand-line), 0 8px 24px rgba(21,26,31,.06); }
+.head.is-solid .logo { color: var(--blue); }
+.head.is-solid .logo__type { color: var(--ink); }
+.head.is-solid .menu__cta { background: var(--blue); border-color: var(--blue) !important; color: #fff; }
+.head.is-solid .menu__cta:hover { background: var(--blue-dark); }
+.head::after { background: var(--blue); }
+@media (max-width: 920px) {
+  .menu { background: var(--blue); color: #fff; }
+  .head.is-solid .menu__cta { background: transparent; }
+}
 
-/* Statement: Wörter werden beim Scrollen weiss */
-.statement { background: #000; color: #fff; padding-block: clamp(96px, 14vw, 200px); }
+/* Steckbrief & Laufband */
+.facts { background: var(--blue); }
+.facts dt { color: #D3DEE6; }
+.ticker { background: #fff; color: var(--ink); border-block: 1px solid var(--sand-line); padding-block: 14px; }
+.ticker__track span { font-weight: 800; font-size: clamp(20px, 1.8vw, 26px); }
+.ticker__track i { background: var(--blue); width: 10px; height: 10px; }
+.badge::before { background: var(--blue); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+
+/* Statement: hell, Wörter werden beim Scrollen blau */
+.statement { background: var(--sand); color: var(--ink); padding-block: clamp(80px, 10vw, 150px); }
 .statement__text {
   font-family: var(--f-head);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
-  font-size: clamp(44px, 7.2vw, 118px);
-  line-height: .92;
-  max-width: 18ch;
+  font-size: clamp(32px, 4.3vw, 66px);
+  line-height: 1;
+  max-width: 22ch;
   text-wrap: balance;
 }
-.statement__text .w { color: #fff; transition: color .4s ease; }
-.statement__text.is-live .w { color: #3A3A3A; }
-.statement__text.is-live .w.on { color: #fff; }
-.statement__sign { margin-top: 36px; font-family: var(--f-head); font-weight: 700; font-size: 17px; letter-spacing: .2em; text-transform: uppercase; color: #8C8C8C; }
+.statement__text .w { color: var(--ink); transition: color .4s ease; }
+.statement__text.is-live .w { color: #C3CDD5; }
+.statement__text.is-live .w.on { color: var(--ink); }
+.statement__text.is-live .w.on:nth-child(-n+4) { color: var(--blue); }
+.statement__sign { margin-top: 28px; font-family: var(--f-head); font-weight: 700; font-size: 16px; letter-spacing: .2em; text-transform: uppercase; color: var(--blue); }
 
-/* Erfolge: harte Kontraste */
-.wins { background: #fff; border-top: 1px solid var(--sand-line); }
-.num { background: #000; color: #fff; }
-.num__v { color: #fff; }
-.num__l small { color: #A8A8A8; }
-.num::after { background: #fff; }
-.mile { border: 2px solid #000; }
-.mile--hl { background: #000; }
-.mile__date { color: #6E6E6E; }
-.mile--hl .mile__date { color: #A8A8A8; }
+/* Erfolge */
+.wins { background: #fff; }
+.num { background: var(--blue-soft); }
+.num__v { color: var(--blue); }
+.num::after { background: var(--blue); }
+.mile { border: 1px solid var(--sand-line); }
+.mile--hl { background: var(--blue); border-color: var(--blue); }
+.mile__date { color: var(--wood); }
+.mile--hl .mile__date { color: #D3DEE6; }
+.mile--hl p:not(.mile__date) { color: #E6EDF2; }
 
-/* Band: tiefschwarz */
-.band__shade { background: linear-gradient(90deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.72) 55%, rgba(0,0,0,.5) 100%); }
-.band__cols p { border-top-color: #fff; color: #D6D6D6; }
+/* Band: blau getönt statt schwarz */
+.band__shade { background: linear-gradient(90deg, rgba(31,47,60,.86) 0%, rgba(31,47,60,.62) 55%, rgba(31,47,60,.35) 100%); }
+.band__cols p { border-top-color: rgba(255,255,255,.6); color: #E6EDF2; }
+.band__title span:last-child { color: #BFD0DD; }
 
 /* Karten & Sponsoren */
-.card { border: 2px solid #000; border-top-width: 8px; }
-.card__meta { color: #6E6E6E; }
-.card__link { color: #000; }
-.tier__name { color: #000; }
-.tier { border-top: 2px solid #000; }
-.collab { background: #000; color: #fff; }
-.collab__text p { color: #CFCFCF; }
-.collab__list li { background: #161616; }
-.collab__list strong { color: #fff; }
-.collab__list span { color: #BDBDBD; }
-.collab .btn--blue { background: #fff; color: #000; }
-.collab .btn--blue:hover { background: #D6D6D6; }
-
-/* Fanartikel */
-.fan { background: var(--sand); }
-.product__price, .product__order { color: #000; }
+.card { border: 1px solid var(--sand-line); border-top: 4px solid var(--blue); }
+.card__meta { color: var(--wood); }
+.tier { border-top: 1px solid var(--sand-line); }
+.tier__name { color: var(--blue-dark); }
+.collab { background: var(--blue-soft); }
+.collab__list li { background: #fff; }
+.collab__list strong { color: var(--blue-dark); }
 
 /* Kontakt & Footer */
-.contact__shade { background: linear-gradient(90deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.85) 50%, rgba(0,0,0,.75) 100%); }
-.form__topics input:checked + span { background: #000; border-color: #000; }
-.form input:focus, .form textarea:focus { border-color: #000; }
-.foot { background: #000; border-top: 1px solid #222; }
-.foot__copy { color: #8C8C8C; }
+.contact__shade { background: linear-gradient(90deg, rgba(31,47,60,.9) 0%, rgba(31,47,60,.8) 50%, rgba(63,91,112,.7) 100%); }
+.contact .eyebrow--light { color: #D3DEE6; }
+.form__topics input:checked + span { background: var(--blue); border-color: var(--blue); }
+.form input:focus, .form textarea:focus { border-color: var(--blue); }
+.foot { background: var(--blue); }
+.foot__copy { color: #D3DEE6; }
+
+/* ==========================================================================
+   Mini-Spiel: Schwing gegen Marc
+   ========================================================================== */
+
+.game { background: var(--blue-soft); }
+.game__grid { display: grid; grid-template-columns: .8fr 1.4fr; gap: 32px clamp(32px, 5vw, 72px); align-items: center; }
+.game__intro { display: grid; gap: 18px; align-content: start; }
+.game__intro p { color: var(--ink-soft); max-width: 30em; }
+.game__levels { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; }
+.game__levels legend { font-weight: 700; font-size: 15px; margin-bottom: 8px; padding: 0; }
+.game__levels label { cursor: pointer; }
+.game__levels input { position: absolute; opacity: 0; pointer-events: none; }
+.game__levels span { display: inline-block; padding: 8px 14px; border: 1.5px solid var(--sand-line); background: #fff; border-radius: 999px; font-size: 15px; font-weight: 600; transition: all .2s; }
+.game__levels input:checked + span { background: var(--blue); border-color: var(--blue); color: #fff; }
+.game__levels input:focus-visible + span { outline: 3px solid var(--blue-dark); outline-offset: 2px; }
+.game__best { font-size: 15px; color: var(--ink-soft); }
+.game__best strong { color: var(--blue-dark); }
+
+.arena {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 30px 60px rgba(31,47,60,.18);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+.arena canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.arena__hud { position: absolute; left: 16px; right: 16px; top: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; pointer-events: none; font-family: var(--f-head); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 16px; color: var(--ink); }
+.arena__timer { font-variant-numeric: tabular-nums; background: #fff; padding: 4px 10px; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.arena__overlay {
+  position: absolute; inset: 0;
+  display: grid; place-items: center; align-content: center; gap: 14px;
+  padding: 20px;
+  text-align: center;
+  background: rgba(233,239,243,.5);
+  backdrop-filter: blur(2px);
+  transition: opacity .3s;
+}
+.arena__overlay[hidden] { display: none !important; }
+.arena__title { font-family: var(--f-head); font-weight: 800; text-transform: uppercase; font-size: clamp(28px, 3.6vw, 48px); line-height: .95; color: var(--ink); }
+.arena__text { color: var(--ink-soft); max-width: 26em; font-size: 16px; }
+.arena__card { display: grid; justify-items: center; gap: 12px; }
+.arena__overlay.is-result { background: transparent; backdrop-filter: none; align-content: start; justify-items: end; padding: 54px 16px 0; }
+.arena__overlay.is-result .arena__card { background: rgba(255,255,255,.95); padding: 14px 18px 16px; border-radius: 10px; box-shadow: 0 12px 30px rgba(31,47,60,.15); max-width: 42%; justify-items: start; text-align: left; }
+.arena__overlay.is-result .arena__title { font-size: clamp(20px, 2vw, 30px); }
+.arena__overlay.is-result .arena__text { font-size: 14px; }
+.arena__overlay.is-result .btn { min-height: 42px; font-size: 16px; }
+@media (max-width: 560px) {
+  .arena__overlay.is-result { padding: 44px 8px 0; }
+  .arena__overlay.is-result .arena__card { max-width: 52%; padding: 10px 12px 12px; }
+  .arena__overlay.is-result .arena__text { display: none; }
+}
+.arena__tap { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); font-family: var(--f-head); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 15px; color: var(--blue-dark); background: #fff; padding: 6px 14px; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,.08); pointer-events: none; }
+@media (max-width: 900px) { .game__grid { grid-template-columns: 1fr; } }
+
+/* Schwebender Spiel-Button */
+.play-fab {
+  position: fixed; right: var(--gutter); bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); z-index: 45;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px 12px 14px;
+  border-radius: 999px;
+  background: var(--blue); color: #fff;
+  font-family: var(--f-head); font-weight: 700; font-size: 16px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+  box-shadow: 0 12px 30px rgba(31,47,60,.35);
+  transform: translateY(120px);
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), background .2s;
+}
+.play-fab.is-visible { transform: none; }
+.play-fab:hover { background: var(--blue-dark); }
+.play-fab svg { width: 26px; height: 20px; fill: currentColor; }
