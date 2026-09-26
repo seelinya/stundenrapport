@@ -1003,3 +1003,79 @@ body { font-size: clamp(16px, .32vw + 13.5px, 21px); }
 .done__link { color: var(--blue-dark); font-weight: 700; }
 
 .pay__opt { display: grid; }
+
+/* ==========================================================================
+   Mobile-Feinschliff
+   ========================================================================== */
+
+/* Menü: geschlossen wirklich unsichtbar (auch für Tastatur und Screenreader) */
+@media (max-width: 920px) {
+  .menu { visibility: hidden; transition: transform .4s cubic-bezier(.7,0,.2,1), visibility 0s linear .4s; }
+  .menu.is-open { visibility: visible; transition: transform .4s cubic-bezier(.7,0,.2,1), visibility 0s; }
+  .menu a { display: block; min-height: 48px; padding-block: 8px !important; line-height: 1.1; }
+  .menu__cta { display: inline-flex !important; align-items: center; min-height: 52px; margin-top: 18px; padding: 10px 22px !important; border: 2px solid #fff !important; border-radius: var(--radius); color: #fff !important; }
+}
+
+@media (max-width: 600px) {
+  :root { --sec: 60px; }
+
+  /* Hero: Buttons in voller Breite, Bild auf die Schwinger */
+  .hero { min-height: clamp(540px, 86svh, 760px); }
+  .hero__content { padding-block: 120px 36px; }
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta .btn { width: 100%; min-height: 52px; }
+  .hero__sub { margin-top: 16px; }
+  .badge { width: 88px; top: calc(env(safe-area-inset-top, 0px) + 84px); right: 12px; }
+
+  /* Grössere Tippziele */
+  .card__link, .product__order, .done__link { display: inline-flex; align-items: center; min-height: 44px; }
+  .mail__copy { min-height: 44px; padding: 10px 14px; }
+  .foot__links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .logo { min-height: 44px; align-items: center; }
+  .form__row label, .form legend { font-size: 15px; }
+  .consent { padding-block: 6px; }
+  .consent input { width: 22px; height: 22px; }
+  .stepper button { width: 42px; height: 42px; }
+  .order__rm { width: 40px; height: 40px; }
+  .chips span, .form__topics span { padding: 10px 14px; }
+
+  /* iOS zoomt bei Schrift unter 16 px ins Feld */
+  .form select, .form input, .form textarea { font-size: 16px; }
+
+  /* News als wischbare Reihe statt vier Karten untereinander */
+  .news__grid {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%;
+    overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+    margin-inline: calc(var(--gutter) * -1); padding: 2px var(--gutter) 16px;
+    scroll-padding-inline: var(--gutter); scrollbar-width: none;
+  }
+  .news__grid::-webkit-scrollbar, .products::-webkit-scrollbar { display: none; }
+  .news__grid .card { scroll-snap-align: start; }
+  .products { scrollbar-width: none; }
+
+  /* Wisch-Hinweis unter den Reihen */
+  .swipe-hint { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+  .swipe-hint::after { content: "→"; animation: nudge 1.6s ease-in-out infinite; }
+
+  /* Sponsoren: Laufband weglassen, die Kategorien zeigen alle Logos */
+  .logo-marquee { display: none; }
+  .tier { padding-top: 16px; gap: 12px; }
+
+  /* Spiel: Einleitung kompakter */
+  .game__intro { gap: 14px; }
+  .game__grid { gap: 24px; }
+
+  /* Formular: etwas mehr Luft, Senden-Button volle Breite */
+  .form { padding: 18px 16px; }
+  .form__part { padding: 14px; }
+  .form__submit .btn { width: 100%; justify-content: center; text-align: center; min-height: 54px; }
+  .done__actions .btn { width: 100%; justify-content: center; }
+}
+.swipe-hint { display: none; }
+@media (max-width: 600px) { .swipe-hint { display: flex; } }
+@media (max-width: 900px) and (min-width: 601px) { .swipe-hint--fan { display: flex; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--ink-soft); } }
+@keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+@media (prefers-reduced-motion: reduce) { .swipe-hint::after { animation: none; } }
+
+/* Schwebender Spiel-Button nicht über dem Kontaktformular */
+.play-fab.is-hidden-zone { opacity: 0; visibility: hidden; transform: translateY(120px); }

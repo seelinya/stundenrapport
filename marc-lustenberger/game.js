@@ -388,8 +388,11 @@
     loop();
   }
 
+  function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* nicht unterstützt */ } }
+
   function finish(won) {
     endT = t;
+    buzz(won ? [40, 60, 90] : 30);
     tapHint.hidden = true;
     var used = DURATION - timeLeft;
     if (won) {
@@ -417,6 +420,7 @@
     if (state !== "play") return;
     pos = Math.min(1, pos + TAP);
     jolt = 1;
+    buzz(8);
     spawn(CX + shown * 120 + (Math.random() - 0.5) * 220, GROUND, 3, 0.5);
     if (pos >= 1) finish(true);
   }
@@ -450,9 +454,12 @@
     }, { threshold: 0.05 }).observe(arena);
   }
   if (fab) {
+    var contact = document.getElementById("kontakt");
     var onScroll = function () {
       var y = window.scrollY || 0;
+      var inContact = contact && contact.getBoundingClientRect().top < window.innerHeight * 0.9;
       fab.classList.toggle("is-visible", y > window.innerHeight * 0.8 && !fab.classList.contains("is-near"));
+      fab.classList.toggle("is-hidden-zone", !!inContact);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
