@@ -73,7 +73,12 @@ function laemuReminderPlain_(employee, summary, month, monthKey) {
   var lines = [];
   lines.push('Hallo ' + employee.firstName);
   lines.push('');
-  if (month) {
+  if (employee.hourly) {
+    lines.push(month
+      ? laemuMonthLabel(monthKey) + ': ' + month.totalHours + ' h an ' + month.recordedDays +
+        (month.recordedDays === 1 ? ' Tag' : ' Tagen') + ' erfasst.'
+      : 'Für ' + laemuMonthLabel(monthKey) + ' sind keine Stunden erfasst.');
+  } else if (month) {
     lines.push(laemuMonthLabel(monthKey) + ': ' + month.totalHours + ' h erfasst (Soll ' +
       month.targetHours + ' h, Saldo ' + laemuSigned_(month.balance) + ' h).');
     if (month.missingDays.length) {
@@ -85,8 +90,8 @@ function laemuReminderPlain_(employee, summary, month, monthKey) {
   } else {
     lines.push('Für ' + laemuMonthLabel(monthKey) + ' sind noch keine Stunden erfasst.');
   }
-  lines.push('Überstunden total: ' + laemuSigned_(summary.balance) + ' h');
-  if (employee.showVacation) {
+  if (!employee.hourly) lines.push('Überstunden total: ' + laemuSigned_(summary.balance) + ' h');
+  if (employee.showVacation && !employee.hourly) {
     lines.push('Ferien ' + new Date().getFullYear() + ': noch ' +
       summary.vacationRemaining + ' von ' + summary.vacationEntitlement + ' Tagen offen.');
   }
@@ -105,7 +110,10 @@ function laemuReminderHtml_(employee, summary, month, monthKey) {
     return '<tr><td style="padding:8px 0;color:#505050;">' + label +
       '</td><td style="padding:8px 0;text-align:right;font-weight:700;">' + value + '</td></tr>';
   }
-  if (month) {
+  if (employee.hourly) {
+    rows += row('Erfasste Stunden', (month ? month.totalHours : 0) + ' h');
+    rows += row('Erfasste Tage', month ? month.recordedDays : 0);
+  } else if (month) {
     rows += row('Erfasste Stunden', month.totalHours + ' h');
     rows += row('Sollstunden', month.targetHours + ' h');
     rows += row('Saldo ' + laemuMonthLabel(monthKey), laemuSigned_(month.balance) + ' h');
@@ -113,13 +121,15 @@ function laemuReminderHtml_(employee, summary, month, monthKey) {
   } else {
     rows += row('Erfasste Stunden', '0 h');
   }
-  rows += row('Überstunden total', laemuSigned_(summary.balance) + ' h');
-  if (employee.showVacation) {
+  if (!employee.hourly) rows += row('Überstunden total', laemuSigned_(summary.balance) + ' h');
+  if (employee.showVacation && !employee.hourly) {
     rows += row('Ferien noch offen', summary.vacationRemaining + ' Tage');
   }
 
   var missing = '';
-  if (month && month.missingDays.length) {
+  if (employee.hourly) {
+    missing = '';
+  } else if (month && month.missingDays.length) {
     missing = '<p style="margin:24px 0 0;padding:16px;background:#EFEFEF;border-left:3px solid #BC8C33;">' +
       '<strong>Es fehlen noch ' + month.missingDays.length + ' Arbeitstage:</strong><br>' +
       month.missingDays.map(laemuFormatDate).join(' · ') + '</p>';

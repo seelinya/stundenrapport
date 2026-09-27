@@ -756,6 +756,12 @@ var LAEMU_INDEX_HTML = [
   "    return null;",
   "  }",
   "",
+  "  /* Ohne feste Anstellung: kein Soll, keine Überstunden, keine Abwesenheiten. */",
+  "  function isHourly() {",
+  "    var emp = currentEmployee();",
+  "    return !!(emp && emp.hourly);",
+  "  }",
+  "",
   "  function server(method, args, onOk, onErr) {",
   "    var runner = window.google && google.script && google.script.run;",
   "    if (!runner) {",
@@ -801,6 +807,7 @@ var LAEMU_INDEX_HTML = [
   "    }",
   "    var emp = currentEmployee();",
   "    if (emp) state.dailyTarget = emp.dailyTarget || state.dailyTarget;",
+  "    el.addAbsence.style.display = isHourly() ? 'none' : '';",
   "    renderEmployees();",
   "    loadDay();",
   "  }",
@@ -820,15 +827,16 @@ var LAEMU_INDEX_HTML = [
   "    var parts = [];",
   "    var weekday = d ? d.weekday : localWeekday(state.date);",
   "    if (weekday) parts.push('<span class=\"tagday\">' + escapeHtml(weekday) + '</span>');",
+  "    var hourly = isHourly();",
   "    if (d && d.holiday) {",
   "      parts.push('<span class=\"tagday gold\">' + escapeHtml(d.holiday) + '</span>');",
-  "      parts.push(d.isWeekend",
+  "      if (!hourly) parts.push(d.isWeekend",
   "        ? 'Feiertag am Wochenende – keine Gutschrift.'",
   "        : 'Feiertag: ' + fmt(state.dailyTarget) + ' h werden automatisch gutgeschrieben.');",
-  "    } else if (d && d.isWeekend) {",
+  "    } else if (d && d.isWeekend && !hourly) {",
   "      parts.push('Wochenende – kein Soll, erfasste Arbeit zählt vollumfänglich.');",
   "    }",
-  "    if (d && d.beforeStart) {",
+  "    if (d && d.beforeStart && !hourly) {",
   "      parts.push('<br>Hinweis: Dieses Datum liegt vor dem Anstellungsbeginn (' + formatDate(d.startDate) + ').');",
   "    }",
   "    if (d && d.existing) {",
@@ -1074,8 +1082,9 @@ var LAEMU_INDEX_HTML = [
   "    absence = round2(absence);",
   "",
   "    var d = state.dayState || {};",
-  "    var target = d.isWeekend ? 0 : round2(state.dailyTarget);",
-  "    var credit = (d.holiday && !d.isWeekend) ? round2(Math.max(0, state.dailyTarget - bookedHoliday)) : 0;",
+  "    var hourly = isHourly();",
+  "    var target = (d.isWeekend || hourly) ? 0 : round2(state.dailyTarget);",
+  "    var credit = (d.holiday && !d.isWeekend && !hourly) ? round2(Math.max(0, state.dailyTarget - bookedHoliday)) : 0;",
   "    var total = round2(work + absence + credit);",
   "",
   "    return {",
@@ -1097,8 +1106,10 @@ var LAEMU_INDEX_HTML = [
   "    line('Gearbeitet', fmt(c.work) + ' h');",
   "    if (c.absence > 0) line('Weiteres (Ferien, Krank, …)', fmt(c.absence) + ' h');",
   "    if (c.credit > 0) line('Feiertagsgutschrift', fmt(c.credit) + ' h');",
-  "    line('Sollzeit ' + (c.target === 0 ? '(Wochenende)' : ''), fmt(c.target) + ' h');",
-  "    line('Saldo Tag', signed(c.balance) + ' h');",
+  "    if (!isHourly()) {",
+  "      line('Sollzeit ' + (c.target === 0 ? '(Wochenende)' : ''), fmt(c.target) + ' h');",
+  "      line('Saldo Tag', signed(c.balance) + ' h');",
+  "    }",
   "    el.summaryLines.innerHTML = lines.join('');",
   "    el.dayTotal.innerHTML = fmt(c.total) + '<small>h</small>';",
   "  }",
@@ -1114,6 +1125,19 @@ var LAEMU_INDEX_HTML = [
   "      return;",
   "    }",
   "    var tiles = [];",
+  "    if (s.hourly) {",
+  "      // Stundenbasis: nur die Stunden pro Monat zusammenzählen.",
+  "      tiles.push('<div class=\"stat\"><div class=\"k\">Stunden ' + escapeHtml(s.monthLabel) + '</div>' +",
+  "        '<div class=\"v gold\">' + fmt(s.monthTotal) + '<small style=\"font-size:15px\"> h</small></div>' +",
+  "        '<div class=\"s\">' + s.monthRecordedDays + (s.monthRecordedDays === 1 ? ' Tag' : ' Tage') +",
+  "        ' erfasst</div></div>');",
+  "      tiles.push('<div class=\"stat\"><div class=\"k\">Stunden ' + s.year + '</div>' +",
+  "        '<div class=\"v\">' + fmt(s.yearTotal) + '<small style=\"font-size:15px\"> h</small></div>' +",
+  "        '<div class=\"s\">' + s.recordedDays + ' Tage insgesamt erfasst</div></div>');",
+  "      el.stats.innerHTML = tiles.join('');",
+  "      el.reminderBox.innerHTML = '';",
+  "      return;",
+  "    }",
   "    tiles.push('<div class=\"stat\"><div class=\"k\">Überstunden total</div>' +",
   "      '<div class=\"v gold\">' + signed(s.overtime) + '<small style=\"font-size:15px\"> h</small></div>' +",
   "      '<div class=\"s\">Stand ' + (s.periodEnd ? formatDate(s.periodEnd) : '–') +",
@@ -1213,7 +1237,7 @@ var LAEMU_INDEX_HTML = [
   "      date: state.date,",
   "      pauseMinutes: Number(state.pause || 0),",
   "      projects: state.projects.filter(function (p) { return p.tag || p.from || p.to; }),",
-  "      absences: state.absences.filter(function (a) { return a.tag || a.hours; })",
+  "      absences: isHourly() ? [] : state.absences.filter(function (a) { return a.tag || a.hours; })",
   "    };",
   "",
   "    server('laemuSubmitDay', [payload], function (result) {",
@@ -1241,8 +1265,13 @@ var LAEMU_INDEX_HTML = [
   "      ' ist im Google Sheet gespeichert.';",
   "    var rows = [];",
   "    rows.push('<div><span>Total Tag</span><span>' + fmt(day.totalHours || 0) + ' h</span></div>');",
-  "    rows.push('<div><span>Saldo Tag</span><span>' + signed(day.balance || 0) + ' h</span></div>');",
-  "    rows.push('<div><span>Überstunden total</span><span>' + signed(stats.overtime || 0) + ' h</span></div>');",
+  "    if (stats.hourly) {",
+  "      rows.push('<div><span>Stunden ' + escapeHtml(stats.monthLabel) + '</span><span>' +",
+  "        fmt(stats.monthTotal || 0) + ' h</span></div>');",
+  "    } else {",
+  "      rows.push('<div><span>Saldo Tag</span><span>' + signed(day.balance || 0) + ' h</span></div>');",
+  "      rows.push('<div><span>Überstunden total</span><span>' + signed(stats.overtime || 0) + ' h</span></div>');",
+  "    }",
   "    if (stats.showVacation) {",
   "      rows.push('<div><span>Ferien bis 31.12.' + stats.year + '</span><span>' +",
   "        fmt(stats.vacationRemaining) + ' Tage</span></div>');",
@@ -1385,7 +1414,7 @@ var VACATION_DAYS_PER_YEAR = 25;
 var TIMEZONE = 'Europe/Zurich';
 
 /** Projekt-Tags (Punkt 5 im Rapport). */
-var PROJECT_TAGS = ['Musikschule', 'Marketing', 'Shop', 'Weiteres'];
+var PROJECT_TAGS = ['Musikschule', 'Marketing', 'Shop', 'Buchhaltung', 'Admin', 'Media', 'Weiteres'];
 
 /** Abwesenheits-Tags hinter dem Link «Weiteres» (Punkt 6 im Rapport). */
 var ABSENCE_TAGS = ['Ferien', 'Feiertag', 'Krank', 'Unfall', 'Weiteres'];
@@ -1402,6 +1431,9 @@ var ABSENCE_TAGS = ['Ferien', 'Feiertag', 'Krank', 'Unfall', 'Weiteres'];
  *  showVacation  Ferienanzeige im Tool (Inhaber:innen brauchen sie nicht)
  *  workload      Beschäftigungsgrad (1 = 100 %)
  *  openingBalance Bereits bestehende Überstunden in Stunden beim Start
+ *  hourly        true = ohne feste Anstellung (Stundenbasis): kein Soll,
+ *                keine Überstunden, keine Ferien – die Stunden werden nur
+ *                pro Monat zusammengezählt
  */
 var EMPLOYEES = [
   {
@@ -1412,6 +1444,7 @@ var EMPLOYEES = [
     showVacation: true,
     workload: 1,
     openingBalance: 0,
+    hourly: false,
     email: ''
   },
   {
@@ -1422,6 +1455,7 @@ var EMPLOYEES = [
     showVacation: false,
     workload: 1,
     openingBalance: 0,
+    hourly: false,
     email: ''
   },
   {
@@ -1432,9 +1466,47 @@ var EMPLOYEES = [
     showVacation: false,
     workload: 1,
     openingBalance: 0,
+    hourly: false,
+    email: ''
+  },
+  {
+    name: 'Vreni Strickler',
+    role: 'Mitarbeiterin',
+    startDate: '2026-01-01',
+    vacationDays: 0,
+    showVacation: false,
+    workload: 1,
+    openingBalance: 0,
+    hourly: true,
+    email: ''
+  },
+  {
+    name: 'Marlies Hess',
+    role: 'Mitarbeiterin',
+    startDate: '2026-01-01',
+    vacationDays: 0,
+    showVacation: false,
+    workload: 1,
+    openingBalance: 0,
+    hourly: true,
+    email: ''
+  },
+  {
+    name: 'Emilia Hess',
+    role: 'Mitarbeiterin',
+    startDate: '2026-01-01',
+    vacationDays: 0,
+    showVacation: false,
+    workload: 1,
+    openingBalance: 0,
+    hourly: true,
     email: ''
   }
 ];
+
+/** Werte der Spalte «Anstellung» im Blatt «Einstellungen». */
+var EMPLOYMENT_FIXED = 'fest';
+var EMPLOYMENT_HOURLY = 'Stundenbasis';
 
 /** Namen der Hilfsblätter. */
 var SETTINGS_SHEET = 'Einstellungen';
@@ -1494,6 +1566,8 @@ var MONTHLY_HEADERS = [
  *  - Feiertage des Kantons Schwyz werden gutgeschrieben, wenn sie auf
  *    Montag bis Freitag fallen.
  *  - Ferien werden in Stunden erfasst; 8.4 h entsprechen einem Ferientag.
+ *  - Mitarbeitende ohne feste Anstellung (Stundenbasis) haben kein Soll und
+ *    keine Feiertagsgutschrift; ihre Stunden werden pro Monat zusammengezählt.
  */
 
 /** Tagessoll in Stunden. */
@@ -1667,9 +1741,11 @@ function laemuMinutesOfDay(value) {
  *   absences: [{ tag, hours, note }],
  *   pauseMinutes: Number
  * }
+ * hourly = true bei Anstellung auf Stundenbasis (kein Soll, keine Gutschrift).
  */
-function laemuComputeDay(day, workload) {
+function laemuComputeDay(day, workload, hourly) {
   var target = laemuDailyTarget(workload);
+  hourly = !!hourly;
   var iso = day.date;
   var projects = day.projects || [];
   var absences = day.absences || [];
@@ -1706,13 +1782,13 @@ function laemuComputeDay(day, workload) {
   // Feiertage werden nur gutgeschrieben, wenn sie auf Mo–Fr fallen. Bereits
   // manuell als «Feiertag» erfasste Stunden werden nicht doppelt gezählt.
   var holidayCredit = 0;
-  if (holidayName && !weekend) {
+  if (holidayName && !weekend && !hourly) {
     holidayCredit = laemuRound2(Math.max(0, target - bookedHolidayHours));
   }
 
   var totalHours = laemuRound2(workHours + absenceHours + holidayCredit);
-  var targetHours = weekend ? 0 : laemuRound2(target);
-  var balance = laemuRound2(totalHours - targetHours);
+  var targetHours = (weekend || hourly) ? 0 : laemuRound2(target);
+  var balance = hourly ? 0 : laemuRound2(totalHours - targetHours);
 
   return {
     date: iso,
@@ -1720,6 +1796,7 @@ function laemuComputeDay(day, workload) {
     weekdayShort: laemuWeekdayShort(iso),
     isWeekend: weekend,
     holiday: holidayName,
+    hourly: hourly,
     projects: projectRows,
     absences: absenceRows,
     pauseMinutes: Number(day.pauseMinutes || 0),
@@ -1805,6 +1882,7 @@ function laemuVacationEntitlement(year, startIso, vacationDaysPerYear, workload)
  * hinterlegen.
  */
 function laemuComputeSummary(daysByDate, employee, todayIso) {
+  if (employee.hourly) return laemuComputeHourlySummary(daysByDate);
   var target = laemuDailyTarget(employee.workload);
   var dates = Object.keys(daysByDate).sort();
   var opening = laemuRound2(Number(employee.openingBalance || 0));
@@ -1937,6 +2015,122 @@ function laemuComputeSummary(daysByDate, employee, todayIso) {
 }
 
 /**
+ * Auswertung für Mitarbeitende auf Stundenbasis: kein Soll, keine
+ * Überstunden, keine fehlenden Tage – nur die erfassten Stunden pro Monat.
+ * Liefert dieselbe Struktur wie laemuComputeSummary.
+ */
+function laemuComputeHourlySummary(daysByDate) {
+  var dates = Object.keys(daysByDate).sort();
+  var totals = {
+    hourly: true,
+    openingBalance: 0,
+    workHours: 0,
+    absenceHours: 0,
+    holidayCredit: 0,
+    totalHours: 0,
+    targetHours: 0,
+    balance: 0,
+    vacationDaysUsed: 0,
+    recordedDays: dates.length,
+    firstDate: dates.length ? dates[0] : null,
+    lastDate: dates.length ? dates[dates.length - 1] : null,
+    periodStart: dates.length ? dates[0] : null,
+    periodEnd: dates.length ? dates[dates.length - 1] : null,
+    missingDays: [],
+    months: {},
+    vacationEntitlement: 0,
+    vacationUsed: 0,
+    vacationRemaining: 0
+  };
+  for (var i = 0; i < dates.length; i++) {
+    var day = daysByDate[dates[i]];
+    var monthKey = dates[i].slice(0, 7);
+    if (!totals.months[monthKey]) {
+      totals.months[monthKey] = {
+        month: monthKey,
+        label: laemuMonthLabel(monthKey),
+        workHours: 0,
+        absenceHours: 0,
+        holidayCredit: 0,
+        totalHours: 0,
+        targetHours: 0,
+        balance: 0,
+        cumulativeBalance: 0,
+        vacationDaysUsed: 0,
+        recordedDays: 0,
+        missingDays: []
+      };
+    }
+    var m = totals.months[monthKey];
+    m.workHours = laemuRound2(m.workHours + day.workHours);
+    m.absenceHours = laemuRound2(m.absenceHours + day.absenceHours);
+    m.totalHours = laemuRound2(m.totalHours + day.workHours + day.absenceHours);
+    m.recordedDays++;
+  }
+  var keys = Object.keys(totals.months).sort();
+  for (var k = 0; k < keys.length; k++) {
+    var mm = totals.months[keys[k]];
+    totals.workHours = laemuRound2(totals.workHours + mm.workHours);
+    totals.absenceHours = laemuRound2(totals.absenceHours + mm.absenceHours);
+    totals.totalHours = laemuRound2(totals.totalHours + mm.totalHours);
+  }
+  totals.monthList = keys.map(function (key) { return totals.months[key]; });
+  return totals;
+}
+
+/** Kennzahlen für die Fusszeile des Tools. */
+function laemuBuildStats(employee, summary, todayIso) {
+  var monthKey = todayIso.slice(0, 7);
+  var year = todayIso.slice(0, 4);
+  var month = summary.months && summary.months[monthKey];
+  var missingThisMonth = month ? month.missingDays : [];
+  var yearTotal = 0;
+  var monthList = summary.monthList || [];
+  for (var i = 0; i < monthList.length; i++) {
+    if (monthList[i].month.slice(0, 4) === year) yearTotal += monthList[i].totalHours;
+  }
+  return {
+    hourly: !!employee.hourly,
+    overtime: summary.balance,
+    totalHours: summary.totalHours,
+    targetHours: summary.targetHours,
+    recordedDays: summary.recordedDays,
+    periodStart: summary.periodStart || employee.startDate,
+    openingBalance: summary.openingBalance || 0,
+    periodEnd: summary.periodEnd,
+    showVacation: !!employee.showVacation && !employee.hourly,
+    vacationEntitlement: summary.vacationEntitlement,
+    vacationUsed: summary.vacationUsed || 0,
+    vacationRemaining: summary.vacationRemaining,
+    year: Number(year),
+    yearTotal: laemuRound2(yearTotal),
+    month: monthKey,
+    monthLabel: laemuMonthLabel(monthKey),
+    monthTotal: month ? month.totalHours : 0,
+    monthTarget: month ? month.targetHours : 0,
+    monthBalance: month ? month.balance : 0,
+    monthRecordedDays: month ? month.recordedDays : 0,
+    missingDays: missingThisMonth.map(function (d) { return laemuFormatDate(d); }),
+    missingDaysCount: missingThisMonth.length
+  };
+}
+
+/** Kurze Erinnerung, die nach dem Einreichen angezeigt wird. */
+function laemuBuildReminderText(employee, stats) {
+  if (stats.hourly) {
+    return 'Im ' + stats.monthLabel + ' sind bisher ' + stats.monthTotal.toFixed(2) + ' Stunden an ' +
+      stats.monthRecordedDays + (stats.monthRecordedDays === 1 ? ' Tag' : ' Tagen') + ' erfasst.';
+  }
+  if (stats.missingDaysCount > 0) {
+    var list = stats.missingDays.slice(0, 5).join(', ');
+    var more = stats.missingDaysCount > 5 ? ' und weitere' : '';
+    return 'Im ' + stats.monthLabel + ' fehlen noch ' + stats.missingDaysCount +
+      (stats.missingDaysCount === 1 ? ' Arbeitstag' : ' Arbeitstage') + ': ' + list + more + '.';
+  }
+  return 'Im ' + stats.monthLabel + ' ist bisher jeder Arbeitstag erfasst. Weiter so!';
+}
+
+/**
  * Prüft, ob eine Zeile aus dem Blatt «Einstellungen» eine Mitarbeiterzeile ist.
  * Hinweistexte und Notizen stehen ebenfalls in der ersten Spalte, sind aber
  * keine Mitarbeitenden: Ein echter Eintrag hat einen kurzen Namen und
@@ -1948,11 +2142,16 @@ function laemuIsEmployeeRow(row) {
   if (!name) return false;
   if (name.length > 60) return false;
   if (/^hinweis\b/i.test(name)) return false;
-  for (var c = 1; c <= 7; c++) {
+  for (var c = 1; c <= 8; c++) {
     var cell = row[c];
     if (cell !== undefined && cell !== null && String(cell).trim() !== '') return true;
   }
   return false;
+}
+
+/** «fest» oder «Stundenbasis» aus der Spalte «Anstellung» lesen. */
+function laemuIsHourlyEmployment(value) {
+  return String(value === undefined || value === null ? '' : value).toLowerCase().indexOf('stunde') >= 0;
 }
 
 /** Fehlende Arbeitstage im angegebenen Monat ('YYYY-MM'). */
@@ -2106,8 +2305,9 @@ function laemuQuoteOfDay(iso) {
  * LAEMU Stundenrapport – Google-Sheets-Anbindung
  *
  * Struktur der Tabelle:
- *   «Einstellungen»    Mitarbeitende, Pensum, Ferienanspruch, E-Mail
+ *   «Einstellungen»    Mitarbeitende, Pensum, Ferienanspruch, E-Mail, Anstellung
  *   «<Mitarbeitername>» ein Blatt pro Person, eine Zeile pro Eintrag
+ *                      (bei Stundenbasis zusätzlich eine Totalzeile pro Monat)
  *   «Monatsübersicht»  automatisch berechnete Monatstotale
  */
 
@@ -2163,17 +2363,29 @@ function laemuEnsureSetup() {
   return 'Tabelle ist eingerichtet.';
 }
 
+var SETTINGS_HEADERS = ['Mitarbeiter', 'Rolle', 'Start Anstellung', 'Pensum (1 = 100 %)',
+  'Ferien pro Jahr (Tage)', 'Ferienanzeige', 'Startsaldo (h)', 'E-Mail', 'Anstellung'];
+
+/** Stand des Blatts «Einstellungen»; höher = neuere Spalten und Personen. */
+var SETTINGS_VERSION = '2';
+var SETTINGS_VERSION_KEY = 'LAEMU_SETTINGS_VERSION';
+
+function laemuSettingsRow_(e) {
+  return [e.name, e.role, e.startDate, e.workload, e.vacationDays,
+    e.showVacation ? 'ja' : 'nein', e.openingBalance || 0, e.email || '',
+    e.hourly ? EMPLOYMENT_HOURLY : EMPLOYMENT_FIXED];
+}
+
 function laemuEnsureSettingsSheet_(ss) {
   var sheet = ss.getSheetByName(SETTINGS_SHEET);
-  if (sheet) return sheet;
+  if (sheet) {
+    laemuUpgradeSettingsSheet_(ss, sheet);
+    return sheet;
+  }
   sheet = ss.insertSheet(SETTINGS_SHEET, 0);
-  var headers = ['Mitarbeiter', 'Rolle', 'Start Anstellung', 'Pensum (1 = 100 %)',
-    'Ferien pro Jahr (Tage)', 'Ferienanzeige', 'Startsaldo (h)', 'E-Mail'];
+  var headers = SETTINGS_HEADERS;
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  var rows = EMPLOYEES.map(function (e) {
-    return [e.name, e.role, e.startDate, e.workload, e.vacationDays,
-      e.showVacation ? 'ja' : 'nein', e.openingBalance || 0, e.email || ''];
-  });
+  var rows = EMPLOYEES.map(laemuSettingsRow_);
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.getRange(2, 3, rows.length, 1).setNumberFormat('@');
   laemuStyleHeader_(sheet, headers.length);
@@ -2183,12 +2395,72 @@ function laemuEnsureSettingsSheet_(ss) {
   sheet.setColumnWidth(5, 170);
   sheet.setColumnWidth(7, 130);
   sheet.setColumnWidth(8, 240);
+  sheet.setColumnWidth(9, 130);
   sheet.getRange(rows.length + 3, 2).setValue(
     'Hinweis: E-Mail eintragen, damit die monatliche Erinnerung verschickt wird. ' +
     'Startsaldo = bereits bestehende Überstunden beim Beginn der Erfassung. ' +
+    'Anstellung «' + EMPLOYMENT_HOURLY + '» = ohne feste Anstellung: kein Soll, keine Überstunden, ' +
+    'die Stunden werden pro Monat zusammengezählt. ' +
     'Wöchentliche Sollzeit: ' + WEEKLY_HOURS + ' h (' + laemuDailyTarget(1) + ' h pro Arbeitstag).')
     .setFontColor(LAEMU_STONE).setFontStyle('italic');
+  PropertiesService.getScriptProperties().setProperty(SETTINGS_VERSION_KEY, SETTINGS_VERSION);
   return sheet;
+}
+
+/**
+ * Bringt ein bestehendes Blatt «Einstellungen» auf den aktuellen Stand:
+ * ergänzt die Spalte «Anstellung» und fügt Personen aus Config.gs hinzu, die
+ * noch fehlen. Läuft pro Stand nur einmal – wer danach eine Person aus dem
+ * Blatt löscht, bekommt sie nicht wieder zurück.
+ */
+function laemuUpgradeSettingsSheet_(ss, sheet) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty(SETTINGS_VERSION_KEY) === SETTINGS_VERSION) return;
+
+  var lock = LockService.getScriptLock();
+  var ownLock = !lock.hasLock();
+  if (ownLock) lock.waitLock(30000);
+  try {
+    if (props.getProperty(SETTINGS_VERSION_KEY) === SETTINGS_VERSION) return;
+
+    var cols = SETTINGS_HEADERS.length;
+    if (sheet.getMaxColumns() < cols) {
+      sheet.insertColumnsAfter(sheet.getMaxColumns(), cols - sheet.getMaxColumns());
+    }
+    var values = sheet.getRange(1, 1, Math.max(sheet.getLastRow(), 1), cols).getValues();
+    if (!String(values[0][cols - 1] || '').trim()) {
+      sheet.getRange(1, cols).setValue(SETTINGS_HEADERS[cols - 1]);
+      laemuStyleHeader_(sheet, cols);
+      sheet.setColumnWidth(cols, 130);
+    }
+
+    var names = {};
+    var lastEmployeeRow = 1;
+    for (var i = 1; i < values.length; i++) {
+      if (!laemuIsEmployeeRow(values[i])) continue;
+      names[String(values[i][0]).trim()] = true;
+      lastEmployeeRow = i + 1;
+      // Bisherige Personen ohne Angabe gelten als fest angestellt.
+      if (!String(values[i][cols - 1] || '').trim()) {
+        sheet.getRange(i + 1, cols).setValue(EMPLOYMENT_FIXED);
+      }
+    }
+
+    var missing = EMPLOYEES.filter(function (e) { return !names[e.name]; });
+    if (missing.length) {
+      sheet.insertRowsAfter(lastEmployeeRow, missing.length);
+      var range = sheet.getRange(lastEmployeeRow + 1, 1, missing.length, cols);
+      range.setFontWeight('normal').setFontStyle('normal').setFontColor(LAEMU_BLACK).setBackground(null);
+      sheet.getRange(lastEmployeeRow + 1, 3, missing.length, 1).setNumberFormat('@');
+      range.setValues(missing.map(laemuSettingsRow_));
+      for (var m = 0; m < missing.length; m++) {
+        laemuEnsureEntrySheet_(ss, missing[m].name);
+      }
+    }
+    props.setProperty(SETTINGS_VERSION_KEY, SETTINGS_VERSION);
+  } finally {
+    if (ownLock) lock.releaseLock();
+  }
 }
 
 function laemuStyleHeader_(sheet, columns) {
@@ -2249,8 +2521,7 @@ function laemuEnsureRows_(sheet, dataRows) {
 /** Mitarbeitende aus dem Blatt «Einstellungen», sonst aus Config.gs. */
 function laemuGetEmployees() {
   var ss = laemuSpreadsheet_();
-  var sheet = ss.getSheetByName(SETTINGS_SHEET);
-  if (!sheet) sheet = laemuEnsureSettingsSheet_(ss);
+  var sheet = laemuEnsureSettingsSheet_(ss);
   var values = sheet.getDataRange().getValues();
   var out = [];
   for (var i = 1; i < values.length; i++) {
@@ -2267,7 +2538,8 @@ function laemuGetEmployees() {
       vacationDays: Number(row[4]) || 0,
       showVacation: String(row[5] || '').trim().toLowerCase().indexOf('ja') === 0,
       openingBalance: Number(row[6]) || 0,
-      email: String(row[7] || '').trim()
+      email: String(row[7] || '').trim(),
+      hourly: laemuIsHourlyEmployment(row[8])
     });
   }
   if (!out.length) {
@@ -2321,7 +2593,7 @@ function laemuReadDays_(employee) {
   }
   var keys = Object.keys(raw);
   for (var k = 0; k < keys.length; k++) {
-    var day = laemuComputeDay(raw[keys[k]], employee.workload);
+    var day = laemuComputeDay(raw[keys[k]], employee.workload, employee.hourly);
     day.submittedAt = raw[keys[k]].submittedAt;
     byDate[keys[k]] = day;
   }
@@ -2336,6 +2608,10 @@ function laemuDayToRows_(day, submittedAt) {
   function summaryCells(pauseMinutes) {
     if (summaryWritten) return ['', '', '', '', '', '', '', ''];
     summaryWritten = true;
+    if (day.hourly) {
+      // Stundenbasis: kein Soll, kein Saldo, keine Ferien.
+      return [pauseMinutes, day.workHours, day.absenceHours, '', day.totalHours, '', '', ''];
+    }
     return [pauseMinutes, day.workHours, day.absenceHours, day.holidayCredit,
       day.totalHours, day.targetHours, day.balance, day.vacationDays];
   }
@@ -2389,15 +2665,59 @@ function laemuSaveDay_(employee, day) {
   }
   kept.sort(function (a, b) { return a.iso < b.iso ? -1 : (a.iso > b.iso ? 1 : 0); });
 
+  var out = kept.map(function (x) { return x.row; });
+  var totalRows = [];
+  if (employee.hourly) {
+    var withTotals = laemuWithMonthTotals_(kept);
+    out = withTotals.rows;
+    totalRows = withTotals.totalRows;
+  }
+
   if (lastRow >= 2) {
     sheet.getRange(2, 1, lastRow - 1, ENTRY_HEADERS.length).clearContent();
   }
-  if (kept.length) {
-    var out = kept.map(function (x) { return x.row; });
+  if (out.length) {
     laemuEnsureRows_(sheet, out.length);
     sheet.getRange(2, 1, out.length, ENTRY_HEADERS.length).setValues(out);
   }
+  if (employee.hourly) {
+    // Hervorhebung neu setzen, weil sich die Totalzeilen verschieben.
+    var span = Math.max(out.length, lastRow - 1);
+    if (span > 0) {
+      sheet.getRange(2, 1, span, ENTRY_HEADERS.length).setFontWeight('normal').setBackground(null);
+    }
+    for (var t = 0; t < totalRows.length; t++) {
+      sheet.getRange(totalRows[t] + 2, 1, 1, ENTRY_HEADERS.length)
+        .setFontWeight('bold').setBackground(LAEMU_SILVER);
+    }
+  }
   return sheet;
+}
+
+/**
+ * Fügt nach jedem Monat eine Totalzeile ein (nur Stundenbasis). Die Zeile hat
+ * kein Datum und wird deshalb beim Einlesen übersprungen und beim nächsten
+ * Speichern neu berechnet.
+ * Rückgabe: { rows, totalRows } – totalRows = Indizes der Totalzeilen in rows.
+ */
+function laemuWithMonthTotals_(kept) {
+  var rows = [];
+  var totalRows = [];
+  var sum = 0;
+  for (var i = 0; i < kept.length; i++) {
+    rows.push(kept[i].row);
+    sum += Number(kept[i].row[11]) || 0;   // Total Tag (h), nur in der ersten Zeile eines Tages
+    var monthKey = kept[i].iso.slice(0, 7);
+    var next = kept[i + 1];
+    if (!next || next.iso.slice(0, 7) !== monthKey) {
+      var total = ['', '', 'Total Monat', laemuMonthLabel(monthKey), '', '', '', '', '', '', '',
+        laemuRound2(sum), '', '', '', '', ''];
+      totalRows.push(rows.length);
+      rows.push(total);
+      sum = 0;
+    }
+  }
+  return { rows: rows, totalRows: totalRows };
 }
 
 /** Baut das Blatt «Monatsübersicht» für alle Mitarbeitenden neu auf. */
@@ -2414,6 +2734,12 @@ function laemuRebuildMonthly() {
     var months = summary.monthList || [];
     for (var m = 0; m < months.length; m++) {
       var mm = months[m];
+      if (employee.hourly) {
+        // Stundenbasis: nur die Stunden pro Monat, kein Soll und kein Saldo.
+        rows.push([employee.name, mm.month, mm.label, mm.workHours, mm.absenceHours, '',
+          mm.totalHours, '', '', '', '', mm.recordedDays, '']);
+        continue;
+      }
       rows.push([
         employee.name,
         mm.month,
@@ -2527,7 +2853,12 @@ function laemuReminderPlain_(employee, summary, month, monthKey) {
   var lines = [];
   lines.push('Hallo ' + employee.firstName);
   lines.push('');
-  if (month) {
+  if (employee.hourly) {
+    lines.push(month
+      ? laemuMonthLabel(monthKey) + ': ' + month.totalHours + ' h an ' + month.recordedDays +
+        (month.recordedDays === 1 ? ' Tag' : ' Tagen') + ' erfasst.'
+      : 'Für ' + laemuMonthLabel(monthKey) + ' sind keine Stunden erfasst.');
+  } else if (month) {
     lines.push(laemuMonthLabel(monthKey) + ': ' + month.totalHours + ' h erfasst (Soll ' +
       month.targetHours + ' h, Saldo ' + laemuSigned_(month.balance) + ' h).');
     if (month.missingDays.length) {
@@ -2539,8 +2870,8 @@ function laemuReminderPlain_(employee, summary, month, monthKey) {
   } else {
     lines.push('Für ' + laemuMonthLabel(monthKey) + ' sind noch keine Stunden erfasst.');
   }
-  lines.push('Überstunden total: ' + laemuSigned_(summary.balance) + ' h');
-  if (employee.showVacation) {
+  if (!employee.hourly) lines.push('Überstunden total: ' + laemuSigned_(summary.balance) + ' h');
+  if (employee.showVacation && !employee.hourly) {
     lines.push('Ferien ' + new Date().getFullYear() + ': noch ' +
       summary.vacationRemaining + ' von ' + summary.vacationEntitlement + ' Tagen offen.');
   }
@@ -2559,7 +2890,10 @@ function laemuReminderHtml_(employee, summary, month, monthKey) {
     return '<tr><td style="padding:8px 0;color:#505050;">' + label +
       '</td><td style="padding:8px 0;text-align:right;font-weight:700;">' + value + '</td></tr>';
   }
-  if (month) {
+  if (employee.hourly) {
+    rows += row('Erfasste Stunden', (month ? month.totalHours : 0) + ' h');
+    rows += row('Erfasste Tage', month ? month.recordedDays : 0);
+  } else if (month) {
     rows += row('Erfasste Stunden', month.totalHours + ' h');
     rows += row('Sollstunden', month.targetHours + ' h');
     rows += row('Saldo ' + laemuMonthLabel(monthKey), laemuSigned_(month.balance) + ' h');
@@ -2567,13 +2901,15 @@ function laemuReminderHtml_(employee, summary, month, monthKey) {
   } else {
     rows += row('Erfasste Stunden', '0 h');
   }
-  rows += row('Überstunden total', laemuSigned_(summary.balance) + ' h');
-  if (employee.showVacation) {
+  if (!employee.hourly) rows += row('Überstunden total', laemuSigned_(summary.balance) + ' h');
+  if (employee.showVacation && !employee.hourly) {
     rows += row('Ferien noch offen', summary.vacationRemaining + ' Tage');
   }
 
   var missing = '';
-  if (month && month.missingDays.length) {
+  if (employee.hourly) {
+    missing = '';
+  } else if (month && month.missingDays.length) {
     missing = '<p style="margin:24px 0 0;padding:16px;background:#EFEFEF;border-left:3px solid #BC8C33;">' +
       '<strong>Es fehlen noch ' + month.missingDays.length + ' Arbeitstage:</strong><br>' +
       month.missingDays.map(laemuFormatDate).join(' · ') + '</p>';
@@ -2664,6 +3000,7 @@ function laemuBootstrap() {
         firstName: e.firstName,
         role: e.role,
         showVacation: e.showVacation,
+        hourly: e.hourly,
         startDate: e.startDate,
         dailyTarget: laemuRound2(laemuDailyTarget(e.workload))
       };
@@ -2699,6 +3036,7 @@ function laemuGetDayState(employeeName, iso) {
     isWeekend: laemuIsWeekend(iso),
     holiday: laemuHolidayName(iso),
     beforeStart: iso < employee.startDate,
+    hourly: employee.hourly,
     startDate: employee.startDate,
     dailyTarget: laemuRound2(laemuDailyTarget(employee.workload)),
     existing: existing ? {
@@ -2706,35 +3044,7 @@ function laemuGetDayState(employeeName, iso) {
       absences: existing.absences,
       pauseMinutes: existing.pauseMinutes
     } : null,
-    stats: laemuStats_(employee, summary, todayIso)
-  };
-}
-
-/** Kennzahlen für die Fusszeile des Tools. */
-function laemuStats_(employee, summary, todayIso) {
-  var monthKey = todayIso.slice(0, 7);
-  var month = summary.months && summary.months[monthKey];
-  var missingThisMonth = month ? month.missingDays : [];
-  return {
-    overtime: summary.balance,
-    totalHours: summary.totalHours,
-    targetHours: summary.targetHours,
-    recordedDays: summary.recordedDays,
-    periodStart: summary.periodStart || employee.startDate,
-    openingBalance: summary.openingBalance || 0,
-    periodEnd: summary.periodEnd,
-    showVacation: employee.showVacation,
-    vacationEntitlement: summary.vacationEntitlement,
-    vacationUsed: summary.vacationUsed || 0,
-    vacationRemaining: summary.vacationRemaining,
-    year: Number(todayIso.slice(0, 4)),
-    month: monthKey,
-    monthLabel: laemuMonthLabel(monthKey),
-    monthTotal: month ? month.totalHours : 0,
-    monthTarget: month ? month.targetHours : 0,
-    monthBalance: month ? month.balance : 0,
-    missingDays: missingThisMonth.map(function (d) { return laemuFormatDate(d); }),
-    missingDaysCount: missingThisMonth.length
+    stats: laemuBuildStats(employee, summary, todayIso)
   };
 }
 
@@ -2765,33 +3075,22 @@ function laemuSubmitDay(payload) {
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
-    var computed = laemuComputeDay(day, employee.workload);
+    var computed = laemuComputeDay(day, employee.workload, employee.hourly);
     laemuSaveDay_(employee, computed);
     laemuRebuildMonthly();
 
     var days = laemuReadDays_(employee);
     var todayIso = laemuTodayIso();
     var summary = laemuComputeSummary(days, employee, todayIso);
-    var stats = laemuStats_(employee, summary, todayIso);
+    var stats = laemuBuildStats(employee, summary, todayIso);
     return {
       ok: true,
       message: 'Danke ' + employee.firstName + '!',
       day: computed,
       stats: stats,
-      reminder: laemuReminderText_(employee, stats)
+      reminder: laemuBuildReminderText(employee, stats)
     };
   } finally {
     lock.releaseLock();
   }
-}
-
-/** Kurze Erinnerung, die nach dem Einreichen angezeigt wird. */
-function laemuReminderText_(employee, stats) {
-  if (stats.missingDaysCount > 0) {
-    var list = stats.missingDays.slice(0, 5).join(', ');
-    var more = stats.missingDaysCount > 5 ? ' und weitere' : '';
-    return 'Im ' + stats.monthLabel + ' fehlen noch ' + stats.missingDaysCount +
-      (stats.missingDaysCount === 1 ? ' Arbeitstag' : ' Arbeitstage') + ': ' + list + more + '.';
-  }
-  return 'Im ' + stats.monthLabel + ' ist bisher jeder Arbeitstag erfasst. Weiter so!';
 }

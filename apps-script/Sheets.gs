@@ -2,8 +2,9 @@
  * LAEMU Stundenrapport – Google-Sheets-Anbindung
  *
  * Struktur der Tabelle:
- *   «Einstellungen»    Mitarbeitende, Pensum, Ferienanspruch, E-Mail
+ *   «Einstellungen»    Mitarbeitende, Pensum, Ferienanspruch, E-Mail, Anstellung
  *   «<Mitarbeitername>» ein Blatt pro Person, eine Zeile pro Eintrag
+ *                      (bei Stundenbasis zusätzlich eine Totalzeile pro Monat)
  *   «Monatsübersicht»  automatisch berechnete Monatstotale
  */
 
@@ -59,17 +60,29 @@ function laemuEnsureSetup() {
   return 'Tabelle ist eingerichtet.';
 }
 
+var SETTINGS_HEADERS = ['Mitarbeiter', 'Rolle', 'Start Anstellung', 'Pensum (1 = 100 %)',
+  'Ferien pro Jahr (Tage)', 'Ferienanzeige', 'Startsaldo (h)', 'E-Mail', 'Anstellung'];
+
+/** Stand des Blatts «Einstellungen»; höher = neuere Spalten und Personen. */
+var SETTINGS_VERSION = '2';
+var SETTINGS_VERSION_KEY = 'LAEMU_SETTINGS_VERSION';
+
+function laemuSettingsRow_(e) {
+  return [e.name, e.role, e.startDate, e.workload, e.vacationDays,
+    e.showVacation ? 'ja' : 'nein', e.openingBalance || 0, e.email || '',
+    e.hourly ? EMPLOYMENT_HOURLY : EMPLOYMENT_FIXED];
+}
+
 function laemuEnsureSettingsSheet_(ss) {
   var sheet = ss.getSheetByName(SETTINGS_SHEET);
-  if (sheet) return sheet;
+  if (sheet) {
+    laemuUpgradeSettingsSheet_(ss, sheet);
+    return sheet;
+  }
   sheet = ss.insertSheet(SETTINGS_SHEET, 0);
-  var headers = ['Mitarbeiter', 'Rolle', 'Start Anstellung', 'Pensum (1 = 100 %)',
-    'Ferien pro Jahr (Tage)', 'Ferienanzeige', 'Startsaldo (h)', 'E-Mail'];
+  var headers = SETTINGS_HEADERS;
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  var rows = EMPLOYEES.map(function (e) {
-    return [e.name, e.role, e.startDate, e.workload, e.vacationDays,
-      e.showVacation ? 'ja' : 'nein', e.openingBalance || 0, e.email || ''];
-  });
+  var rows = EMPLOYEES.map(laemuSettingsRow_);
   sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   sheet.getRange(2, 3, rows.length, 1).setNumberFormat('@');
   laemuStyleHeader_(sheet, headers.length);
@@ -79,12 +92,72 @@ function laemuEnsureSettingsSheet_(ss) {
   sheet.setColumnWidth(5, 170);
   sheet.setColumnWidth(7, 130);
   sheet.setColumnWidth(8, 240);
+  sheet.setColumnWidth(9, 130);
   sheet.getRange(rows.length + 3, 2).setValue(
     'Hinweis: E-Mail eintragen, damit die monatliche Erinnerung verschickt wird. ' +
     'Startsaldo = bereits bestehende Überstunden beim Beginn der Erfassung. ' +
+    'Anstellung «' + EMPLOYMENT_HOURLY + '» = ohne feste Anstellung: kein Soll, keine Überstunden, ' +
+    'die Stunden werden pro Monat zusammengezählt. ' +
     'Wöchentliche Sollzeit: ' + WEEKLY_HOURS + ' h (' + laemuDailyTarget(1) + ' h pro Arbeitstag).')
     .setFontColor(LAEMU_STONE).setFontStyle('italic');
+  PropertiesService.getScriptProperties().setProperty(SETTINGS_VERSION_KEY, SETTINGS_VERSION);
   return sheet;
+}
+
+/**
+ * Bringt ein bestehendes Blatt «Einstellungen» auf den aktuellen Stand:
+ * ergänzt die Spalte «Anstellung» und fügt Personen aus Config.gs hinzu, die
+ * noch fehlen. Läuft pro Stand nur einmal – wer danach eine Person aus dem
+ * Blatt löscht, bekommt sie nicht wieder zurück.
+ */
+function laemuUpgradeSettingsSheet_(ss, sheet) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty(SETTINGS_VERSION_KEY) === SETTINGS_VERSION) return;
+
+  var lock = LockService.getScriptLock();
+  var ownLock = !lock.hasLock();
+  if (ownLock) lock.waitLock(30000);
+  try {
+    if (props.getProperty(SETTINGS_VERSION_KEY) === SETTINGS_VERSION) return;
+
+    var cols = SETTINGS_HEADERS.length;
+    if (sheet.getMaxColumns() < cols) {
+      sheet.insertColumnsAfter(sheet.getMaxColumns(), cols - sheet.getMaxColumns());
+    }
+    var values = sheet.getRange(1, 1, Math.max(sheet.getLastRow(), 1), cols).getValues();
+    if (!String(values[0][cols - 1] || '').trim()) {
+      sheet.getRange(1, cols).setValue(SETTINGS_HEADERS[cols - 1]);
+      laemuStyleHeader_(sheet, cols);
+      sheet.setColumnWidth(cols, 130);
+    }
+
+    var names = {};
+    var lastEmployeeRow = 1;
+    for (var i = 1; i < values.length; i++) {
+      if (!laemuIsEmployeeRow(values[i])) continue;
+      names[String(values[i][0]).trim()] = true;
+      lastEmployeeRow = i + 1;
+      // Bisherige Personen ohne Angabe gelten als fest angestellt.
+      if (!String(values[i][cols - 1] || '').trim()) {
+        sheet.getRange(i + 1, cols).setValue(EMPLOYMENT_FIXED);
+      }
+    }
+
+    var missing = EMPLOYEES.filter(function (e) { return !names[e.name]; });
+    if (missing.length) {
+      sheet.insertRowsAfter(lastEmployeeRow, missing.length);
+      var range = sheet.getRange(lastEmployeeRow + 1, 1, missing.length, cols);
+      range.setFontWeight('normal').setFontStyle('normal').setFontColor(LAEMU_BLACK).setBackground(null);
+      sheet.getRange(lastEmployeeRow + 1, 3, missing.length, 1).setNumberFormat('@');
+      range.setValues(missing.map(laemuSettingsRow_));
+      for (var m = 0; m < missing.length; m++) {
+        laemuEnsureEntrySheet_(ss, missing[m].name);
+      }
+    }
+    props.setProperty(SETTINGS_VERSION_KEY, SETTINGS_VERSION);
+  } finally {
+    if (ownLock) lock.releaseLock();
+  }
 }
 
 function laemuStyleHeader_(sheet, columns) {
@@ -145,8 +218,7 @@ function laemuEnsureRows_(sheet, dataRows) {
 /** Mitarbeitende aus dem Blatt «Einstellungen», sonst aus Config.gs. */
 function laemuGetEmployees() {
   var ss = laemuSpreadsheet_();
-  var sheet = ss.getSheetByName(SETTINGS_SHEET);
-  if (!sheet) sheet = laemuEnsureSettingsSheet_(ss);
+  var sheet = laemuEnsureSettingsSheet_(ss);
   var values = sheet.getDataRange().getValues();
   var out = [];
   for (var i = 1; i < values.length; i++) {
@@ -163,7 +235,8 @@ function laemuGetEmployees() {
       vacationDays: Number(row[4]) || 0,
       showVacation: String(row[5] || '').trim().toLowerCase().indexOf('ja') === 0,
       openingBalance: Number(row[6]) || 0,
-      email: String(row[7] || '').trim()
+      email: String(row[7] || '').trim(),
+      hourly: laemuIsHourlyEmployment(row[8])
     });
   }
   if (!out.length) {
@@ -217,7 +290,7 @@ function laemuReadDays_(employee) {
   }
   var keys = Object.keys(raw);
   for (var k = 0; k < keys.length; k++) {
-    var day = laemuComputeDay(raw[keys[k]], employee.workload);
+    var day = laemuComputeDay(raw[keys[k]], employee.workload, employee.hourly);
     day.submittedAt = raw[keys[k]].submittedAt;
     byDate[keys[k]] = day;
   }
@@ -232,6 +305,10 @@ function laemuDayToRows_(day, submittedAt) {
   function summaryCells(pauseMinutes) {
     if (summaryWritten) return ['', '', '', '', '', '', '', ''];
     summaryWritten = true;
+    if (day.hourly) {
+      // Stundenbasis: kein Soll, kein Saldo, keine Ferien.
+      return [pauseMinutes, day.workHours, day.absenceHours, '', day.totalHours, '', '', ''];
+    }
     return [pauseMinutes, day.workHours, day.absenceHours, day.holidayCredit,
       day.totalHours, day.targetHours, day.balance, day.vacationDays];
   }
@@ -285,15 +362,59 @@ function laemuSaveDay_(employee, day) {
   }
   kept.sort(function (a, b) { return a.iso < b.iso ? -1 : (a.iso > b.iso ? 1 : 0); });
 
+  var out = kept.map(function (x) { return x.row; });
+  var totalRows = [];
+  if (employee.hourly) {
+    var withTotals = laemuWithMonthTotals_(kept);
+    out = withTotals.rows;
+    totalRows = withTotals.totalRows;
+  }
+
   if (lastRow >= 2) {
     sheet.getRange(2, 1, lastRow - 1, ENTRY_HEADERS.length).clearContent();
   }
-  if (kept.length) {
-    var out = kept.map(function (x) { return x.row; });
+  if (out.length) {
     laemuEnsureRows_(sheet, out.length);
     sheet.getRange(2, 1, out.length, ENTRY_HEADERS.length).setValues(out);
   }
+  if (employee.hourly) {
+    // Hervorhebung neu setzen, weil sich die Totalzeilen verschieben.
+    var span = Math.max(out.length, lastRow - 1);
+    if (span > 0) {
+      sheet.getRange(2, 1, span, ENTRY_HEADERS.length).setFontWeight('normal').setBackground(null);
+    }
+    for (var t = 0; t < totalRows.length; t++) {
+      sheet.getRange(totalRows[t] + 2, 1, 1, ENTRY_HEADERS.length)
+        .setFontWeight('bold').setBackground(LAEMU_SILVER);
+    }
+  }
   return sheet;
+}
+
+/**
+ * Fügt nach jedem Monat eine Totalzeile ein (nur Stundenbasis). Die Zeile hat
+ * kein Datum und wird deshalb beim Einlesen übersprungen und beim nächsten
+ * Speichern neu berechnet.
+ * Rückgabe: { rows, totalRows } – totalRows = Indizes der Totalzeilen in rows.
+ */
+function laemuWithMonthTotals_(kept) {
+  var rows = [];
+  var totalRows = [];
+  var sum = 0;
+  for (var i = 0; i < kept.length; i++) {
+    rows.push(kept[i].row);
+    sum += Number(kept[i].row[11]) || 0;   // Total Tag (h), nur in der ersten Zeile eines Tages
+    var monthKey = kept[i].iso.slice(0, 7);
+    var next = kept[i + 1];
+    if (!next || next.iso.slice(0, 7) !== monthKey) {
+      var total = ['', '', 'Total Monat', laemuMonthLabel(monthKey), '', '', '', '', '', '', '',
+        laemuRound2(sum), '', '', '', '', ''];
+      totalRows.push(rows.length);
+      rows.push(total);
+      sum = 0;
+    }
+  }
+  return { rows: rows, totalRows: totalRows };
 }
 
 /** Baut das Blatt «Monatsübersicht» für alle Mitarbeitenden neu auf. */
@@ -310,6 +431,12 @@ function laemuRebuildMonthly() {
     var months = summary.monthList || [];
     for (var m = 0; m < months.length; m++) {
       var mm = months[m];
+      if (employee.hourly) {
+        // Stundenbasis: nur die Stunden pro Monat, kein Soll und kein Saldo.
+        rows.push([employee.name, mm.month, mm.label, mm.workHours, mm.absenceHours, '',
+          mm.totalHours, '', '', '', '', mm.recordedDays, '']);
+        continue;
+      }
       rows.push([
         employee.name,
         mm.month,

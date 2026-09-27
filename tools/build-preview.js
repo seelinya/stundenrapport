@@ -73,6 +73,8 @@ var LAEMU_PREVIEW = (function () {
           skipped++;
           employees.forEach(function (emp) {
             if (cursor < emp.startDate) return;
+            // Stundenbasis: nur einzelne Tage, wie im echten Alltag.
+            if (emp.hourly && laemuWeekdayIndex(cursor) % 2 === 1) return;
             store[emp.name + '|' + cursor] = {
               date: cursor,
               projects: demo.map(function (d) { return { tag: d.tag, from: d.from, to: d.to, note: '' }; }),
@@ -88,14 +90,14 @@ var LAEMU_PREVIEW = (function () {
     return store;
   }
 
-  function daysFor(name, workload) {
+  function daysFor(name, workload, hourly) {
     var store = seed();
     var out = {};
     Object.keys(store).forEach(function (key) {
       if (key === '__seeded') return;
       var parts = key.split('|');
       if (parts[0] !== name) return;
-      out[parts[1]] = laemuComputeDay(store[key], workload);
+      out[parts[1]] = laemuComputeDay(store[key], workload, hourly);
     });
     return out;
   }
@@ -105,29 +107,6 @@ var LAEMU_PREVIEW = (function () {
     return null;
   }
 
-  function stats(emp, summary, todayIso) {
-    var monthKey = todayIso.slice(0, 7);
-    var month = summary.months && summary.months[monthKey];
-    return {
-      overtime: summary.balance,
-      recordedDays: summary.recordedDays,
-      periodEnd: summary.periodEnd,
-      periodStart: summary.periodStart,
-      showVacation: emp.showVacation,
-      vacationEntitlement: summary.vacationEntitlement,
-      vacationUsed: summary.vacationUsed || 0,
-      vacationRemaining: summary.vacationRemaining,
-      year: Number(todayIso.slice(0, 4)),
-      month: monthKey,
-      monthLabel: laemuMonthLabel(monthKey),
-      monthTotal: month ? month.totalHours : 0,
-      monthTarget: month ? month.targetHours : 0,
-      monthBalance: month ? month.balance : 0,
-      missingDays: (month ? month.missingDays : []).map(laemuFormatDate),
-      missingDaysCount: month ? month.missingDays.length : 0
-    };
-  }
-
   return {
     bootstrap: function () {
       var iso = today();
@@ -135,7 +114,7 @@ var LAEMU_PREVIEW = (function () {
         employees: employees.map(function (e) {
           return {
             name: e.name, firstName: e.firstName, role: e.role,
-            showVacation: e.showVacation, startDate: e.startDate,
+            showVacation: e.showVacation, hourly: e.hourly, startDate: e.startDate,
             dailyTarget: laemuRound2(laemuDailyTarget(e.workload))
           };
         }),
@@ -152,7 +131,7 @@ var LAEMU_PREVIEW = (function () {
     },
     laemuGetDayState: function (name, iso) {
       var emp = employee(name);
-      var days = daysFor(name, emp.workload);
+      var days = daysFor(name, emp.workload, emp.hourly);
       var todayIso = today();
       var summary = laemuComputeSummary(days, emp, todayIso);
       var existing = days[iso] || null;
@@ -162,13 +141,14 @@ var LAEMU_PREVIEW = (function () {
         isWeekend: laemuIsWeekend(iso),
         holiday: laemuHolidayName(iso),
         beforeStart: iso < emp.startDate,
+        hourly: emp.hourly,
         startDate: emp.startDate,
         dailyTarget: laemuRound2(laemuDailyTarget(emp.workload)),
         existing: existing ? {
           projects: existing.projects, absences: existing.absences,
           pauseMinutes: existing.pauseMinutes
         } : null,
-        stats: stats(emp, summary, todayIso)
+        stats: laemuBuildStats(emp, summary, todayIso)
       };
     },
     laemuSubmitDay: function (payload) {
@@ -184,19 +164,16 @@ var LAEMU_PREVIEW = (function () {
       var store = seed();
       store[emp.name + '|' + day.date] = day;
       save(store);
-      var computed = laemuComputeDay(day, emp.workload);
+      var computed = laemuComputeDay(day, emp.workload, emp.hourly);
       var todayIso = today();
-      var summary = laemuComputeSummary(daysFor(emp.name, emp.workload), emp, todayIso);
-      var s = stats(emp, summary, todayIso);
+      var summary = laemuComputeSummary(daysFor(emp.name, emp.workload, emp.hourly), emp, todayIso);
+      var s = laemuBuildStats(emp, summary, todayIso);
       return {
         ok: true,
         message: 'Danke ' + emp.firstName + '!',
         day: computed,
         stats: s,
-        reminder: s.missingDaysCount
-          ? 'Im ' + s.monthLabel + ' fehlen noch ' + s.missingDaysCount + ' Arbeitstage: ' +
-            s.missingDays.slice(0, 5).join(', ') + '.'
-          : 'Im ' + s.monthLabel + ' ist bisher jeder Arbeitstag erfasst. Weiter so!'
+        reminder: laemuBuildReminderText(emp, s)
       };
     }
   };

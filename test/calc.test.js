@@ -266,6 +266,8 @@ test('Hinweiszeilen im Blatt «Einstellungen» gelten nicht als Mitarbeitende', 
     ['Lian Müller', 'Mitarbeiter', '2026-09-01', 1, 25, 'ja', 0, 'lian@example.ch']), true);
   assert.equal(L.laemuIsEmployeeRow(
     ['Niklaus Hess', 'Inhaber', '2026-01-01', 1, 0, 'nein', 0, '']), true);
+  assert.equal(L.laemuIsEmployeeRow(
+    ['Marlies Hess', 'Mitarbeiterin', '2026-01-01', 1, 0, 'nein', 0, '', 'Stundenbasis']), true);
   // Der Hinweistext, der beim Einrichten ins Blatt geschrieben wird
   assert.equal(L.laemuIsEmployeeRow([
     'Hinweis: E-Mail eintragen, damit die monatliche Erinnerung verschickt wird. ' +
@@ -277,4 +279,77 @@ test('Hinweiszeilen im Blatt «Einstellungen» gelten nicht als Mitarbeitende', 
   assert.equal(L.laemuIsEmployeeRow(null), false);
   // Ein Name allein genügt, sobald eine weitere Spalte gefüllt ist
   assert.equal(L.laemuIsEmployeeRow(['Neue Person', '', '', 1, '', '', '', '']), true);
+});
+
+const HOURLY = { name: 'Vreni Strickler', startDate: '2026-01-01', vacationDays: 0, workload: 1,
+  showVacation: false, hourly: true };
+
+test('Neue Projekt-Tags und Personen auf Stundenbasis sind konfiguriert', () => {
+  assert.deepEqual(Array.from(L.PROJECT_TAGS),
+    ['Musikschule', 'Marketing', 'Shop', 'Buchhaltung', 'Admin', 'Media', 'Weiteres']);
+  const hourly = Array.from(L.EMPLOYEES).filter((e) => e.hourly).map((e) => e.name);
+  assert.deepEqual(hourly, ['Vreni Strickler', 'Marlies Hess', 'Emilia Hess']);
+  assert.equal(L.laemuIsHourlyEmployment('Stundenbasis'), true);
+  assert.equal(L.laemuIsHourlyEmployment('fest'), false);
+  assert.equal(L.laemuIsHourlyEmployment(''), false);
+});
+
+test('Stundenbasis: kein Soll, keine Feiertagsgutschrift, kein Saldo', () => {
+  const werktag = L.laemuComputeDay({
+    date: '2026-09-02', projects: [{ tag: 'Buchhaltung', from: '08:00', to: '11:30' }],
+    absences: [], pauseMinutes: 0
+  }, 1, true);
+  assert.equal(werktag.totalHours, 3.5);
+  assert.equal(werktag.targetHours, 0);
+  assert.equal(werktag.balance, 0);
+
+  const feiertag = L.laemuComputeDay({ date: '2026-12-25', projects: [], absences: [], pauseMinutes: 0 }, 1, true);
+  assert.equal(feiertag.holidayCredit, 0);
+  assert.equal(feiertag.totalHours, 0);
+});
+
+test('Stundenbasis: Stunden werden pro Monat zusammengezählt, ohne fehlende Tage', () => {
+  const days = {};
+  function add(date, from, to, pause) {
+    days[date] = L.laemuComputeDay({
+      date: date, projects: [{ tag: 'Media', from: from, to: to }], absences: [], pauseMinutes: pause || 0
+    }, 1, true);
+  }
+  add('2026-08-20', '09:00', '12:00');        // 3
+  add('2026-09-02', '08:00', '12:30', 30);    // 4
+  add('2026-09-15', '13:00', '15:15');        // 2.25
+  const summary = L.laemuComputeSummary(days, HOURLY, '2026-09-27');
+  assert.equal(summary.hourly, true);
+  assert.equal(summary.balance, 0);
+  assert.equal(summary.targetHours, 0);
+  assert.deepEqual(Array.from(summary.missingDays), []);
+  assert.equal(summary.monthList.length, 2);
+  assert.equal(summary.months['2026-08'].totalHours, 3);
+  assert.equal(summary.months['2026-09'].totalHours, 6.25);
+  assert.equal(summary.months['2026-09'].recordedDays, 2);
+  assert.equal(summary.totalHours, 9.25);
+
+  const stats = L.laemuBuildStats(HOURLY, summary, '2026-09-27');
+  assert.equal(stats.hourly, true);
+  assert.equal(stats.monthTotal, 6.25);
+  assert.equal(stats.monthRecordedDays, 2);
+  assert.equal(stats.yearTotal, 9.25);
+  assert.equal(stats.missingDaysCount, 0);
+  assert.equal(L.laemuBuildReminderText(HOURLY, stats),
+    'Im September 2026 sind bisher 6.25 Stunden an 2 Tagen erfasst.');
+});
+
+test('Fest Angestellte behalten Soll, Überstunden und Erinnerung an fehlende Tage', () => {
+  const days = {};
+  ['2026-09-07', '2026-09-09'].forEach((date) => {
+    days[date] = L.laemuComputeDay({
+      date: date, projects: [{ tag: 'Admin', from: '08:00', to: '16:24' }], absences: [], pauseMinutes: 0
+    }, 1, false);
+  });
+  const summary = L.laemuComputeSummary(days, LIAN, '2026-09-09');
+  const stats = L.laemuBuildStats(LIAN, summary, '2026-09-09');
+  assert.equal(stats.hourly, false);
+  assert.equal(stats.missingDaysCount, 1);  // 8.9. nicht erfasst
+  assert.equal(stats.overtime, -8.4);
+  assert.ok(L.laemuBuildReminderText(LIAN, stats).indexOf('fehlen noch 1 Arbeitstag') >= 0);
 });

@@ -97,13 +97,13 @@ clasp push
 | --- | --- | --- |
 | 1 | LAEMU-Logo | Original-Vektor aus den Brand Guidelines (`brand/laemu-logo.svg`) |
 | 2 | Lebensspruch | wechselt täglich, innerhalb eines Zyklus wiederholt sich keiner |
-| 3 | Mitarbeiter:in | Lian Müller, Niklaus Hess, Selina Strickler – Auswahl wird pro Browser als Standard gespeichert |
+| 3 | Mitarbeiter:in | Lian Müller, Niklaus Hess, Selina Strickler, Vreni Strickler, Marlies Hess, Emilia Hess – Auswahl wird pro Browser als Standard gespeichert |
 | 4 | Datum | frei wählbar inkl. Samstag und Sonntag, Schnellwahl «Heute / Gestern / Vorgestern» |
-| 5 | Projekt | Tags Musikschule, Marketing, Shop, Weiteres; darunter Arbeitsbeginn und -ende, Stunden werden dezimal berechnet; beliebig viele Projekte pro Tag |
+| 5 | Projekt | Tags Musikschule, Marketing, Shop, Buchhaltung, Admin, Media, Weiteres; darunter Arbeitsbeginn und -ende, Stunden werden dezimal berechnet; beliebig viele Projekte pro Tag |
 | 6 | «Weiteres» | Link unter den Projekten: Ferien, Feiertag, Krank, Unfall, Weiteres. Die Stundeneingabe samt Quick Action «Ganzer Tag» erscheint erst, wenn ein Tag gesetzt ist |
 | 7 | Pausenzeit | in Minuten, mit Schnellwahl 15/30/45/60 |
 | 8 | Total | Arbeitszeit, Abwesenheiten und Feiertagsgutschrift werden laufend zusammengerechnet |
-| 9 | Kennzahlen | Überstunden total und – nur bei Lian – die bis zum 31.12. verbleibenden Ferientage |
+| 9 | Kennzahlen | Überstunden total und – nur bei Lian – die bis zum 31.12. verbleibenden Ferientage; bei Anstellung auf Stundenbasis stattdessen die Stunden im laufenden Monat und im Jahr |
 | 10 | Einreichen | speichert den Tag im Google Sheet |
 | 11 | Google Sheet | ein Blatt pro Person, jede Eingabe als eigene Zeile, Monatstotale separat, monatliche Erinnerung |
 | 12 | Erfolgsmeldung | «Danke {Vorname}!» mit Tagesrückblick und Hinweis auf fehlende Tage |
@@ -132,6 +132,10 @@ clasp push
   Bei unterjährigem Eintritt anteilig pro Monat: Lian startet am 1. September, hat also
   4 von 12 Monaten × 25 Tage = **8.5 Tage** bis Ende Dezember (auf halbe Tage gerundet).
   Niklaus und Selina sind Inhaber:innen – bei ihnen wird keine Ferienanzeige eingeblendet.
+* **Stundenbasis** (Vreni, Marlies, Emilia – ohne feste Anstellung): kein Soll, keine
+  Überstunden, keine Feiertagsgutschrift, keine Ferien und keine Erinnerung an fehlende Tage.
+  Die erfassten Stunden werden pro Monat zusammengezählt. Der Link «Weiteres (Ferien,
+  Feiertag, Krank …)» wird für sie ausgeblendet.
 
 ---
 
@@ -143,7 +147,9 @@ clasp push
 Arbeitszeit Tag · Abwesenheit Tag · Feiertagsgutschrift · Total Tag · Soll Tag · Saldo Tag ·
 Ferien (Tage) · Bemerkung · Erfasst am`
 
-Die Tagesspalten stehen jeweils in der ersten Zeile eines Tages. Wird ein Tag erneut
+Die Tagesspalten stehen jeweils in der ersten Zeile eines Tages. Bei Anstellung auf
+Stundenbasis schliesst jeder Monat mit einer hervorgehobenen Zeile «Total Monat» ab (Summe in
+«Total Tag»); sie wird bei jedem Einreichen neu berechnet. Wird ein Tag erneut
 eingereicht, ersetzen die neuen Zeilen die alten – die Tabelle bleibt nach Datum sortiert.
 
 **Blatt «Monatsübersicht»** – pro Person und Monat: Arbeitszeit, Abwesenheiten, Feiertage,
@@ -151,7 +157,9 @@ Total Ist, Soll, Saldo Monat, Saldo kumuliert, bezogene Ferientage, erfasste Tag
 fehlende Arbeitstage. Es wird bei jedem Einreichen neu berechnet.
 
 **Blatt «Einstellungen»** – Mitarbeitende, Rolle, Anstellungsbeginn, Pensum, Ferienanspruch,
-Ferienanzeige, Startsaldo und E-Mail. Änderungen hier wirken sofort, ohne Code-Anpassung. Neue
+Ferienanzeige, Startsaldo, E-Mail und Anstellung («fest» oder «Stundenbasis»). Ein bestehendes
+Blatt wird beim ersten Aufruf der neuen Version automatisch ergänzt: Spalte «Anstellung» und
+fehlende Personen aus `Config.gs` kommen einmalig dazu. Änderungen hier wirken sofort, ohne Code-Anpassung. Neue
 Mitarbeitende einfach als Zeile ergänzen und danach im Menü «Tabelle einrichten» ausführen.
 
 ---
@@ -179,7 +187,7 @@ genügt ein `@font-face`-Block in `Stylesheet.html`.
 ## Entwicklung
 
 ```bash
-npm test             # 18 Tests: Feiertage, Soll/Ist, Ferien, Validierung, Tagesspruch
+npm test             # 23 Tests: Feiertage, Soll/Ist, Ferien, Validierung, Tagesspruch
 npm run preview      # Vorschau neu bauen
 npm run bundle       # apps-script-single/ neu erzeugen
 ```
