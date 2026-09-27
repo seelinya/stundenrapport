@@ -11,6 +11,8 @@
  *  - Feiertage des Kantons Schwyz werden gutgeschrieben, wenn sie auf
  *    Montag bis Freitag fallen.
  *  - Ferien werden in Stunden erfasst; 8.4 h entsprechen einem Ferientag.
+ *  - Mitarbeitende ohne feste Anstellung (Stundenbasis) haben kein Soll und
+ *    keine Feiertagsgutschrift; ihre Stunden werden pro Monat zusammengezählt.
  */
 
 /** Tagessoll in Stunden. */
@@ -184,9 +186,11 @@ function laemuMinutesOfDay(value) {
  *   absences: [{ tag, hours, note }],
  *   pauseMinutes: Number
  * }
+ * hourly = true bei Anstellung auf Stundenbasis (kein Soll, keine Gutschrift).
  */
-function laemuComputeDay(day, workload) {
+function laemuComputeDay(day, workload, hourly) {
   var target = laemuDailyTarget(workload);
+  hourly = !!hourly;
   var iso = day.date;
   var projects = day.projects || [];
   var absences = day.absences || [];
@@ -223,13 +227,13 @@ function laemuComputeDay(day, workload) {
   // Feiertage werden nur gutgeschrieben, wenn sie auf Mo–Fr fallen. Bereits
   // manuell als «Feiertag» erfasste Stunden werden nicht doppelt gezählt.
   var holidayCredit = 0;
-  if (holidayName && !weekend) {
+  if (holidayName && !weekend && !hourly) {
     holidayCredit = laemuRound2(Math.max(0, target - bookedHolidayHours));
   }
 
   var totalHours = laemuRound2(workHours + absenceHours + holidayCredit);
-  var targetHours = weekend ? 0 : laemuRound2(target);
-  var balance = laemuRound2(totalHours - targetHours);
+  var targetHours = (weekend || hourly) ? 0 : laemuRound2(target);
+  var balance = hourly ? 0 : laemuRound2(totalHours - targetHours);
 
   return {
     date: iso,
@@ -237,6 +241,7 @@ function laemuComputeDay(day, workload) {
     weekdayShort: laemuWeekdayShort(iso),
     isWeekend: weekend,
     holiday: holidayName,
+    hourly: hourly,
     projects: projectRows,
     absences: absenceRows,
     pauseMinutes: Number(day.pauseMinutes || 0),
@@ -322,6 +327,7 @@ function laemuVacationEntitlement(year, startIso, vacationDaysPerYear, workload)
  * hinterlegen.
  */
 function laemuComputeSummary(daysByDate, employee, todayIso) {
+  if (employee.hourly) return laemuComputeHourlySummary(daysByDate);
   var target = laemuDailyTarget(employee.workload);
   var dates = Object.keys(daysByDate).sort();
   var opening = laemuRound2(Number(employee.openingBalance || 0));
@@ -454,6 +460,122 @@ function laemuComputeSummary(daysByDate, employee, todayIso) {
 }
 
 /**
+ * Auswertung für Mitarbeitende auf Stundenbasis: kein Soll, keine
+ * Überstunden, keine fehlenden Tage – nur die erfassten Stunden pro Monat.
+ * Liefert dieselbe Struktur wie laemuComputeSummary.
+ */
+function laemuComputeHourlySummary(daysByDate) {
+  var dates = Object.keys(daysByDate).sort();
+  var totals = {
+    hourly: true,
+    openingBalance: 0,
+    workHours: 0,
+    absenceHours: 0,
+    holidayCredit: 0,
+    totalHours: 0,
+    targetHours: 0,
+    balance: 0,
+    vacationDaysUsed: 0,
+    recordedDays: dates.length,
+    firstDate: dates.length ? dates[0] : null,
+    lastDate: dates.length ? dates[dates.length - 1] : null,
+    periodStart: dates.length ? dates[0] : null,
+    periodEnd: dates.length ? dates[dates.length - 1] : null,
+    missingDays: [],
+    months: {},
+    vacationEntitlement: 0,
+    vacationUsed: 0,
+    vacationRemaining: 0
+  };
+  for (var i = 0; i < dates.length; i++) {
+    var day = daysByDate[dates[i]];
+    var monthKey = dates[i].slice(0, 7);
+    if (!totals.months[monthKey]) {
+      totals.months[monthKey] = {
+        month: monthKey,
+        label: laemuMonthLabel(monthKey),
+        workHours: 0,
+        absenceHours: 0,
+        holidayCredit: 0,
+        totalHours: 0,
+        targetHours: 0,
+        balance: 0,
+        cumulativeBalance: 0,
+        vacationDaysUsed: 0,
+        recordedDays: 0,
+        missingDays: []
+      };
+    }
+    var m = totals.months[monthKey];
+    m.workHours = laemuRound2(m.workHours + day.workHours);
+    m.absenceHours = laemuRound2(m.absenceHours + day.absenceHours);
+    m.totalHours = laemuRound2(m.totalHours + day.workHours + day.absenceHours);
+    m.recordedDays++;
+  }
+  var keys = Object.keys(totals.months).sort();
+  for (var k = 0; k < keys.length; k++) {
+    var mm = totals.months[keys[k]];
+    totals.workHours = laemuRound2(totals.workHours + mm.workHours);
+    totals.absenceHours = laemuRound2(totals.absenceHours + mm.absenceHours);
+    totals.totalHours = laemuRound2(totals.totalHours + mm.totalHours);
+  }
+  totals.monthList = keys.map(function (key) { return totals.months[key]; });
+  return totals;
+}
+
+/** Kennzahlen für die Fusszeile des Tools. */
+function laemuBuildStats(employee, summary, todayIso) {
+  var monthKey = todayIso.slice(0, 7);
+  var year = todayIso.slice(0, 4);
+  var month = summary.months && summary.months[monthKey];
+  var missingThisMonth = month ? month.missingDays : [];
+  var yearTotal = 0;
+  var monthList = summary.monthList || [];
+  for (var i = 0; i < monthList.length; i++) {
+    if (monthList[i].month.slice(0, 4) === year) yearTotal += monthList[i].totalHours;
+  }
+  return {
+    hourly: !!employee.hourly,
+    overtime: summary.balance,
+    totalHours: summary.totalHours,
+    targetHours: summary.targetHours,
+    recordedDays: summary.recordedDays,
+    periodStart: summary.periodStart || employee.startDate,
+    openingBalance: summary.openingBalance || 0,
+    periodEnd: summary.periodEnd,
+    showVacation: !!employee.showVacation && !employee.hourly,
+    vacationEntitlement: summary.vacationEntitlement,
+    vacationUsed: summary.vacationUsed || 0,
+    vacationRemaining: summary.vacationRemaining,
+    year: Number(year),
+    yearTotal: laemuRound2(yearTotal),
+    month: monthKey,
+    monthLabel: laemuMonthLabel(monthKey),
+    monthTotal: month ? month.totalHours : 0,
+    monthTarget: month ? month.targetHours : 0,
+    monthBalance: month ? month.balance : 0,
+    monthRecordedDays: month ? month.recordedDays : 0,
+    missingDays: missingThisMonth.map(function (d) { return laemuFormatDate(d); }),
+    missingDaysCount: missingThisMonth.length
+  };
+}
+
+/** Kurze Erinnerung, die nach dem Einreichen angezeigt wird. */
+function laemuBuildReminderText(employee, stats) {
+  if (stats.hourly) {
+    return 'Im ' + stats.monthLabel + ' sind bisher ' + stats.monthTotal.toFixed(2) + ' Stunden an ' +
+      stats.monthRecordedDays + (stats.monthRecordedDays === 1 ? ' Tag' : ' Tagen') + ' erfasst.';
+  }
+  if (stats.missingDaysCount > 0) {
+    var list = stats.missingDays.slice(0, 5).join(', ');
+    var more = stats.missingDaysCount > 5 ? ' und weitere' : '';
+    return 'Im ' + stats.monthLabel + ' fehlen noch ' + stats.missingDaysCount +
+      (stats.missingDaysCount === 1 ? ' Arbeitstag' : ' Arbeitstage') + ': ' + list + more + '.';
+  }
+  return 'Im ' + stats.monthLabel + ' ist bisher jeder Arbeitstag erfasst. Weiter so!';
+}
+
+/**
  * Prüft, ob eine Zeile aus dem Blatt «Einstellungen» eine Mitarbeiterzeile ist.
  * Hinweistexte und Notizen stehen ebenfalls in der ersten Spalte, sind aber
  * keine Mitarbeitenden: Ein echter Eintrag hat einen kurzen Namen und
@@ -465,11 +587,16 @@ function laemuIsEmployeeRow(row) {
   if (!name) return false;
   if (name.length > 60) return false;
   if (/^hinweis\b/i.test(name)) return false;
-  for (var c = 1; c <= 7; c++) {
+  for (var c = 1; c <= 8; c++) {
     var cell = row[c];
     if (cell !== undefined && cell !== null && String(cell).trim() !== '') return true;
   }
   return false;
+}
+
+/** «fest» oder «Stundenbasis» aus der Spalte «Anstellung» lesen. */
+function laemuIsHourlyEmployment(value) {
+  return String(value === undefined || value === null ? '' : value).toLowerCase().indexOf('stunde') >= 0;
 }
 
 /** Fehlende Arbeitstage im angegebenen Monat ('YYYY-MM'). */

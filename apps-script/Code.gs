@@ -55,6 +55,7 @@ function laemuBootstrap() {
         firstName: e.firstName,
         role: e.role,
         showVacation: e.showVacation,
+        hourly: e.hourly,
         startDate: e.startDate,
         dailyTarget: laemuRound2(laemuDailyTarget(e.workload))
       };
@@ -90,6 +91,7 @@ function laemuGetDayState(employeeName, iso) {
     isWeekend: laemuIsWeekend(iso),
     holiday: laemuHolidayName(iso),
     beforeStart: iso < employee.startDate,
+    hourly: employee.hourly,
     startDate: employee.startDate,
     dailyTarget: laemuRound2(laemuDailyTarget(employee.workload)),
     existing: existing ? {
@@ -97,35 +99,7 @@ function laemuGetDayState(employeeName, iso) {
       absences: existing.absences,
       pauseMinutes: existing.pauseMinutes
     } : null,
-    stats: laemuStats_(employee, summary, todayIso)
-  };
-}
-
-/** Kennzahlen für die Fusszeile des Tools. */
-function laemuStats_(employee, summary, todayIso) {
-  var monthKey = todayIso.slice(0, 7);
-  var month = summary.months && summary.months[monthKey];
-  var missingThisMonth = month ? month.missingDays : [];
-  return {
-    overtime: summary.balance,
-    totalHours: summary.totalHours,
-    targetHours: summary.targetHours,
-    recordedDays: summary.recordedDays,
-    periodStart: summary.periodStart || employee.startDate,
-    openingBalance: summary.openingBalance || 0,
-    periodEnd: summary.periodEnd,
-    showVacation: employee.showVacation,
-    vacationEntitlement: summary.vacationEntitlement,
-    vacationUsed: summary.vacationUsed || 0,
-    vacationRemaining: summary.vacationRemaining,
-    year: Number(todayIso.slice(0, 4)),
-    month: monthKey,
-    monthLabel: laemuMonthLabel(monthKey),
-    monthTotal: month ? month.totalHours : 0,
-    monthTarget: month ? month.targetHours : 0,
-    monthBalance: month ? month.balance : 0,
-    missingDays: missingThisMonth.map(function (d) { return laemuFormatDate(d); }),
-    missingDaysCount: missingThisMonth.length
+    stats: laemuBuildStats(employee, summary, todayIso)
   };
 }
 
@@ -156,33 +130,22 @@ function laemuSubmitDay(payload) {
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
-    var computed = laemuComputeDay(day, employee.workload);
+    var computed = laemuComputeDay(day, employee.workload, employee.hourly);
     laemuSaveDay_(employee, computed);
     laemuRebuildMonthly();
 
     var days = laemuReadDays_(employee);
     var todayIso = laemuTodayIso();
     var summary = laemuComputeSummary(days, employee, todayIso);
-    var stats = laemuStats_(employee, summary, todayIso);
+    var stats = laemuBuildStats(employee, summary, todayIso);
     return {
       ok: true,
       message: 'Danke ' + employee.firstName + '!',
       day: computed,
       stats: stats,
-      reminder: laemuReminderText_(employee, stats)
+      reminder: laemuBuildReminderText(employee, stats)
     };
   } finally {
     lock.releaseLock();
   }
-}
-
-/** Kurze Erinnerung, die nach dem Einreichen angezeigt wird. */
-function laemuReminderText_(employee, stats) {
-  if (stats.missingDaysCount > 0) {
-    var list = stats.missingDays.slice(0, 5).join(', ');
-    var more = stats.missingDaysCount > 5 ? ' und weitere' : '';
-    return 'Im ' + stats.monthLabel + ' fehlen noch ' + stats.missingDaysCount +
-      (stats.missingDaysCount === 1 ? ' Arbeitstag' : ' Arbeitstage') + ': ' + list + more + '.';
-  }
-  return 'Im ' + stats.monthLabel + ' ist bisher jeder Arbeitstag erfasst. Weiter so!';
 }

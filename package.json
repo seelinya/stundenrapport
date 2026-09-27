@@ -8,5 +8,8 @@
     "preview": "node tools/build-preview.js",
     "bundle": "node tools/build-appsscript-bundle.js"
   },
+  "devDependencies": {
+    "terser": "^5.0.0"
+  },
   "license": "UNLICENSED"
 }

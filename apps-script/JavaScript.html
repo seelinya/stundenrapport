@@ -90,6 +90,12 @@
     return null;
   }
 
+  /* Ohne feste Anstellung: kein Soll, keine Überstunden, keine Abwesenheiten. */
+  function isHourly() {
+    var emp = currentEmployee();
+    return !!(emp && emp.hourly);
+  }
+
   function server(method, args, onOk, onErr) {
     var runner = window.google && google.script && google.script.run;
     if (!runner) {
@@ -135,6 +141,7 @@
     }
     var emp = currentEmployee();
     if (emp) state.dailyTarget = emp.dailyTarget || state.dailyTarget;
+    el.addAbsence.style.display = isHourly() ? 'none' : '';
     renderEmployees();
     loadDay();
   }
@@ -154,15 +161,16 @@
     var parts = [];
     var weekday = d ? d.weekday : localWeekday(state.date);
     if (weekday) parts.push('<span class="tagday">' + escapeHtml(weekday) + '</span>');
+    var hourly = isHourly();
     if (d && d.holiday) {
       parts.push('<span class="tagday gold">' + escapeHtml(d.holiday) + '</span>');
-      parts.push(d.isWeekend
+      if (!hourly) parts.push(d.isWeekend
         ? 'Feiertag am Wochenende – keine Gutschrift.'
         : 'Feiertag: ' + fmt(state.dailyTarget) + ' h werden automatisch gutgeschrieben.');
-    } else if (d && d.isWeekend) {
+    } else if (d && d.isWeekend && !hourly) {
       parts.push('Wochenende – kein Soll, erfasste Arbeit zählt vollumfänglich.');
     }
-    if (d && d.beforeStart) {
+    if (d && d.beforeStart && !hourly) {
       parts.push('<br>Hinweis: Dieses Datum liegt vor dem Anstellungsbeginn (' + formatDate(d.startDate) + ').');
     }
     if (d && d.existing) {
@@ -408,8 +416,9 @@
     absence = round2(absence);
 
     var d = state.dayState || {};
-    var target = d.isWeekend ? 0 : round2(state.dailyTarget);
-    var credit = (d.holiday && !d.isWeekend) ? round2(Math.max(0, state.dailyTarget - bookedHoliday)) : 0;
+    var hourly = isHourly();
+    var target = (d.isWeekend || hourly) ? 0 : round2(state.dailyTarget);
+    var credit = (d.holiday && !d.isWeekend && !hourly) ? round2(Math.max(0, state.dailyTarget - bookedHoliday)) : 0;
     var total = round2(work + absence + credit);
 
     return {
@@ -431,8 +440,10 @@
     line('Gearbeitet', fmt(c.work) + ' h');
     if (c.absence > 0) line('Weiteres (Ferien, Krank, …)', fmt(c.absence) + ' h');
     if (c.credit > 0) line('Feiertagsgutschrift', fmt(c.credit) + ' h');
-    line('Sollzeit ' + (c.target === 0 ? '(Wochenende)' : ''), fmt(c.target) + ' h');
-    line('Saldo Tag', signed(c.balance) + ' h');
+    if (!isHourly()) {
+      line('Sollzeit ' + (c.target === 0 ? '(Wochenende)' : ''), fmt(c.target) + ' h');
+      line('Saldo Tag', signed(c.balance) + ' h');
+    }
     el.summaryLines.innerHTML = lines.join('');
     el.dayTotal.innerHTML = fmt(c.total) + '<small>h</small>';
   }
@@ -448,6 +459,19 @@
       return;
     }
     var tiles = [];
+    if (s.hourly) {
+      // Stundenbasis: nur die Stunden pro Monat zusammenzählen.
+      tiles.push('<div class="stat"><div class="k">Stunden ' + escapeHtml(s.monthLabel) + '</div>' +
+        '<div class="v gold">' + fmt(s.monthTotal) + '<small style="font-size:15px"> h</small></div>' +
+        '<div class="s">' + s.monthRecordedDays + (s.monthRecordedDays === 1 ? ' Tag' : ' Tage') +
+        ' erfasst</div></div>');
+      tiles.push('<div class="stat"><div class="k">Stunden ' + s.year + '</div>' +
+        '<div class="v">' + fmt(s.yearTotal) + '<small style="font-size:15px"> h</small></div>' +
+        '<div class="s">' + s.recordedDays + ' Tage insgesamt erfasst</div></div>');
+      el.stats.innerHTML = tiles.join('');
+      el.reminderBox.innerHTML = '';
+      return;
+    }
     tiles.push('<div class="stat"><div class="k">Überstunden total</div>' +
       '<div class="v gold">' + signed(s.overtime) + '<small style="font-size:15px"> h</small></div>' +
       '<div class="s">Stand ' + (s.periodEnd ? formatDate(s.periodEnd) : '–') +
@@ -547,7 +571,7 @@
       date: state.date,
       pauseMinutes: Number(state.pause || 0),
       projects: state.projects.filter(function (p) { return p.tag || p.from || p.to; }),
-      absences: state.absences.filter(function (a) { return a.tag || a.hours; })
+      absences: isHourly() ? [] : state.absences.filter(function (a) { return a.tag || a.hours; })
     };
 
     server('laemuSubmitDay', [payload], function (result) {
@@ -575,8 +599,13 @@
       ' ist im Google Sheet gespeichert.';
     var rows = [];
     rows.push('<div><span>Total Tag</span><span>' + fmt(day.totalHours || 0) + ' h</span></div>');
-    rows.push('<div><span>Saldo Tag</span><span>' + signed(day.balance || 0) + ' h</span></div>');
-    rows.push('<div><span>Überstunden total</span><span>' + signed(stats.overtime || 0) + ' h</span></div>');
+    if (stats.hourly) {
+      rows.push('<div><span>Stunden ' + escapeHtml(stats.monthLabel) + '</span><span>' +
+        fmt(stats.monthTotal || 0) + ' h</span></div>');
+    } else {
+      rows.push('<div><span>Saldo Tag</span><span>' + signed(day.balance || 0) + ' h</span></div>');
+      rows.push('<div><span>Überstunden total</span><span>' + signed(stats.overtime || 0) + ' h</span></div>');
+    }
     if (stats.showVacation) {
       rows.push('<div><span>Ferien bis 31.12.' + stats.year + '</span><span>' +
         fmt(stats.vacationRemaining) + ' Tage</span></div>');
