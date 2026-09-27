@@ -65,5 +65,26 @@ const code = scripts.map((f) => {
 
 fs.mkdirSync(outDir, { recursive: true });
 fs.rmSync(path.join(outDir, 'Index.html'), { force: true });
-fs.writeFileSync(path.join(outDir, 'Code.gs'), header + htmlConstant + '\n' + code);
+const full = header + htmlConstant + '\n' + code;
+fs.writeFileSync(path.join(outDir, 'Code.gs'), full);
 console.log('apps-script-single/Code.gs erzeugt (Backend und Oberfläche in einer Datei).');
+
+// Kompakte Fassung mit wenigen, langen Zeilen – für Umgebungen, in denen sich
+// nur eine begrenzte Anzahl Zeilen kopieren lässt. Gleicher Code, nur ohne
+// Kommentare und Einrückung (Namen bleiben unverändert).
+let terser;
+try {
+  terser = require('terser');
+} catch (err) {
+  console.warn('terser fehlt («npm install») – Code-kompakt.gs wurde nicht erneuert.');
+}
+if (terser) {
+  terser.minify(full, { compress: false, mangle: false, format: { comments: false, max_line_len: 900 } })
+    .then((result) => {
+      const compactHeader = '// LAEMU Stundenrapport – kompakte Fassung von Code.gs (gleicher Code, erzeugt mit\n' +
+        '// "node tools/build-appsscript-bundle.js"). Ganzen Inhalt in Code.gs im Apps-Script-Editor einfügen.\n';
+      fs.writeFileSync(path.join(outDir, 'Code-kompakt.gs'), compactHeader + result.code + '\n');
+      console.log('apps-script-single/Code-kompakt.gs erzeugt (' +
+        (result.code.split('\n').length + 2) + ' Zeilen).');
+    });
+}

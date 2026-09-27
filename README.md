@@ -32,6 +32,10 @@ die Eingaben landen aber nur im Browser-Speicher statt im Google Sheet.
    Diese eine Datei enthält alles – Backend und Oberfläche. Es muss keine weitere Datei
    angelegt oder benannt werden.
 
+   Lassen sich nicht alle Zeilen auf einmal kopieren, stattdessen
+   [`apps-script-single/Code-kompakt.gs`](apps-script-single/Code-kompakt.gs) verwenden: derselbe
+   Code in rund 60 Zeilen.
+
 3. Empfohlen: unter **Projekteinstellungen** die Option «`appsscript.json`-Manifestdatei im
    Editor anzeigen» aktivieren und den Inhalt von [`apps-script/appsscript.json`](apps-script/appsscript.json)
    übernehmen. Das setzt die Zeitzone auf Europe/Zurich und die Berechtigungen.
@@ -189,6 +193,7 @@ genügt ein `@font-face`-Block in `Stylesheet.html`.
 ```bash
 npm test             # 23 Tests: Feiertage, Soll/Ist, Ferien, Validierung, Tagesspruch
 npm run preview      # Vorschau neu bauen
+npm install          # einmalig, für die kompakte Fassung (terser)
 npm run bundle       # apps-script-single/ neu erzeugen
 ```
 
