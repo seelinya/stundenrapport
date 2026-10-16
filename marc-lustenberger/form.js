@@ -302,19 +302,4 @@
 
   renderOrder();
   update();
-
-  // Direktlink von der Fanartikel-Seite: kontakt.html#artikel-<id>
-  function fromHash() {
-    var h = (location.hash || "").slice(1);
-    if (h.indexOf("artikel-") !== 0) return;
-    var l = lines.find(function (x) { return x.pid === h.slice(8); });
-    if (!l) return;
-    selectTopic("Fanartikel");
-    if (l.qty === 0) l.qty = 1;
-    renderOrder(); update();
-    var k = document.getElementById("kontakt");
-    if (k) setTimeout(function () { k.scrollIntoView(); }, 60);
-  }
-  fromHash();
-  window.addEventListener("hashchange", fromHash);
 })();

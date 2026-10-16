@@ -5,50 +5,10 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) und per du geschrieben.
+Hero · Steckbrief · Über mich · Statement · Mini-Spiel «Schwing gegen Marc» · Erfolge · Kraft/Technik/Kopf · News · Sponsoren · Fanartikel · Kontakt
 
-Gestaltung: hell mit klaren Linien, Schwarz-Weiss-Fotos und Blau (Logo-Blau `--blue`) als einzige Farbe –
-für Buttons, Bildrahmen und CTA-Bänder. Schriften: Lato für Text und Titel (Titel fett, kursiv, Grossbuchstaben),
-Roustel nur ganz gezielt (Kinderzitat `x-scribble`, Unterschrift `x-sign`). Die Schriftdateien liegen in `assets/fonts/`, die
-Markenregeln in `brand.css` (wird zuletzt geladen). Auf Tablet und Handy blendet sich der Header beim Runterscrollen
-aus und erscheint beim Hochscrollen wieder.
-
-Bewegung (`motion.js`): Elemente mit `data-anim` blenden beim Scrollen ein, `data-count` zählt hoch,
-`data-words` lässt ein Statement Wort für Wort aufleuchten. Wer im Gerät «Bewegung reduzieren» eingestellt
-hat, sieht alles sofort und ohne Animation.
-
-Fotos: Die Bilder in `assets/img/` liegen in Originalgrösse und werden nie grösser angezeigt, damit sie
-scharf bleiben. Für grössere Darstellungen braucht es die Originalfotos in höherer Auflösung.
-
-| Seite | Inhalt |
-|---|---|
-| `index.html` | Startseite: Titelbild, Facts, «Hoi, ich bin Marc» (mit Kinderfoto), Erfolge & Saison (Kommendes oben, Vergangenes ausgeblasst), Sponsoren mit Aufruf, Fanshop |
-| `ueber-marc.html` (Über mich) | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
-| `mein-weg.html` | Alle Stationen von der Kindheit bis heute, jede mit Bild, dazu «Der Plan» bis 2031 |
-| `erfolge.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |
-| `sponsoren.html` | Was Sponsoren davon haben, Leistungsausweis, Ablauf, Pakete, aktuelle Sponsoren |
-| `fanartikel.html` | Fanartikel; «Bestellen» öffnet `kontakt.html#artikel-<id>` mit vorausgefülltem Warenkorb |
-| `kontakt.html` | Kontakt- und Bestellformular, Instagram |
-
-Auf jeder Seite steht über dem Footer das Sponsorenband mit Haupt- und Co-Sponsoren.
-
-### Wöchentlich aktualisieren
-
-Termine, Resultate, News und Medienberichte stehen oben in `saison.js` als einfache Listen. Neue Einträge
-oben einfügen – Startseite und Erfolge-Seite zeigen sie automatisch an.
-
-Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `site.js` (Hero-Video, «Mein Weg», Galerie,
-Anfrage-Links), `form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `site.css`.
-
-### Platzhalter, Instagram und Video
-
-- «Foto folgt» in «Mein Weg» (Kindheit, Jungschwinger) und in der Galerie (Training, Ernährungsberatung,
-  Kraftraum, Körperanalyse, Ferien). Galerie-Kachel ersetzen durch
-  `<figure class="gi" data-cat="training"><img src="assets/img/…" alt="…"><figcaption>…</figcaption></figure>`.
-- Instagram: Die Kacheln verlinken auf das Profil und zeigen Fotos der Website. Für echte, aktuelle Beiträge
-  beim Hosting ein Instagram-Feed-Widget einbinden (Platz ist im Code markiert).
-- Hintergrundvideo im Hero: Datei z. B. als `assets/video/hero.mp4` ablegen und im `data-src` des
-  `<video id="hero-video">` eintragen.
+Das Mini-Spiel steckt in `game.js` (Canvas, keine Abhängigkeiten). Schwierigkeit und Dauer
+stehen oben in der Datei (`LEVELS`, `DURATION`, `TAP`).
 
 ## Inhalte pflegen
 

@@ -82,17 +82,11 @@
 
   var links = Array.prototype.slice.call(menu.querySelectorAll("a[href^='#']"));
   var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
-  var ticking = false, lastY = 0;
+  var ticking = false;
   function onScroll() {
     ticking = false;
     var y = window.scrollY || window.pageYOffset;
     head.classList.toggle("is-solid", y > 60);
-    // Tablet & Handy: beim Runterscrollen ausblenden, beim Hochscrollen wieder zeigen
-    var compact = window.matchMedia("(max-width: 1140px)").matches;
-    var menuOpen = burger.getAttribute("aria-expanded") === "true";
-    if (compact && !menuOpen && y > 120 && y > lastY + 4) head.classList.add("is-hidden");
-    else if (!compact || menuOpen || y < lastY - 4 || y <= 120) head.classList.remove("is-hidden");
-    lastY = y;
     var active = -1;
     targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top < window.innerHeight * .4) active = i; });
     links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
@@ -102,7 +96,7 @@
 
   // --- Sponsoren --------------------------------------------------------
   var tiers = document.getElementById("tiers");
-  if (tiers) SPONSORS.forEach(function (group) {
+  SPONSORS.forEach(function (group) {
     var tier = el("div", "tier" + (group.main ? " tier--main" : ""));
     tier.appendChild(el("h3", "tier__name", group.tier));
     var ul = el("ul", "tier__logos");
@@ -121,58 +115,9 @@
     tiers.appendChild(tier);
   });
 
-
-
-  // --- Partner-Logos auf der Startseite (alle, Hauptsponsoren grösser) -----
-  var plogos = document.getElementById("partner-logos");
-  if (plogos) {
-    var seenP = {};
-    SPONSORS.forEach(function (g) {
-      g.items.forEach(function (s) {
-        if (seenP[s.logo]) return; seenP[s.logo] = true;
-        var a = el(s.url ? "a" : "span", "plogo" + (g.main ? " plogo--main" : ""));
-        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
-        a.title = s.name;
-        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
-        a.appendChild(img); plogos.appendChild(a);
-      });
-    });
-  }
-
-  // --- Laufendes Logoband auf der Startseite --------------------------------
-  var marquee = document.getElementById("logo-marquee");
-  if (marquee) {
-    var seenM = {}, list = [];
-    SPONSORS.forEach(function (g) { g.items.forEach(function (s) { if (!seenM[s.logo]) { seenM[s.logo] = true; list.push(s); } }); });
-    [0, 1].forEach(function (round) {
-      list.forEach(function (s) {
-        var a = el(s.url ? "a" : "span", "x-logos__item");
-        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
-        if (round) a.setAttribute("aria-hidden", "true");
-        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = round ? "" : s.name; img.loading = "lazy";
-        a.appendChild(img); marquee.appendChild(a);
-      });
-    });
-  }
-
-  // --- Sponsorenband auf jeder Seite -------------------------------------
-  var bar = document.getElementById("sponsor-bar");
-  if (bar) {
-    var shown = {};
-    SPONSORS.filter(function (g) { return g.main || g.tier === "Co-Sponsoren"; }).forEach(function (g) {
-      g.items.forEach(function (s) {
-        if (shown[s.logo]) return; shown[s.logo] = true;
-        var a = el(s.url ? "a" : "span", "sbar__logo" + (g.main ? " sbar__logo--main" : ""));
-        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
-        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
-        a.appendChild(img); bar.appendChild(a);
-      });
-    });
-  }
-
   // --- Fanartikel -------------------------------------------------------
   var products = document.getElementById("products");
-  if (products) PRODUCTS.forEach(function (p) {
+  PRODUCTS.forEach(function (p) {
     var li = el("li", "product");
     var img = el("img");
     img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
@@ -185,7 +130,8 @@
     body.appendChild(price);
     if (!p.noOrder) {
       var a = el("a", "product__order", "Bestellen");
-      a.href = "kontakt.html#artikel-" + p.id;
+      a.href = "#kontakt";
+      a.setAttribute("data-product", p.id);
       body.appendChild(a);
     } else {
       body.appendChild(el("span"));
@@ -196,7 +142,6 @@
 
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");
-  if (mail) (function () {
   mail.textContent = CONTACT_EMAIL;
   document.getElementById("copy").addEventListener("click", function (e) {
     var btn = e.currentTarget;
@@ -213,8 +158,6 @@
     } catch (err) { fallback(); }
   });
 
-
-  })();
 
   // --- Eye-Catcher -----------------------------------------------------
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
