@@ -860,3 +860,6 @@ body:has(.pghero:not(.pghero--img)) .head:not(.is-solid) .menu__cta:hover { back
 .ig__tile:hover img { filter: grayscale(.2) contrast(1.05) !important; }
 .logo-tile img, .logo-marquee__track img, .sbar__logo img { filter: grayscale(1) !important; opacity: .75; }
 .logo-tile:hover img, .sbar__logo:hover img { filter: none !important; opacity: 1; }
+
+/* Handy: kein schwebender Spiel-Button – ruhiger Fokus */
+@media (max-width: 900px) { .play-fab { display: none !important; } }
