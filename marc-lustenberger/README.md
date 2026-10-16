@@ -7,9 +7,11 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) und per du geschrieben.
 
-Gestaltung: klare Linien, Schwarz/Weiss mit hohem Kontrast, eckige Elemente. Blau (`--cta` in `site.css`)
-ist die einzige Farbe und steht für Buttons und Links. Auf Tablet und Handy blendet sich der Header beim
-Runterscrollen aus und erscheint beim Hochscrollen wieder.
+Gestaltung: hell mit klaren Linien, Schwarz-Weiss-Fotos und Blau (Logo-Blau `--blue`) als einzige Farbe –
+für Buttons, Bildrahmen und CTA-Bänder. Schriften: Lato für Text und Titel (Titel fett, kursiv, Grossbuchstaben),
+Roustel für persönliche Notizen (Klasse `note` bzw. `sign`). Die Schriftdateien liegen in `assets/fonts/`, die
+Markenregeln in `brand.css` (wird zuletzt geladen). Auf Tablet und Handy blendet sich der Header beim Runterscrollen
+aus und erscheint beim Hochscrollen wieder.
 
 | Seite | Inhalt |
 |---|---|

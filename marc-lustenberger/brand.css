@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Marc Lustenberger – Markenschicht
+   Hell, klare Linien, Schwarz-Weiss-Fotos, Blau als einzige Farbe.
+   Schriften: Lato (Text & Titel), Roustel (persönliche Notizen).
+   Wird nach styles.css und site.css geladen und überschreibt diese.
+   ========================================================================== */
+
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-400i.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-700.woff2") format("woff2"); font-weight: 600 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-700i.woff2") format("woff2"); font-weight: 600 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Roustel"; src: url("assets/fonts/roustel.woff2") format("woff2"); font-display: swap; }
+
+:root {
+  --blue: #5A7A92;          /* Markenblau aus dem Logo */
+  --blue-dark: #3F5B70;
+  --blue-soft: #EDF2F5;
+  --cta: var(--blue);
+  --cta-dark: var(--blue-dark);
+  --accent: var(--blue);
+  --black: #111418;
+  --ink: #111418;
+  --ink-soft: #4F5963;
+  --sand: #F4F6F8;
+  --sand-line: #DDE3E8;
+  --f-head: "Lato", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Lato", "Helvetica Neue", Arial, sans-serif;
+  --f-note: "Roustel", "Segoe Script", cursive;
+}
+
+body { font-family: var(--f-body); color: var(--ink); background: #fff; }
+
+/* ---------- Titel: fett, kursiv, Grossbuchstaben ---------- */
+.h2, .pghero__title, .phero__title, .hero2__title, .join__title, .switch__text, .band__title, .motto__text, .endcta .h2, .fanclub .h2 {
+  font-family: var(--f-head); font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: -.005em;
+}
+.h2 { font-size: clamp(28px, 3.2vw, 54px); line-height: 1.04; }
+.pghero__title, .phero__title { font-size: clamp(32px, 4.4vw, 80px); line-height: 1.04; }
+.hero2__title span:first-child { font-size: clamp(26px, 3.4vw, 64px); color: #fff; letter-spacing: .02em; }
+.hero2__title span:last-child { font-size: clamp(36px, calc(7.6vw + 4px), 144px); line-height: 1; }
+.join__title { font-size: clamp(24px, 2.4vw, 40px); line-height: 1.08; }
+.switch__text { font-size: clamp(24px, 2.8vw, 48px); }
+.h3, .card h3, .mile h3, .people__grid h3, .why3__item h3 { font-family: var(--f-head); font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: 0; }
+.plan__list strong, .trust__list strong, .next__card strong, .cal__empty strong { font-weight: 700; letter-spacing: .01em; }
+.plan__year, .num__v, .proof__row strong, .res__rank, .tl__rank, .cal__date b { font-weight: 700; font-style: italic; }
+.num__v { font-size: clamp(52px, 5.6vw, 88px); }
+
+/* Kleine Labels: aufrecht, gesperrt */
+.eyebrow { font-family: var(--f-head); font-weight: 700; font-style: normal; font-size: 12.5px; letter-spacing: .2em; color: var(--blue); }
+.eyebrow::before { background: var(--blue) !important; height: 2px; width: 28px; }
+.eyebrow--light, .hero2__eyebrow { color: #fff; }
+.eyebrow--light::before { background: #fff !important; }
+.hero2__eyebrow { font-weight: 700; font-size: 12.5px; letter-spacing: .2em; }
+
+/* ---------- Persönliche Notizen in Roustel ---------- */
+.note, .sign {
+  font-family: var(--f-note); font-weight: 400; font-style: normal; text-transform: none; letter-spacing: 0;
+  color: var(--blue); line-height: 1.1;
+}
+.note--head { display: inline-block; font-size: clamp(44px, 4.4vw, 74px); transform: rotate(-4deg); transform-origin: left center; margin: -.12em 0 -.1em .2em; }
+.note--light { color: #fff; font-size: clamp(40px, 3.6vw, 60px); transform: rotate(-3deg); transform-origin: left center; margin-top: 4px; }
+.sign { font-size: clamp(64px, 6.4vw, 100px); transform: rotate(-6deg); transform-origin: left center; margin-top: 0; line-height: .9; }
+.hero2__motto.note { font-family: var(--f-note); color: #fff; font-weight: 400; font-size: clamp(36px, 3.8vw, 64px); font-style: normal; line-height: 1.1; transform: rotate(-3deg); transform-origin: left center; margin-block: clamp(22px, 2.4vw, 34px) 8px; opacity: 1; }
+blockquote footer { font-family: var(--f-note); font-size: clamp(40px, 3.4vw, 56px); line-height: 1; color: var(--blue); font-style: normal; letter-spacing: 0; }
+
+/* ---------- Buttons: eckig, klar ---------- */
+.btn { font-family: var(--f-head); font-weight: 700; font-style: normal; font-size: 13.5px; letter-spacing: .12em; text-transform: uppercase; border-radius: 0; border-width: 2px; }
+.btn--blue, .hero2__cta .btn--white { background: var(--blue); border-color: var(--blue); color: #fff; }
+.btn--blue:hover, .hero2__cta .btn--white:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+.btn--line { border-color: var(--black); color: var(--black); background: transparent; }
+.btn--line:hover { background: var(--black); color: #fff; }
+.btn--ghost { border-color: #fff; color: #fff; }
+.btn--ghost:hover { background: #fff; color: var(--black); }
+/* auf blauen Flächen: weisser Button */
+.join .btn--white, .endcta .btn--white, .fanclub .btn--white { background: #fff; color: var(--black); border-color: #fff; }
+.join .btn--white:hover, .endcta .btn--white:hover, .fanclub .btn--white:hover { background: var(--black); color: #fff; border-color: var(--black); }
+
+/* ---------- Header ---------- */
+.head.is-solid { background: rgba(255,255,255,.97); border-bottom: 1px solid var(--sand-line); box-shadow: none; }
+.menu a { font-family: var(--f-head); font-weight: 700; font-style: normal; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+.menu .menu__cta { background: var(--blue); color: #fff !important; border-radius: 0; }
+.menu .menu__cta:hover { background: var(--blue-dark); }
+
+/* ---------- Helle Flächen statt schwarzer Blöcke ---------- */
+.facts { background: #fff; color: var(--ink); border-bottom: 1px solid var(--sand-line); }
+.facts__grid div { border-color: var(--sand-line) !important; }
+.facts dt { color: var(--blue); font-weight: 700; font-size: 12px; letter-spacing: .18em; }
+.facts dd { font-weight: 700; font-style: italic; text-transform: uppercase; font-size: clamp(15px, .5vw + 11px, 20px); }
+
+.plan { background: var(--sand); color: var(--ink); }
+.plan .h2, .plan__goal .plan__year { color: var(--ink); }
+.plan .eyebrow--light { color: var(--blue); }
+.plan .eyebrow--light::before { background: var(--blue) !important; }
+.plan__lead, .plan__list em, .plan__base { color: var(--ink-soft); }
+.plan__list::before { background: var(--black); }
+.plan__list li::before { background: #fff; border-color: var(--black); }
+.plan__year { color: var(--blue); }
+.plan__goal::before { background: var(--blue) !important; border-color: var(--blue) !important; box-shadow: 0 0 0 6px rgba(90,122,146,.22) !important; }
+.plan__base { border-top-color: var(--sand-line); }
+
+.back { background: #fff; color: var(--ink); border-top: 1px solid var(--sand-line); }
+.back .h2, .back__quote { color: var(--ink); }
+.back .eyebrow--light { color: var(--blue); }
+.back .eyebrow--light::before { background: var(--blue) !important; }
+.back__text p:not(.back__quote) { color: var(--ink-soft); }
+
+/* Blau als gezielter Farbakzent */
+.switch__half--ring, .mile--hl, .chap--gold, .fanclub, .endcta, .join { background-color: var(--blue); color: #fff; }
+.join { border: 0; }
+.join p:not(.note) { color: #EEF3F6; }
+.endcta__text, .fanclub p:not(.eyebrow) { color: #EEF3F6; }
+.fanclub .eyebrow, .endcta .eyebrow { color: #fff; }
+.fanclub .eyebrow::before, .endcta .eyebrow::before { background: #fff !important; }
+
+.tl__item.tl__item--next { background: var(--blue); border-color: var(--blue); }
+.tl__item--next .tl__when, .tl__item--next .tl__what span { color: #E3EBF0; }
+.tl__badge { background: #fff; color: var(--blue-dark); }
+.tl__item { border-color: var(--sand-line); }
+.tl__item--past { opacity: .55; }
+
+.card { border: 1px solid var(--sand-line); border-top: 4px solid var(--blue); }
+.pack { border: 1px solid var(--black); border-top: 6px solid var(--black); }
+.pack--main { border-top-color: var(--blue); }
+.season2, .shop2, .hl, .game, .media, .packs, .offer, .proof, .why3--sand, .journey, .wins { background: var(--sand); }
+
+/* Footer hell */
+.foot { background: #fff; color: var(--ink); border-top: 1px solid var(--black); }
+.foot__links a { font-weight: 700; font-size: 14px; }
+.foot__copy { color: var(--ink-soft); }
+.logo--foot { color: var(--blue); }
+.sbar { background: #fff; }
+
+/* ---------- Fotos: Schwarz-Weiss mit blauem Rahmen ---------- */
+.hoi__photo { isolation: isolate; }
+.hoi__photo::before { content: ""; position: absolute; inset: 16px -16px -16px 16px; border: 6px solid var(--blue); z-index: -1; pointer-events: none; }
+.hoi__photo img { border-radius: 0; }
+.hoi__bubble {
+  font-family: var(--f-note); font-style: normal; font-weight: 400; text-transform: none; letter-spacing: 0;
+  font-size: clamp(38px, 3.6vw, 54px); line-height: 1; color: var(--blue); white-space: nowrap; max-width: none;
+  background: #fff; border: 0; box-shadow: none; border-radius: 0; padding: 12px 20px 10px;
+  transform: rotate(-4deg);
+}
+.hoi__bubble::after { font-family: var(--f-body); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ---------- Laufband ---------- */
+.mq { background: var(--black); color: #fff; overflow: hidden; padding-block: 14px; }
+.mq__track { display: flex; align-items: center; gap: 28px; width: max-content; animation: mq 60s linear infinite; }
+.mq__track span { font-family: var(--f-head); font-weight: 700; font-style: italic; text-transform: uppercase; font-size: clamp(18px, 1.6vw, 24px); letter-spacing: .02em; white-space: nowrap; }
+.mq__track em { font-family: var(--f-note); font-style: normal; font-size: clamp(36px, 3.2vw, 50px); color: #A9C2D4; white-space: nowrap; line-height: 1; }
+.mq__track span::after { content: "•"; margin-left: 28px; font-style: normal; color: #A9C2D4; }
+@keyframes mq { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .mq__track { animation: none; } }
+
+/* ---------- CTA-Band unten (wie ein Sportbanner) ---------- */
+.strip {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 32px;
+  padding: clamp(18px, 2.4vw, 30px) var(--gutter); background: var(--blue); color: #fff; text-decoration: none;
+  font-family: var(--f-head); font-weight: 700; font-style: italic; text-transform: uppercase;
+  font-size: clamp(22px, 3vw, 46px); line-height: 1.05; transition: background .2s;
+}
+.strip__go { display: inline-flex; align-items: center; gap: .4em; white-space: nowrap; }
+.strip__go::before { content: "›"; font-style: normal; font-weight: 700; transition: transform .2s; }
+.strip:hover { background: var(--blue-dark); }
+.strip:hover .strip__go::before { transform: translateX(6px); }
+.strip + .foot { border-top: 0; }
+
+@media (max-width: 720px) {
+  .hoi__photo::before { inset: 12px -10px -12px 10px; border-width: 5px; }
+  .strip { justify-content: flex-start; }
+}
+
+/* Fanshop-Titel: kompakter, keine Trennung mitten im Wort */
+.product h3 { font-weight: 700; font-style: italic; font-size: clamp(15px, .5vw + 11px, 19px); line-height: 1.15; overflow-wrap: normal; hyphens: manual; }
+.hoi__bubble::after { margin-top: 2px; }
+
+/* Notizen gegen spezifischere Absatzregeln absichern */
+p.note.note--head { font-size: clamp(44px, 4.4vw, 74px); line-height: 1.1; }
+p.note.note--light { font-size: clamp(40px, 3.6vw, 60px); line-height: 1.1; color: #fff; }
+.hoi__text p.sign.sign:not(.hoi__lead) { font-size: clamp(64px, 6.4vw, 100px); line-height: .9; color: var(--blue); margin-top: 6px; }
+.hoi__photo .hoi__bubble { white-space: normal; max-width: 86%; font-size: clamp(34px, 3vw, 48px); line-height: 1.02; bottom: 28px; padding: 12px 20px 12px; }
+.hoi__photo .hoi__bubble::after { margin-top: 12px; }
+.note--head { white-space: nowrap; }
+p.note.note--head { margin: .02em 0 0 .2em; }
+p.note.note--light { margin-top: 18px; }
+blockquote footer { line-height: 1.25; }
+@media (max-width: 600px) { blockquote footer { font-size: 34px; } }
