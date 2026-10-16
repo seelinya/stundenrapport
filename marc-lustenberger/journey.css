@@ -362,3 +362,106 @@
   .kranz__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kranz__facts div { border-right: 0; padding: 18px 12px 10px 0 !important; border-bottom: 1px solid var(--sand-line); }
 }
+
+/* ==========================================================================
+   Ruhiger Auftritt: weniger Bewegung, editoriale Erfolge, Werdegang,
+   Lifestyle und Galerie
+   ========================================================================== */
+
+/* Hero: ein Bild, keine Einblend-Animationen */
+.hero2__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; filter: grayscale(1) contrast(1.05) brightness(.95); }
+.hero2__title span, .hero2__motto, .hero2__eyebrow, .hero2__cta { animation: none !important; }
+.hero2__motto { border-left: 0; padding-left: 0; font-style: normal; font-weight: 500; font-family: var(--f-body); font-size: clamp(17px, .7vw + 13px, 24px); color: rgba(255,255,255,.9); }
+.hero2__eyebrow { font-size: clamp(13px, .35vw + 11px, 17px); }
+@media (max-width: 600px) { .hero2__content { padding-top: 120px; } }
+
+/* Erfolge */
+.hl { background: #fff; }
+.hl__head { margin-bottom: clamp(28px, 3vw, 48px); }
+.hl__grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: clamp(10px, 1.2vw, 18px); }
+.hl__item { margin: 0; position: relative; overflow: hidden; border-radius: 4px; aspect-ratio: 4 / 5; background: var(--sand); }
+.hl__item img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; filter: grayscale(1) contrast(1.05); transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.hl__item:hover img { transform: scale(1.03); }
+.hl__item figcaption { position: absolute; inset: auto 0 0 0; padding: clamp(16px, 2vw, 28px); color: #fff; display: grid; gap: 4px; background: linear-gradient(0deg, rgba(21,26,31,.78), rgba(21,26,31,0)); }
+.hl__item figcaption span { font-size: clamp(13px, .2vw + 12px, 15px); color: rgba(255,255,255,.82); }
+.hl__item figcaption strong { font-family: var(--f-head); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; font-size: clamp(24px, 2.2vw, 40px); line-height: 1.05; }
+.hl__line { margin-top: clamp(28px, 3vw, 48px); max-width: 52em; font-size: clamp(17px, .5vw + 14px, 22px); line-height: 1.7; color: var(--ink-soft); }
+.hl__line b { color: var(--blue-dark); font-weight: 700; }
+@media (max-width: 860px) {
+  .hl__grid { grid-template-columns: 1fr 1fr; }
+  .hl__item--main { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+}
+
+/* Werdegang: ruhige, horizontale Folge */
+.path { background: var(--sand); overflow: hidden; }
+.path__head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: clamp(28px, 3vw, 48px); }
+.path__nav { display: flex; gap: 8px; }
+.path__btn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--sand-line); background: #fff; color: var(--ink); font-size: 18px; cursor: pointer; transition: border-color .2s, background .2s; }
+.path__btn:hover { border-color: var(--blue); }
+.path__btn:disabled { opacity: .35; cursor: default; }
+.path__track {
+  list-style: none; margin: 0; padding: 0 0 8px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: clamp(260px, 26vw, 380px); gap: clamp(16px, 2vw, 28px);
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+}
+.path__track::-webkit-scrollbar { display: none; }
+.step { scroll-snap-align: start; display: grid; align-content: start; gap: 12px; padding-top: 18px; border-top: 1px solid var(--ink); }
+.step__year { font-family: var(--f-head); font-weight: 600; font-size: clamp(40px, 3.4vw, 64px); line-height: 1; color: #B9C7D2; letter-spacing: -.01em; }
+.step__media { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: #fff; }
+.step__media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); }
+.step h3 { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; font-size: clamp(20px, 1.5vw, 26px); letter-spacing: .03em; color: var(--ink); line-height: 1.15; }
+.step p { font-size: clamp(15px, .2vw + 14px, 17px); line-height: 1.6; color: var(--ink-soft); }
+.step--accent .step__year, .step--next .step__year { color: var(--blue); }
+.step--next { border-top-style: dashed; }
+.step__link { color: var(--blue-dark); font-weight: 700; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.step__link:hover { text-decoration: underline; }
+@media (max-width: 600px) { .path__track { grid-auto-columns: 78%; } .path__nav { display: none; } }
+
+/* Platzhalter (ruhig, ohne Muster) */
+.ph { display: grid; place-content: center; gap: 4px; text-align: center; padding: 16px; background: #E9EEF2; border: 0; color: var(--ink-soft); aspect-ratio: auto; max-width: none; margin: 0; }
+.ph__label { font-family: var(--f-head); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; color: var(--blue); }
+.ph__hint { font-size: 14px; }
+
+/* Lifestyle */
+.life { background: #fff; }
+.life__head { display: grid; gap: 14px; max-width: 760px; margin-bottom: clamp(32px, 4vw, 60px); }
+.life__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 48px); }
+.life__grid article { display: grid; gap: 10px; align-content: start; padding-top: 18px; border-top: 1px solid var(--sand-line); }
+.life__grid h3 { font-family: var(--f-head); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: clamp(20px, 1.4vw, 24px); color: var(--ink); }
+.life__grid p { color: var(--ink-soft); font-size: clamp(15px, .2vw + 14px, 17px); line-height: 1.6; }
+@media (max-width: 960px) { .life__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .life__grid { grid-template-columns: 1fr; } }
+
+/* Galerie */
+.gal { background: #fff; padding-top: 0; }
+.gal__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 32px; margin-bottom: clamp(24px, 3vw, 40px); }
+.gal__filter { display: flex; flex-wrap: wrap; gap: 6px; }
+.gal__filter button { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--sand-line); background: #fff; font: 600 14.5px/1 var(--f-body); color: var(--ink-soft); cursor: pointer; }
+.gal__filter button.is-on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.gal__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 16vw, 260px); grid-auto-flow: dense; gap: clamp(8px, 1vw, 14px); }
+.gi { margin: 0; position: relative; overflow: hidden; border-radius: 4px; background: #E9EEF2; }
+.gi--tall { grid-row: span 2; }
+.gi--wide { grid-column: span 2; }
+.gi img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); cursor: zoom-in; transition: transform 1s cubic-bezier(.2,.7,.2,1), filter .6s; }
+.gi:hover img { transform: scale(1.03); filter: grayscale(.2); }
+.gi .ph { height: 100%; }
+.gi figcaption { position: absolute; left: 12px; bottom: 10px; font-size: 13px; font-weight: 600; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.5); pointer-events: none; }
+.gi--ph figcaption { display: none; }
+.gi[hidden] { display: none; }
+@media (max-width: 860px) { .gal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 42vw; } }
+
+/* Lightbox */
+.lb { position: fixed; inset: 0; z-index: 90; background: rgba(15,20,25,.94); display: grid; place-items: center; align-content: center; gap: 12px; padding: 24px; }
+.lb[hidden] { display: none; }
+.lb img { max-width: min(1200px, 92vw); max-height: 80vh; object-fit: contain; }
+.lb p { color: #D3DEE6; font-size: 15px; }
+.lb__close { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 14px); right: 16px; width: 48px; height: 48px; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font-size: 28px; cursor: pointer; }
+
+/* Motto ruhiger */
+.motto__text { max-width: 20ch; }
+
+.step__media.ph { aspect-ratio: 4 / 3; }
+.who__photo img { object-position: 62% 30%; }
+@media (max-width: 600px) { .hl__item figcaption span { display: none; } }

@@ -167,6 +167,49 @@
     if (facts.getBoundingClientRect().top > window.innerHeight) io2.observe(facts);
   }
 
+
+  // --- Werdegang: Pfeile zum Blättern -------------------------------------------
+  var track = $("path-track"), prev = $("path-prev"), next = $("path-next");
+  if (track && prev && next) {
+    var stepW = function () { var f = track.querySelector(".step"); return f ? f.getBoundingClientRect().width + 24 : 300; };
+    var upd = function () {
+      prev.disabled = track.scrollLeft < 8;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8;
+    };
+    prev.addEventListener("click", function () { track.scrollBy({ left: -stepW(), behavior: reduce ? "auto" : "smooth" }); });
+    next.addEventListener("click", function () { track.scrollBy({ left: stepW(), behavior: reduce ? "auto" : "smooth" }); });
+    track.addEventListener("scroll", function () { requestAnimationFrame(upd); }, { passive: true });
+    window.addEventListener("resize", upd);
+    upd();
+  }
+
+  // --- Galerie: Filter und Lightbox -------------------------------------------------
+  var gal = $("gal"), filter = $("gal-filter");
+  if (gal && filter) {
+    filter.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      var f = b.getAttribute("data-f");
+      filter.querySelectorAll("button").forEach(function (x) { x.classList.toggle("is-on", x === b); x.setAttribute("aria-pressed", String(x === b)); });
+      gal.querySelectorAll(".gi").forEach(function (g) { g.hidden = f !== "alle" && g.getAttribute("data-cat") !== f; });
+    });
+    var lb = $("lb"), lbImg = $("lb-img"), lbCap = $("lb-cap"), lastFocus = null;
+    var close = function () { lb.hidden = true; document.body.style.overflow = ""; if (lastFocus) lastFocus.focus(); };
+    gal.querySelectorAll(".gi img").forEach(function (img) {
+      img.tabIndex = 0;
+      var open = function () {
+        lastFocus = img;
+        lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt;
+        var cap = img.parentNode.querySelector("figcaption"); lbCap.textContent = cap ? cap.textContent : "";
+        lb.hidden = false; document.body.style.overflow = "hidden"; $("lb-close").focus();
+      };
+      img.addEventListener("click", open);
+      img.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+    $("lb-close").addEventListener("click", close);
+    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) close(); });
+  }
+
   // --- Direktlinks von der Partner-Seite: Formular vorausfüllen -----------------
   // z. B. index.html#anfrage-hauptsponsor
   var PACKS = { "anfrage-hauptsponsor": "Hauptsponsor", "anfrage-cosponsor": "Co-Sponsor", "anfrage-partner": "Partner", "anfrage-sponsoring": "" };

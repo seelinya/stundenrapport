@@ -44,9 +44,10 @@
   </a>
   <nav class="menu" id="menu" aria-label="Hauptnavigation">
     <a href="#marc">Marc</a>
-    <a href="#werdegang">Werdegang</a>
     <a href="#erfolge">Erfolge</a>
-    <a href="#mitschwingen">Mitschwingen</a>
+    <a href="#werdegang">Werdegang</a>
+    <a href="#lifestyle">Lifestyle</a>
+    <a href="#galerie">Galerie</a>
     <a href="#fanartikel">Fanartikel</a>
     <a href="partner.html" class="menu__partner">Partner</a>
     <a href="#kontakt" class="menu__cta">Kontakt</a>
@@ -58,48 +59,24 @@
 
 <main id="inhalt">
 
-<!-- ============ HERO: bewegter Hintergrund ============ -->
+<!-- ============ HERO ============ -->
 <section class="hero2" id="top">
   <div class="hero2__stage" aria-hidden="true">
-    <div class="hero2__slides" id="slides">
-      <img src="assets/img/cheer.jpg" alt="" class="is-on" style="--pos: 50% 18%">
-      <img src="assets/img/hero-action.jpg" alt="" style="--pos: 62% 40%">
-      <img src="assets/img/fist.jpg" alt="" style="--pos: 55% 30%">
-    </div>
-    <!-- Optional: echtes Hintergrundvideo. Datei ablegen (z. B. assets/video/hero.mp4) und den Pfad
-         in data-src eintragen. Ohne Video blenden die Fotos ineinander. -->
+    <img class="hero2__img" src="assets/img/cheer.jpg" alt="">
+    <!-- Optional: Hintergrundvideo. Datei ablegen (z. B. assets/video/hero.mp4) und den Pfad in data-src eintragen. -->
     <video class="hero2__video" id="hero-video" muted loop playsinline preload="none" data-src=""></video>
-    <canvas class="hero2__dust" id="dust"></canvas>
     <div class="hero2__shade"></div>
   </div>
-
   <div class="hero2__content wrap">
-    <p class="hero2__eyebrow"><span class="dot" aria-hidden="true"></span>Eidgenosse 2025 · Schwinger aus Hasle LU</p>
+    <p class="hero2__eyebrow">Eidgenosse 2025 · Schwinger aus Hasle LU</p>
     <h1 class="hero2__title"><span>Marc</span><span>Lustenberger</span></h1>
-    <p class="hero2__motto">«Ausreden zählen nicht.<br>Aufgeben geht nicht.»</p>
+    <p class="hero2__motto">«Ausreden zählen nicht. Aufgeben geht nicht.»</p>
     <div class="hero2__cta">
-      <a class="btn btn--white" href="#werdegang">Sein Werdegang</a>
+      <a class="btn btn--white" href="#marc">Marc kennenlernen</a>
       <a class="btn btn--ghost" href="partner.html">Partner werden</a>
     </div>
   </div>
-
-  <div class="badge" aria-hidden="true">
-    <svg viewBox="0 0 200 200" class="badge__ring">
-      <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-      <text><textPath href="#circ" startOffset="0">EIDGENOSSE · ESAF 2025 · HASLE LU · FESTSIEGER ·</textPath></text>
-    </svg>
-    <svg class="badge__mark"><use href="#ml"/></svg>
-  </div>
-
-  <a class="hero2__scroll" href="#marc" aria-label="Weiter zu: Wer ist Marc?"><span></span></a>
 </section>
-
-<!-- ============ LAUFBAND ============ -->
-<div class="ticker" aria-label="Erfolge in Kürze">
-  <div class="ticker__track">
-    <span>Eidgenosse 2025</span><i></i><span>28 Kränze</span><i></i><span>Festsieg Sachseln 2025</span><i></i><span>Festsieg Innerschweizer 2026</span><i></i><span>15. Rang Jahreswertung 2025</span><i></i><span>Hasle LU</span><i></i>
-  </div>
-</div>
 
 <!-- ============ STECKBRIEF ============ -->
 <section class="facts" aria-label="Steckbrief">
@@ -107,188 +84,187 @@
     <div><dt>Verband</dt><dd>Entlebucher Schwingerverband</dd></div>
     <div><dt>Wohnort</dt><dd>Hasle LU</dd></div>
     <div><dt>Geboren</dt><dd>02.02.2003</dd></div>
-    <div><dt>Beruf</dt><dd>Zimmermann</dd></div>
     <div><dt>Grösse</dt><dd>182 cm</dd></div>
     <div><dt>Gewicht</dt><dd>107 kg</dd></div>
+    <div><dt>Ziel</dt><dd>ESAF 2028</dd></div>
   </dl>
 </section>
 
 <!-- ============ ÜBER MARC ============ -->
 <section class="who sec" id="marc">
   <div class="wrap who__grid">
-    <figure class="who__photo rv">
-      <img src="assets/img/portrait-kranz.jpg" alt="Marc Lustenberger mit dem eidgenössischen Kranz am ESAF 2025" loading="lazy">
-      <figcaption>Mit dem Eichenlaub am ESAF 2025 in Mollis</figcaption>
+    <figure class="who__photo">
+      <img src="assets/img/fist.jpg" alt="Marc Lustenberger ballt die Faust" loading="lazy" style="object-position: 62% 30%">
     </figure>
     <div class="who__text">
       <p class="eyebrow">Über Marc</p>
-      <h2 class="h2 rv">Zimmermann aus Hasle.<br>Eidgenosse seit 2025.</h2>
+      <h2 class="h2">Aus Hasle.<br>Eidgenosse seit 2025.</h2>
       <p class="who__lead">«Schon als kleiner Junge war ich vom Schwingsport begeistert.» Mit sieben Jahren startete Marc in der Schwinghalle, 2019 bei den Aktiven. Heute ist er Eidgenosse, Festsieger und hat ein klares Ziel: am ESAF 2028 ganz vorne mitzuschwingen.</p>
-      <p class="who__body">Im Sägemehl zielstrebig, diszipliniert und willensstark. Daneben bodenständig, herzlich und mit viel Humor. Neben dem Sport beginnt Marc eine Weiterbildung zum Technischen Kaufmann.</p>
+      <p class="who__body">Im Sägemehl zielstrebig, diszipliniert und willensstark. Daneben bodenständig, herzlich und mit viel Humor. Neben dem Sport bildet sich Marc zum Technischen Kaufmann weiter.</p>
     </div>
   </div>
 </section>
 
-<!-- ============ WERDEGANG ============ -->
-<section class="journey sec" id="werdegang">
+<!-- ============ ERFOLGE ============ -->
+<section class="hl sec" id="erfolge">
   <div class="wrap">
-    <div class="journey__head">
+    <div class="hl__head">
+      <p class="eyebrow">Erfolge</p>
+      <h2 class="h2">Die grossen Momente.</h2>
+    </div>
+    <div class="hl__grid">
+      <figure class="hl__item hl__item--main">
+        <img src="assets/img/portrait-kranz.jpg" alt="Marc mit dem eidgenössischen Kranz" loading="lazy">
+        <figcaption><span>ESAF 2025 · Mollis</span><strong>Eidgenosse</strong></figcaption>
+      </figure>
+      <figure class="hl__item">
+        <img src="assets/img/action-3.jpg" alt="Marc im Zweikampf" loading="lazy">
+        <figcaption><span>Ob- und Nidwaldner Kantonales 2025 · Sachseln</span><strong>Erster Festsieg</strong></figcaption>
+      </figure>
+      <figure class="hl__item">
+        <img src="assets/img/hero-action.jpg" alt="Marc im Zweikampf" loading="lazy" style="object-position: 58% 40%">
+        <figcaption><span>Innerschweizer Schwingfest 2026 · Arth</span><strong>Festsieg</strong></figcaption>
+      </figure>
+    </div>
+    <p class="hl__line">
+      <b>28</b> Kränze bis Ende 2025 – darunter <b>1</b> eidgenössischer, <b>6</b> Teilverbands-, <b>5</b> Berg- und <b>16</b> Kantonalkränze.
+      Dazu <b>8</b> Schlussgänge, der <b>15.</b> Rang in der eidgenössischen Jahreswertung 2025 und der <b>7.</b> Rang am Unspunnen-Schwinget 2023.
+    </p>
+  </div>
+</section>
+
+<!-- ============ WERDEGANG ============ -->
+<section class="path sec" id="werdegang">
+  <div class="wrap path__head">
+    <div>
       <p class="eyebrow">Werdegang</p>
-      <h2 class="h2 rv">Vom Schnuppertraining<br>zum Eichenlaub.</h2>
-      <p class="lead">Rückschläge, Verletzungen, ein halber Punkt – und ein Kindheitstraum, der in Erfüllung geht. Marcs Weg in seinen eigenen Worten.</p>
+      <h2 class="h2">Schritt für Schritt.</h2>
     </div>
-
-    <div class="journey__body">
-      <nav class="jnav" id="jnav" aria-label="Stationen im Werdegang">
-        <ol>
-          <li><a href="#j-anfang">Der Anfang</a></li>
-          <li><a href="#j-jung">Jungschwinger</a></li>
-          <li><a href="#j-aktiv">Aktivschwinger</a></li>
-          <li><a href="#j-pratteln">Pratteln 2022</a></li>
-          <li><a href="#j-unspunnen">Unspunnen 2023</a></li>
-          <li><a href="#j-2024">2024</a></li>
-          <li><a href="#j-durchbruch">Durchbruch 2025</a></li>
-          <li><a href="#j-esaf">Eidgenosse</a></li>
-          <li><a href="#j-2026">2026</a></li>
-          <li><a href="#j-ziel">Ziel ESAF 2028</a></li>
-        </ol>
-        <span class="jnav__bar"><span id="jbar"></span></span>
-      </nav>
-
-      <ol class="chapters" id="chapters">
-        <li class="chap" id="j-anfang">
-          <p class="chap__when">Kindheit · Hasle</p>
-          <h3>Der Anfang</h3>
-          <figure class="ph rv">
-            <span class="ph__icon" aria-hidden="true"><svg viewBox="0 0 40 30"><use href="#wrestle"/></svg></span>
-            <span class="ph__label">Platzhalter · Kinderfoto</span>
-            <span class="ph__hint">Marc als Bub im Sägemehl oder beim ersten Schnuppertraining</span>
-          </figure>
-          <p>«Schon als kleiner Junge war ich vom Schwingsport begeistert. Nach meinem ersten Schnuppertraining wollte ich unbedingt in die Schwinghalle.» Weil er noch zu jung war, schaute er vor dem Fernseher zu und raufte sich zu Hause mit dem Vater und den älteren Cousins.</p>
-        </li>
-
-        <li class="chap" id="j-jung">
-          <p class="chap__when">Ab 7 Jahren</p>
-          <h3>Jungschwinger</h3>
-          <figure class="ph rv">
-            <span class="ph__icon" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#kranz"/></svg></span>
-            <span class="ph__label">Platzhalter · Jungschwingerzeit</span>
-            <span class="ph__hint">Foto von einem Jungschwingertag oder mit den ersten Zweigen</span>
-          </figure>
-          <p>«Mit sieben Jahren durfte ich endlich starten.» Schon bald folgten Erfolge an Jungschwingertagen.</p>
-          <div class="chap__stats">
-            <div><strong>40+</strong><span>Festsiege als Jungschwinger</span></div>
-            <div><strong>120+</strong><span>Zweige</span></div>
-          </div>
-        </li>
-
-        <li class="chap" id="j-aktiv">
-          <p class="chap__when">Ab 2019</p>
-          <h3>Bei den Aktiven</h3>
-          <p>2019 beginnt die Laufbahn als Aktivschwinger. Bereits in der zweiten Saison gewinnt Marc am Schwyzer Kantonalen seinen ersten Kranz. Es folgen weitere Kränze, ein Teilverbandskranz am Innerschweizer und der erste Bergkranz auf dem Brünig.</p>
-          <figure class="chap__img rv"><img src="assets/img/action-2.jpg" alt="Marc Lustenberger im Zweikampf" loading="lazy"></figure>
-        </li>
-
-        <li class="chap chap--setback" id="j-pratteln">
-          <p class="chap__when">2022 · ESAF Pratteln</p>
-          <h3>Ein halber Punkt</h3>
-          <p>Am Eidgenössischen in Pratteln verpasst Marc den Kranz um einen halben Punkt. «Diese Erfahrung gab mir die Motivation, noch härter an mir zu arbeiten.» Doch Verletzungen bremsen ihn immer wieder aus.</p>
-        </li>
-
-        <li class="chap" id="j-unspunnen">
-          <p class="chap__when">2023 · Unspunnen-Schwinget</p>
-          <h3>Zurück nach schwierigen Monaten</h3>
-          <p>Marc qualifiziert sich für den prestigeträchtigen Unspunnen-Schwinget – und belegt mit vier Siegen, einem Unentschieden und einer Niederlage den 7. Rang. «Eine grosse Genugtuung nach schwierigen Monaten.»</p>
-          <div class="chap__stats">
-            <div><strong>4</strong><span>Siege</span></div>
-            <div><strong>7.</strong><span>Rang</span></div>
-          </div>
-        </li>
-
-        <li class="chap" id="j-2024">
-          <p class="chap__when">2024</p>
-          <h3>Trotz Rücken: Bergkranz</h3>
-          <p>Immer wieder kämpft Marc mit dem Rücken und kleineren Verletzungen. Trotzdem: 3. Rang am Stoos-Schwinget und der Bergkranz auf dem Weissenstein.</p>
-        </li>
-
-        <li class="chap chap--big" id="j-durchbruch">
-          <p class="chap__when">2025 · Sachseln</p>
-          <h3>Ein Kindheitstraum</h3>
-          <p>Eine Verletzung am Schlüsselbein – und dank seinem Team rechtzeitig zurück zur Kranzfestsaison. Am Luzerner Kantonalen steht er erstmals im Schlussgang eines Kranzfests. Eine Woche später gewinnt er das Ob- und Nidwaldner Kantonale in Sachseln: sechs Gänge, sechs Siege. «Ein Kindheitstraum ging in Erfüllung.»</p>
-          <figure class="chap__img rv"><img src="assets/img/action-3.jpg" alt="Marc Lustenberger im Zweikampf" loading="lazy"></figure>
-        </li>
-
-        <li class="chap chap--big chap--gold" id="j-esaf">
-          <p class="chap__when">30./31. August 2025 · ESAF Mollis</p>
-          <h3>Eidgenosse</h3>
-          <p>«Mit grosser Freude, aber auch mit Druck reiste ich nach Mollis.» Dort erfüllt Marc sein grosses Ziel: den Eidgenössischen Kranz. Acht Saisonkränze und der 15. Rang in der eidgenössischen Jahreswertung.</p>
-          <figure class="chap__img chap__img--tall rv"><img src="assets/img/cheer.jpg" alt="Marc Lustenberger jubelt mit beiden Fäusten" loading="lazy"></figure>
-          <div class="chap__stats">
-            <div><strong>8</strong><span>Kränze 2025</span></div>
-            <div><strong>15.</strong><span>Rang Jahreswertung</span></div>
-          </div>
-        </li>
-
-        <li class="chap" id="j-2026">
-          <p class="chap__when">5. Juli 2026 · Arth</p>
-          <h3>Festsieg am Innerschweizer</h3>
-          <p>Schlussgang gegen Samuel Schwyzer, nach 14 Minuten gestellt. Zwei Festsieger, Marc im Rang 1a – sein bisher grösster Erfolg auf Teilverbandsebene.</p>
-        </li>
-
-        <li class="chap chap--future" id="j-ziel">
-          <p class="chap__when">Nächstes Kapitel</p>
-          <h3>ESAF 2028: ganz vorne mitschwingen</h3>
-          <p>«Mein Ziel ist es, mich Schritt für Schritt an der Spitze zu etablieren, um am ESAF 2028 ganz vorne mitzuschwingen.» Dafür braucht es harte Arbeit und ein professionelles Umfeld. Daneben beginnt Marc eine Weiterbildung zum Technischen Kaufmann.</p>
-          <div class="chap__cta">
-            <a class="btn btn--blue" href="partner.html">Weg als Partner begleiten</a>
-            <a class="btn btn--line" href="#fanartikel">Als Fan dabei sein</a>
-          </div>
-        </li>
-      </ol>
+    <div class="path__nav">
+      <button type="button" class="path__btn" id="path-prev" aria-label="Zurück">←</button>
+      <button type="button" class="path__btn" id="path-next" aria-label="Weiter">→</button>
     </div>
+  </div>
+  <ol class="path__track" id="path-track">
+    <li class="step">
+      <span class="step__year">Kindheit</span>
+      <div class="step__media ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Marc als Bub im Sägemehl</span></div>
+      <h3>Der Anfang</h3>
+      <p>Nach dem ersten Schnuppertraining wollte er nur noch in die Schwinghalle. Bis es so weit war, schaute er am Fernseher zu – und raufte sich zu Hause mit dem Vater und den Cousins.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">Ab 7</span>
+      <div class="step__media ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Jungschwingerzeit</span></div>
+      <h3>Jungschwinger</h3>
+      <p>Über 40 Festsiege und mehr als 120 Zweige an Jungschwingertagen.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2019</span>
+      <div class="step__media"><img src="assets/img/action-2.jpg" alt="" loading="lazy"></div>
+      <h3>Bei den Aktiven</h3>
+      <p>Erster Kranz in der zweiten Saison am Schwyzer Kantonalen. Später ein Teilverbandskranz am Innerschweizer und der erste Bergkranz auf dem Brünig.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2022</span>
+      <h3>Ein halber Punkt</h3>
+      <p>Am Eidgenössischen in Pratteln fehlt ein halber Punkt zum Kranz. «Diese Erfahrung gab mir die Motivation, noch härter an mir zu arbeiten.»</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2023</span>
+      <h3>Unspunnen</h3>
+      <p>Nach schwierigen Monaten mit Verletzungen: 7. Rang am Unspunnen-Schwinget, mit vier Siegen.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2024</span>
+      <h3>Bergkranz</h3>
+      <p>Trotz Rückenproblemen: 3. Rang am Stoos-Schwinget und der Bergkranz auf dem Weissenstein.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2025</span>
+      <div class="step__media"><img src="assets/img/action-3.jpg" alt="" loading="lazy"></div>
+      <h3>Ein Kindheitstraum</h3>
+      <p>Nach einer Schlüsselbeinverletzung zurück: erster Schlussgang am Luzerner Kantonalen, eine Woche später der Festsieg in Sachseln – sechs Gänge, sechs Siege.</p>
+    </li>
+    <li class="step step--accent">
+      <span class="step__year">2025</span>
+      <div class="step__media"><img src="assets/img/cheer.jpg" alt="" loading="lazy" style="object-position: 50% 20%"></div>
+      <h3>Eidgenosse</h3>
+      <p>Am ESAF in Mollis erfüllt sich das grosse Ziel: der eidgenössische Kranz. Acht Saisonkränze, 15. Rang in der Jahreswertung.</p>
+    </li>
+    <li class="step">
+      <span class="step__year">2026</span>
+      <h3>Festsieg in Arth</h3>
+      <p>Am Innerschweizer Schwingfest stellt Marc den Schlussgang gegen Samuel Schwyzer – zwei Festsieger, Marc im Rang 1a.</p>
+    </li>
+    <li class="step step--next">
+      <span class="step__year">2028</span>
+      <h3>Das Ziel</h3>
+      <p>«Mich Schritt für Schritt an der Spitze etablieren und am ESAF 2028 ganz vorne mitschwingen.»</p>
+      <a class="step__link" href="partner.html">Diesen Weg begleiten →</a>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ LIFESTYLE ============ -->
+<section class="life sec" id="lifestyle">
+  <div class="wrap">
+    <div class="life__head">
+      <p class="eyebrow">Abseits vom Sägemehl</p>
+      <h2 class="h2">Was es braucht.</h2>
+      <p class="lead">Ein Kranz entsteht nicht am Festtag. Sondern in den Wochen davor – im Training, am Küchentisch und in der Erholung.</p>
+    </div>
+    <div class="life__grid">
+      <article><h3>Training</h3><p>Schwingtraining mit den Kollegen im Keller, dazu Kraft und Athletik. Technik wiederholen, bis sie im Schlussgang sitzt.</p></article>
+      <article><h3>Ernährung</h3><p>Begleitet von einer Ernährungsberatung: was auf den Teller kommt, ist Teil der Vorbereitung.</p></article>
+      <article><h3>Körperanalyse</h3><p>Regelmässig gemessen statt geschätzt – so wird sichtbar, wo der Körper steht und was er braucht.</p></article>
+      <article><h3>Erholung</h3><p>Familie, Freunde, Ferien. Abschalten gehört genauso dazu wie der nächste Trainingsblock.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERIE ============ -->
+<section class="gal sec" id="galerie">
+  <div class="wrap">
+    <div class="gal__head">
+      <div>
+        <p class="eyebrow">Galerie</p>
+        <h2 class="h2">Einblicke.</h2>
+      </div>
+      <div class="gal__filter" id="gal-filter" role="group" aria-label="Galerie filtern">
+        <button type="button" class="is-on" data-f="alle">Alle</button>
+        <button type="button" data-f="wettkampf">Wettkampf</button>
+        <button type="button" data-f="training">Training</button>
+        <button type="button" data-f="alltag">Alltag</button>
+      </div>
+    </div>
+    <!-- Bilder ergänzen: <figure class="gi" data-cat="training"><img src="…" alt="…"><figcaption>…</figcaption></figure> -->
+    <div class="gal__grid" id="gal">
+      <figure class="gi gi--tall" data-cat="wettkampf"><img src="assets/img/cheer.jpg" alt="Marc jubelt am ESAF 2025" loading="lazy"><figcaption>ESAF 2025, Mollis</figcaption></figure>
+      <figure class="gi gi--ph" data-cat="training"><div class="ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Training mit den Schwingkollegen</span></div><figcaption>Schwingkeller</figcaption></figure>
+      <figure class="gi" data-cat="wettkampf"><img src="assets/img/action-2.jpg" alt="Marc im Zweikampf" loading="lazy"><figcaption>Im Zweikampf</figcaption></figure>
+      <figure class="gi gi--ph" data-cat="alltag"><div class="ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Ernährungsberatung</span></div><figcaption>Ernährung</figcaption></figure>
+      <figure class="gi gi--ph gi--tall" data-cat="training"><div class="ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Kraftraum / Morgenroutine</span></div><figcaption>Routine</figcaption></figure>
+      <figure class="gi" data-cat="wettkampf"><img src="assets/img/portrait-kranz.jpg" alt="Marc mit Kranz" loading="lazy" style="object-position:50% 20%"><figcaption>Mit dem Eichenlaub</figcaption></figure>
+      <figure class="gi gi--ph" data-cat="training"><div class="ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Körperanalyse</span></div><figcaption>Körperanalyse</figcaption></figure>
+      <figure class="gi gi--ph gi--wide" data-cat="alltag"><div class="ph"><span class="ph__label">Foto folgt</span><span class="ph__hint">Ferien</span></div><figcaption>Ferien</figcaption></figure>
+      <figure class="gi" data-cat="alltag"><img src="assets/img/team.jpg" alt="Team Lustenberger" loading="lazy"><figcaption>Team Lustenberger</figcaption></figure>
+      <figure class="gi" data-cat="wettkampf"><img src="assets/img/action-3.jpg" alt="Marc im Zweikampf" loading="lazy"><figcaption>Sachseln 2025</figcaption></figure>
+    </div>
+  </div>
+  <div class="lb" id="lb" hidden>
+    <button type="button" class="lb__close" id="lb-close" aria-label="Schliessen">×</button>
+    <img id="lb-img" alt="">
+    <p id="lb-cap"></p>
   </div>
 </section>
 
 <!-- ============ MOTTO ============ -->
 <section class="motto" aria-label="Marcs Motto">
-  <img class="motto__img" src="assets/img/fist.jpg" alt="" loading="lazy">
+  <img class="motto__img" src="assets/img/hero-action.jpg" alt="" loading="lazy">
   <div class="motto__shade" aria-hidden="true"></div>
   <div class="wrap motto__inner">
-    <p class="motto__text" id="statement">Ausreden zählen nicht, aufgeben geht nicht. Wo ein Wille ist, ist immer ein Weg.</p>
+    <p class="motto__text">Wo ein Wille ist, ist immer ein Weg.</p>
     <p class="motto__sign">Marc Lustenberger</p>
-  </div>
-</section>
-
-<!-- ============ ERFOLGE ============ -->
-<section class="kranz sec" id="erfolge">
-  <div class="wrap">
-    <div class="kranz__head">
-      <div>
-        <p class="eyebrow">Erfolge</p>
-        <h2 class="h2 rv">Leistungsausweis</h2>
-      </div>
-      <p class="kranz__note">Kränze: Stand nach der Saison 2025</p>
-    </div>
-
-    <div class="stats">
-      <div class="stats__total">
-        <strong>28</strong>
-        <span>Kränze total</span>
-      </div>
-      <dl class="stats__list">
-        <div><dt>Eidgenössischer Kranz</dt><dd>1</dd></div>
-        <div><dt>Teilverbandskränze</dt><dd>6</dd></div>
-        <div><dt>Bergkränze</dt><dd>5</dd></div>
-        <div><dt>Kantonalkränze</dt><dd>16</dd></div>
-      </dl>
-    </div>
-
-    <div class="kranz__facts">
-      <div><strong>2</strong><span>Festsiege<small>Sachseln 2025 · Arth 2026</small></span></div>
-      <div><strong>8</strong><span>Schlussgänge<small>Stand Saison 2025</small></span></div>
-      <div><strong>15.</strong><span>Rang<small>Eidg. Jahreswertung 2025</small></span></div>
-      <div><strong>7.</strong><span>Rang<small>Unspunnen-Schwinget 2023</small></span></div>
-    </div>
   </div>
 </section>
 

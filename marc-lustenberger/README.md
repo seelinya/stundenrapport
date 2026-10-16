@@ -20,8 +20,9 @@ Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `journey.js` (Hero, 
 
 ### Platzhalter und Video
 
-- In den Kapiteln «Der Anfang» und «Jungschwinger» stehen gestrichelte Platzhalter für ein Kinderfoto
-  und ein Foto aus der Jungschwingerzeit. Ersetzen durch `<figure class="chap__img"><img src="…"></figure>`.
+- «Foto folgt»-Platzhalter im Werdegang (Kindheit, Jungschwinger) und in der Galerie (Training,
+  Ernährungsberatung, Routine, Körperanalyse, Ferien). In der Galerie eine Kachel ersetzen durch
+  `<figure class="gi" data-cat="training"><img src="assets/img/…" alt="…"><figcaption>…</figcaption></figure>`.
 - Hintergrundvideo im Hero: Datei z. B. als `assets/video/hero.mp4` ablegen und den Pfad im
   `data-src` des `<video id="hero-video">` eintragen. Ohne Video blenden die Fotos ineinander.
 
