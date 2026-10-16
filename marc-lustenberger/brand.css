@@ -366,3 +366,11 @@ strong, b { font-weight: 900; }
 .tier { padding-block: 22px; }
 .logo-marquee__track { gap: 16px; }
 .logo-marquee__track img { background: #F4F4F4 !important; padding: 10px 14px; box-sizing: border-box; }
+
+/* Kontakt: leichtes Foto im Hintergrund, Formular leicht transparent */
+.contact { position: relative; isolation: isolate; }
+.contact .contact__img { display: block !important; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; filter: grayscale(1) contrast(1.05); opacity: .55; z-index: -2; transform: none !important; }
+.contact .contact__shade { display: block !important; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.72) 45%, rgba(0,0,0,.45) 100%); }
+.contact .form { background: rgba(255,255,255,.86); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+.contact .form__part { background: rgba(255,255,255,.55); }
+.contact .form input[type="text"], .contact .form input[type="email"], .contact .form input[type="tel"], .contact .form input[type="date"], .contact .form textarea, .contact .form select { background: rgba(255,255,255,.8); }
