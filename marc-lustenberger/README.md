@@ -5,15 +5,15 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Mehrere Seiten mit gemeinsamem Header und Footer:
+Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) geschrieben;
+auf der Partner-Seite werden Unternehmen mit «Sie» angesprochen, Fans mit «du».
 
 | Seite | Inhalt |
 |---|---|
 | `index.html` | Startseite: Hero, Steckbrief, «Warum man Marc die Daumen drückt», Erfolge, «Mein Weg» (Auszug, blätterbar), «Was es braucht» (Einblicke-Auszug), Mini-Spiel, Partner, News, Instagram |
-| `ueber-marc.html` | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
+| `ueber-marc.html` (Über mich) | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
 | `mein-weg.html` | Alle Stationen von der Kindheit bis heute, jede mit Bild, dazu «Der Plan» bis 2031 |
-| `saison.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |
-| `einblicke.html` | Galerie mit Filter (Wettkampf, Training, Alltag) und Grossansicht |
+| `news.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |
 | `partner.html` | Was Partner davon haben, Leistungsausweis, Ablauf, Pakete, aktuelle Partner |
 | `fanartikel.html` | Fanartikel; «Bestellen» öffnet `kontakt.html#artikel-<id>` mit vorausgefülltem Warenkorb |
 | `kontakt.html` | Kontakt- und Bestellformular, Instagram |
@@ -23,7 +23,7 @@ Auf jeder Seite steht über dem Footer das Sponsorenband mit Haupt- und Co-Spons
 ### Wöchentlich aktualisieren
 
 Termine, Resultate, News und Medienberichte stehen oben in `saison.js` als einfache Listen. Neue Einträge
-oben einfügen – Startseite und Saison-Seite zeigen sie automatisch an.
+oben einfügen – Startseite und News-Seite zeigen sie automatisch an.
 
 Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `site.js` (Hero-Video, «Mein Weg», Galerie,
 Anfrage-Links), `form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `site.css`.
