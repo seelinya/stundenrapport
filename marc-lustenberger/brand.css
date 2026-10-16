@@ -273,3 +273,26 @@ strong, b { font-weight: 900; }
 .m-kicker { margin-bottom: clamp(16px, 1.6vw, 26px); }
 .m-hero__title { line-height: .94; }
 .m-spons__photo, .m-about__photo { width: 100%; }
+
+/* ==========================================================================
+   Feinschliff: Start schwarz-weiss, Beige nur als Akzent, kaum Kursiv
+   ========================================================================== */
+:root { --tile: #F3F3F3; }
+.m-hero .hero__img { filter: grayscale(1) contrast(1.12) brightness(.9); }
+
+/* Beige nur noch klein: Fotorahmen und Werte. Flächen weiss bzw. hellgrau */
+.m-wins { background: #fff; border-top: 1px solid #E6E6E6; }
+.m-plan li::before { background: #fff; }
+.game { background: #F5F5F5; }
+.m-pack { background: #F5F5F5; }
+.m-wins .m-list li { border-color: #E2E2E2; }
+
+/* Kursiv nur noch beim Namen im Hero und beim Motto */
+.h2, .m-hero__claim, .m-facts dd, .m-list b, .m-list strong, .m-plan b, .m-plan .is-goal span,
+.m-why b, .m-why h3, .m-pack h3, .m-spons__photo figcaption, .m-note, .product h3,
+.menu a, .tier__name { font-style: normal !important; }
+.m-hero__title, .m-band__motto { font-style: italic; }
+.m-hero__claim { font-weight: 300; font-size: clamp(22px, 1.6vw + 14px, 40px); }
+.m-lead { max-width: 26em; }
+.m-pack.m-pack--main { background: var(--black); }
+.form__part { background: #F5F5F5; border-radius: 0; }
