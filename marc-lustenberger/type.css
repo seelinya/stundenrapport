@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Schriften: Lato Regular für Text, Lato Black / Black Italic für Titel,
+   Roustel nur für Marcs Unterschrift. Wird nach styles.css geladen.
+   ========================================================================== */
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-400i.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-700.woff2") format("woff2"); font-weight: 500 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-900.woff2") format("woff2"); font-weight: 800 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lato"; src: url("assets/fonts/lato-900i.woff2") format("woff2"); font-weight: 500 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Roustel"; src: url("assets/fonts/roustel.woff2") format("woff2"); font-display: swap; }
+
+:root {
+  --f-head: "Lato", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Lato", "Helvetica Neue", Arial, sans-serif;
+  --f-note: "Roustel", "Segoe Script", cursive;
+}
+body { font-family: var(--f-body); font-weight: 400; }
+
+/* Titel: Lato Black Italic, wegen der breiteren Schrift etwas kleiner */
+.hero__title, .h2, .statement__text, .band__title, .contact .h2 { font-weight: 900; font-style: italic; letter-spacing: -.005em; }
+.hero__title { font-size: clamp(38px, calc(7.4vw + 8px), 168px); }
+.h2 { font-size: clamp(30px, 3.9vw, 76px); line-height: 1.04; }
+.statement__text { font-size: clamp(26px, 3.4vw, 70px); }
+.band__title { font-size: clamp(40px, 6vw, 96px); }
+/* Kleinere Titel und Labels: Lato Black aufrecht */
+.h3, .card h3, .mile h3, .product h3, .duo h3, .band__cols strong, .eyebrow, .facts dt { font-weight: 900; font-style: normal; }
+.product h3 { font-size: clamp(15px, .45vw + 11px, 19px); overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.menu a { font-size: clamp(13px, .35vw + 9px, 16px); font-weight: 700; white-space: nowrap; }
+
+/* Roustel – nur hier: Marcs Unterschrift unter dem Statement */
+.statement__sign { font-family: var(--f-note); font-weight: 400; font-size: clamp(40px, 3.6vw, 60px); letter-spacing: 0; text-transform: none; line-height: 1; transform: rotate(-4deg); transform-origin: left center; display: inline-block; margin-top: 30px; }
