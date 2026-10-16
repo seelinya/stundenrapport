@@ -67,9 +67,9 @@
 
   // News (neueste zuerst)
   var NEWS = [
-    { date: "2026-07", tag: "Festsieg", title: "Doppelsieg am Innerschweizer in Arth", text: "Gestellter Schlussgang gegen Samuel Schwyzer – zwei Festsieger.", url: "https://www.srf.ch/sport/mehr-sport/schwingen/innerschweizer-schwingfest-lustenberger-und-schwyzer-teilen-festsieg-in-arth", src: "SRF Sport" },
-    { date: "2026", tag: "Heimat", title: "Empfang im Entlebuch", text: "Der Entlebucher Schwingerverband lädt zum Empfang.", url: "https://entlebucher-schwingerverband.ch/2026/empfang-marc-lustenberger/", src: "Entlebucher SV" },
-    { date: "2025-06", tag: "Interview", title: "Schwinger der Woche", text: "Nach dem ersten Kranzfestsieg in Sachseln.", url: "https://www.schlussgang.ch/aktuell/im-interview-marc-lustenberger-zum-ersten-kranzfestsieg", src: "Schlussgang" }
+    { date: "2026-07", img: "schultern.jpg", tag: "Festsieg", title: "Doppelsieg am Innerschweizer in Arth", text: "Gestellter Schlussgang gegen Samuel Schwyzer – zwei Festsieger.", url: "https://www.srf.ch/sport/mehr-sport/schwingen/innerschweizer-schwingfest-lustenberger-und-schwyzer-teilen-festsieg-in-arth", src: "SRF Sport" },
+    { date: "2026", img: "team-essen.jpg", tag: "Heimat", title: "Empfang im Entlebuch", text: "Der Entlebucher Schwingerverband lädt zum Empfang.", url: "https://entlebucher-schwingerverband.ch/2026/empfang-marc-lustenberger/", src: "Entlebucher SV" },
+    { date: "2025-06", img: "lupf.jpg", tag: "Interview", title: "Schwinger der Woche", text: "Nach dem ersten Kranzfestsieg in Sachseln.", url: "https://www.schlussgang.ch/aktuell/im-interview-marc-lustenberger-zum-ersten-kranzfestsieg", src: "Schlussgang" }
   ];
 
   // Für das Bestellformular (form.js)
@@ -192,11 +192,13 @@
     var a = el("a", "m-newsitem");
     a.href = n.url; a.target = "_blank"; a.rel = "noopener";
     var p = n.date.split("-");
+    if (n.img) { var th = el("img", "m-newsitem__img"); th.src = "assets/img/" + n.img; th.alt = ""; th.loading = "lazy"; a.appendChild(th); }
+    var link = a, tx = el("span", "m-newsitem__txt"); a.appendChild(tx); a = tx;
     a.appendChild(el("span", "m-newsitem__meta", (p[1] ? MONTHS_LONG[parseInt(p[1], 10) - 1] + " " : "") + p[0] + " · " + n.tag));
     a.appendChild(el("strong", null, n.title));
     a.appendChild(el("span", "m-newsitem__text", n.text));
     a.appendChild(el("span", "m-newsitem__src", n.src));
-    newsList.appendChild(a);
+    newsList.appendChild(link);
   });
 
   // --- Fanartikel -------------------------------------------------------
