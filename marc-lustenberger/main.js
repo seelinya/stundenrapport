@@ -139,6 +139,22 @@
     });
   }
 
+  // --- Laufendes Logoband auf der Startseite --------------------------------
+  var marquee = document.getElementById("logo-marquee");
+  if (marquee) {
+    var seenM = {}, list = [];
+    SPONSORS.forEach(function (g) { g.items.forEach(function (s) { if (!seenM[s.logo]) { seenM[s.logo] = true; list.push(s); } }); });
+    [0, 1].forEach(function (round) {
+      list.forEach(function (s) {
+        var a = el(s.url ? "a" : "span", "x-logos__item");
+        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
+        if (round) a.setAttribute("aria-hidden", "true");
+        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = round ? "" : s.name; img.loading = "lazy";
+        a.appendChild(img); marquee.appendChild(a);
+      });
+    });
+  }
+
   // --- Sponsorenband auf jeder Seite -------------------------------------
   var bar = document.getElementById("sponsor-bar");
   if (bar) {

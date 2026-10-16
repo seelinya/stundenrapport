@@ -9,9 +9,16 @@ Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sich
 
 Gestaltung: hell mit klaren Linien, Schwarz-Weiss-Fotos und Blau (Logo-Blau `--blue`) als einzige Farbe –
 für Buttons, Bildrahmen und CTA-Bänder. Schriften: Lato für Text und Titel (Titel fett, kursiv, Grossbuchstaben),
-Roustel für persönliche Notizen (Klasse `note` bzw. `sign`). Die Schriftdateien liegen in `assets/fonts/`, die
+Roustel nur ganz gezielt (Kinderzitat `x-scribble`, Unterschrift `x-sign`). Die Schriftdateien liegen in `assets/fonts/`, die
 Markenregeln in `brand.css` (wird zuletzt geladen). Auf Tablet und Handy blendet sich der Header beim Runterscrollen
 aus und erscheint beim Hochscrollen wieder.
+
+Bewegung (`motion.js`): Elemente mit `data-anim` blenden beim Scrollen ein, `data-count` zählt hoch,
+`data-words` lässt ein Statement Wort für Wort aufleuchten. Wer im Gerät «Bewegung reduzieren» eingestellt
+hat, sieht alles sofort und ohne Animation.
+
+Fotos: Die Bilder in `assets/img/` liegen in Originalgrösse und werden nie grösser angezeigt, damit sie
+scharf bleiben. Für grössere Darstellungen braucht es die Originalfotos in höherer Auflösung.
 
 | Seite | Inhalt |
 |---|---|
