@@ -36,3 +36,11 @@ Originaldateien ersetzen (gleiche Dateinamen), vor allem `hero-action.jpg`,
 
 marc-lustenberger.ch (Portrait, Sponsoren, Fanartikel, Kontakt), ESV-Schwingerportrait,
 schlussgang.ch, SRF Sport, Luzerner Zeitung und Entlebucher Schwingerverband.
+
+
+## Branding (Moodboard)
+
+- Farben: Blau `#4F6B7F`, Schwarz `#000000`, Sand `#EEEBE4`, Weiss – definiert in `brand.css`
+- Schriften: Titel Lato Black / Black Italic, Text Lato Light / Light Italic, Roustel nur selten (Unterschrift)
+- Fotos aus dem Moodboard liegen in `assets/img/` (max. 1600 px, nie hochskaliert)
+- Paket-Buttons (`data-pack`) füllen das Kontaktformular automatisch vor

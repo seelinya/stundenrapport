@@ -82,11 +82,17 @@
 
   var links = Array.prototype.slice.call(menu.querySelectorAll("a[href^='#']"));
   var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
-  var ticking = false;
+  var ticking = false, lastY = 0;
   function onScroll() {
     ticking = false;
     var y = window.scrollY || window.pageYOffset;
     head.classList.toggle("is-solid", y > 60);
+    // Tablet & Handy: beim Runterscrollen ausblenden, beim Hochscrollen wieder zeigen
+    var compact = window.matchMedia("(max-width: 1140px)").matches;
+    var menuOpen = burger.getAttribute("aria-expanded") === "true";
+    if (compact && !menuOpen && y > 120 && y > lastY + 4) head.classList.add("is-hidden");
+    else if (!compact || menuOpen || y < lastY - 4 || y <= 120) head.classList.remove("is-hidden");
+    lastY = y;
     var active = -1;
     targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top < window.innerHeight * .4) active = i; });
     links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
@@ -259,6 +265,18 @@
     window.addEventListener("scroll", paintWords, { passive: true });
     paintWords();
   }
+
+  // Paket-Buttons: Kontaktformular mit dem gewählten Paket vorbereiten
+  document.querySelectorAll("[data-pack]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var topic = document.getElementById("t-spons");
+      if (topic && !topic.checked) { topic.checked = true; topic.dispatchEvent(new Event("change", { bubbles: true })); }
+      var spons = document.getElementById("i-spons");
+      if (spons && !spons.checked) { spons.checked = true; spons.dispatchEvent(new Event("change", { bubbles: true })); }
+      var msg = document.getElementById("f-msg");
+      if (msg && !msg.value.trim()) msg.value = "Hoi Marc, mich interessiert das Paket «" + a.getAttribute("data-pack") + "». Lass uns gerne bei einem Kafi darüber reden.";
+    });
+  });
 
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
