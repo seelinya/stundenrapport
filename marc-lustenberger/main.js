@@ -278,6 +278,23 @@
     });
   });
 
+  // Slider Erfolge & Ziele: Pfeile scrollen um eine Karte
+  var slider = document.querySelector("[data-slider]");
+  if (slider) {
+    var stepS = function () { var c = slider.querySelector(".m-card"); return c ? c.getBoundingClientRect().width + 16 : 320; };
+    var navBtns = document.querySelectorAll(".m-slider__btn");
+    var updS = function () {
+      var max = slider.scrollWidth - slider.clientWidth - 2;
+      navBtns.forEach(function (b) { b.disabled = b.getAttribute("data-dir") === "-1" ? slider.scrollLeft <= 2 : slider.scrollLeft >= max; });
+    };
+    navBtns.forEach(function (b) {
+      b.addEventListener("click", function () { slider.scrollBy({ left: stepS() * parseInt(b.getAttribute("data-dir"), 10), behavior: reduce ? "auto" : "smooth" }); });
+    });
+    slider.addEventListener("scroll", function () { requestAnimationFrame(updS); }, { passive: true });
+    window.addEventListener("resize", updS);
+    updS();
+  }
+
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
 })();

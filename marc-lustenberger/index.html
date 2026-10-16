@@ -57,6 +57,11 @@
     <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
     <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
   </symbol>
+    <symbol id="ml-logo" viewBox="0 0 171 134">
+    <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
+    <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
+    <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
+  </symbol>
   <symbol id="ml" viewBox="0 0 138 110">
     <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
   </symbol>
@@ -144,34 +149,47 @@
 <!-- ============ ERFOLGE & ZIELE ============ -->
 <section class="m-wins sec" id="erfolge">
   <div class="wrap">
-    <div class="m-head rv">
-      <p class="m-eyebrow">Erfolge &amp; Ziele</p>
-      <h2 class="h2">Das habe ich erreicht.<br>Da will ich hin.</h2>
-    </div>
-    <div class="m-wins__grid">
-      <div class="m-wins__col rv">
-        <h3 class="m-sub">Meilensteine</h3>
-        <ol class="m-list">
-          <li><b>2019</b><span><strong>Erster Kranz</strong>Schwyzer Kantonales</span></li>
-          <li><b>2025</b><span><strong>Erster Festsieg</strong>Sachseln – 6 Gänge, 6 Siege</span></li>
-          <li><b>2025</b><span><strong>Eidgenosse</strong>ESAF Mollis</span></li>
-          <li><b>2026</b><span><strong>Festsieg Innerschweizer</strong>Arth</span></li>
-        </ol>
+    <div class="m-head m-head--row rv">
+      <div>
+        <p class="m-eyebrow">Erfolge &amp; Ziele</p>
+        <h2 class="h2">Das habe ich erreicht.<br>Da will ich hin.</h2>
       </div>
-      <div class="m-wins__col m-wins__col--plan rv">
-        <h3 class="m-sub">Mein Plan</h3>
-        <ol class="m-plan">
-          <li><b>2027</b><span>Sieg am Luzerner Kantonalen</span></li>
-          <li><b>2028</b><span>Sieg am Innerschweizer</span></li>
-          <li><b>2028–31</b><span>Bergfestsieg</span></li>
-          <li class="is-goal"><b>2031</b><span>Königskandidat</span></li>
-        </ol>
+      <div class="m-slider__nav">
+        <button type="button" class="m-slider__btn" data-dir="-1" aria-label="Zurück">←</button>
+        <button type="button" class="m-slider__btn" data-dir="1" aria-label="Weiter">→</button>
       </div>
     </div>
-    <figure class="m-wins__photo rv">
-      <img src="assets/img/schultern.jpg" width="1440" height="960" alt="Marc Lustenberger wird nach dem Sieg auf den Schultern getragen" loading="lazy">
-    </figure>
   </div>
+  <ol class="m-slider" data-slider aria-label="Erfolge und Ziele">
+      <li class="m-card" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/wurf-2.jpg" width="1200" height="800" alt="" loading="lazy"></figure>
+        <div class="m-card__body"><b>2019</b><strong>Erster Kranz</strong><span>Schwyzer Kantonales</span></div>
+      </li>
+      <li class="m-card" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/lupf.jpg" width="1440" height="960" alt="" loading="lazy"></figure>
+        <div class="m-card__body"><b>2025</b><strong>Erster Festsieg</strong><span>Sachseln – 6 Gänge, 6 Siege</span></div>
+      </li>
+      <li class="m-card" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/kranz.jpg" width="800" height="533" alt="" loading="lazy"></figure>
+        <div class="m-card__body"><b>2025</b><strong>Eidgenosse</strong><span>ESAF Mollis</span></div>
+      </li>
+      <li class="m-card" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/schultern.jpg" width="1440" height="960" alt="" loading="lazy"></figure>
+        <div class="m-card__body"><b>2026</b><strong>Festsieg Innerschweizer</strong><span>Arth</span></div>
+      </li>
+      <li class="m-card m-card--goal" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/wurf.jpg" width="1440" height="960" alt="" loading="lazy"><span class="m-card__tag">Ziel</span></figure>
+        <div class="m-card__body"><b>2027</b><strong>Sieg am Luzerner Kantonalen</strong><span>Mein Heimfest</span></div>
+      </li>
+      <li class="m-card m-card--goal" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/kraftraum.jpg" width="457" height="610" alt="" loading="lazy"><span class="m-card__tag">Ziel</span></figure>
+        <div class="m-card__body"><b>2028</b><strong>Sieg am Innerschweizer</strong><span>Zum zweiten Mal</span></div>
+      </li>
+      <li class="m-card m-card--goal" tabindex="0">
+        <figure class="m-card__img"><img src="assets/img/steg.jpg" width="1440" height="1920" alt="" loading="lazy"><span class="m-card__tag">Ziel</span></figure>
+        <div class="m-card__body"><b>2031</b><strong>Königskandidat</strong><span>Mit einem Bergfestsieg auf dem Weg</span></div>
+      </li>
+  </ol>
 </section>
 
 <!-- ============ SPONSORING ============ -->
