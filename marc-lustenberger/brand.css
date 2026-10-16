@@ -296,3 +296,11 @@ strong, b { font-weight: 900; }
 .m-lead { max-width: 26em; }
 .m-pack.m-pack--main { background: var(--black); }
 .form__part { background: #F5F5F5; border-radius: 0; }
+
+/* Titel im Hero gerade */
+.m-hero__title { font-style: normal; }
+
+/* Zitat zum Schmunzeln (Roustel, einziger Einsatz) */
+.m-quote { margin: 30px 0 0; padding-left: 20px; border-left: 3px solid var(--blue); }
+.m-quote__text { margin: 0; font-family: var(--f-note); font-size: clamp(30px, 2.6vw, 42px); line-height: 1.15; color: var(--blue); }
+.m-quote figcaption { margin-top: 10px; font-weight: 900; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
