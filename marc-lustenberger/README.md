@@ -7,8 +7,8 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 Zwei Seiten:
 
-- `index.html` – die Journey: Hero mit bewegtem Hintergrund (Fotos blenden ineinander, Sägemehl
-  fliegt), Steckbrief, «Wer ist Marc?» (Worte seines besten Freundes), die Journey in zehn Kapiteln
+- `index.html` – Startseite: Hero mit bewegtem Hintergrund (Fotos blenden ineinander, Sägemehl
+  fliegt), Steckbrief, «Über Marc», der Werdegang in zehn Stationen
   vom Schnuppertraining bis zum Ziel ESAF 2028, Motto, Kranz-Bilanz, Mini-Spiel, News,
   Partner-Teaser, Fanartikel und Kontakt.
 - `partner.html` – für Sponsoren: Warum Marc, die drei Pakete aus dem Sponsoringdossier, aktuelle

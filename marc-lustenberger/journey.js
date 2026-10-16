@@ -1,4 +1,4 @@
-/* Journey-Erlebnis: Hero-Hintergrund, Eigenschaften, Kapitel-Navigation, Kranz-Bilanz */
+/* Startseite: Hero-Hintergrund, Werdegang-Navigation, Anfrage-Links */
 (function () {
   "use strict";
 
@@ -93,7 +93,7 @@
     }, 1100);
   }
 
-  // --- Journey: aktives Kapitel und Fortschritt --------------------------------
+  // --- Werdegang: aktive Station und Fortschritt --------------------------------
   var chapters = $("chapters"), jbar = $("jbar"), jnav = $("jnav");
   if (chapters && jnav) {
     var links = Array.prototype.slice.call(jnav.querySelectorAll("a"));
