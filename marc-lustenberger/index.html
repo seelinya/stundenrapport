@@ -59,32 +59,32 @@
 </header>
 
 <main id="inhalt">
-<!-- ============ HERO ============ -->
-<section class="x-hero" id="top">
-  <div class="wrap x-hero__grid">
-    <div class="x-hero__text">
-      <p class="x-kicker x-in" style="--d:.05s">Eidgenosse 2025 · Hasle LU</p>
-      <h1 class="x-hero__name">
-        <span class="x-line"><span class="x-in" style="--d:.15s">Marc</span></span>
-        <span class="x-line"><span class="x-in" style="--d:.28s">Lustenberger</span></span>
-      </h1>
-      <p class="x-hero__claim x-in" style="--d:.45s">Ausreden zählen nicht.<br>Aufgeben geht nicht.</p>
-      <div class="x-hero__cta x-in" style="--d:.6s">
-        <a class="btn btn--blue" href="#team">Werde Teil von Team Marc</a>
-        <a class="btn btn--line" href="ueber-marc.html">Lern mich kennen</a>
-      </div>
-    </div>
-    <figure class="x-hero__photo">
-      <img src="assets/img/cheer.jpg" width="664" height="805" alt="Marc Lustenberger jubelt nach einem Sieg im Sägemehl" fetchpriority="high">
-      <span class="x-badge"><svg aria-hidden="true"><use href="#kranz"/></svg><span>Eidgenosse<br>2025</span></span>
-    </figure>
+<!-- ============ HERO MIT VIDEO ============ -->
+<section class="x-hero x-hero--dark" id="top">
+  <div class="x-hero__bg" aria-hidden="true">
+    <img class="x-hero__poster" src="assets/img/hero-action.jpg" width="1711" height="589" alt="" fetchpriority="high">
+    <!-- Hintergrundvideo (YouTube, stumm, Schlaufe). ID hier austauschen. -->
+    <div class="x-hero__video" data-yt="FOX0-VO428U"></div>
+    <div class="x-hero__shade"></div>
   </div>
-  <dl class="wrap x-stats" aria-label="Steckbrief">
-    <div data-anim><dt>Kränze</dt><dd><span data-count="28">28</span></dd></div>
-    <div data-anim style="--d:.08s"><dt>Festsiege</dt><dd><span data-count="2">2</span></dd></div>
-    <div data-anim style="--d:.16s"><dt>Jahrgang</dt><dd>2003</dd></div>
-    <div data-anim style="--d:.24s"><dt>Grösse</dt><dd><span data-count="182">182</span><small>cm</small></dd></div>
-    <div data-anim style="--d:.32s"><dt>Gewicht</dt><dd><span data-count="107">107</span><small>kg</small></dd></div>
+  <div class="wrap x-hero__inner">
+    <p class="x-kicker x-in" style="--d:.1s">Eidgenosse 2025 · Schwinger aus Hasle LU</p>
+    <h1 class="x-hero__name">
+      <span class="x-line"><span class="x-in" style="--d:.2s">Marc</span></span>
+      <span class="x-line"><span class="x-in" style="--d:.34s">Lustenberger</span></span>
+    </h1>
+    <p class="x-hero__claim x-in" style="--d:.5s">Ausreden zählen nicht.<br>Aufgeben geht nicht.</p>
+    <div class="x-hero__cta x-in" style="--d:.65s">
+      <a class="btn btn--blue" href="#team">Werde Teil von Team Marc</a>
+      <a class="btn btn--ghost" href="#marc">Meine Geschichte</a>
+    </div>
+  </div>
+  <dl class="wrap x-stats x-stats--dark" aria-label="Steckbrief">
+    <div><dt>Kränze</dt><dd><span data-count="28">28</span></dd></div>
+    <div><dt>Festsiege</dt><dd><span data-count="2">2</span></dd></div>
+    <div><dt>Jahrgang</dt><dd>2003</dd></div>
+    <div><dt>Grösse</dt><dd><span data-count="182">182</span><small>cm</small></dd></div>
+    <div><dt>Gewicht</dt><dd><span data-count="107">107</span><small>kg</small></dd></div>
   </dl>
 </section>
 
@@ -92,27 +92,79 @@
   <div class="x-ticker__track"><span>Eidgenosse 2025</span><span>Festsieg Sachseln 2025</span><span>Festsieg Arth 2026</span><span>28 Kränze</span><span>Hasle LU</span><span>Ziel 2031</span><span>Eidgenosse 2025</span><span>Festsieg Sachseln 2025</span><span>Festsieg Arth 2026</span><span>28 Kränze</span><span>Hasle LU</span><span>Ziel 2031</span></div>
 </div>
 
-<!-- ============ HOI ============ -->
-<section class="x-hello sec" id="marc">
-  <div class="wrap x-hello__grid">
-    <figure class="x-hello__photo" data-anim>
-      <img src="assets/img/klein-marc.jpg" width="428" height="713" alt="Klein-Marc auf den Schultern von zwei Jungschwingern, beide Arme in die Höhe gestreckt" loading="lazy">
-      <figcaption class="x-scribble">«Ich wott eifach<br>go schwinge!»</figcaption>
-    </figure>
-    <div class="x-hello__text" data-anim>
-      <p class="eyebrow">Über mich</p>
-      <h2 class="h2">Hoi, ich bin Marc.</h2>
-      <p class="x-big">Schon als kleiner Bub wollte ich nur eines: schwingen. Heute bin ich Eidgenosse – und noch lange nicht fertig.</p>
-      <a class="x-link" href="ueber-marc.html">Meine Geschichte</a>
+<!-- ============ MEINE GESCHICHTE ============ -->
+<section class="x-tale sec" id="marc">
+  <div class="wrap">
+    <div class="x-head x-head--row" data-anim>
+      <div>
+        <p class="eyebrow">Meine Geschichte</p>
+        <h2 class="h2">Hoi, ich bin Marc.</h2>
+      </div>
+      <p class="x-head__lead">Schwingen ist meine Leidenschaft, seit ich denken kann. So bin ich dahin gekommen, wo ich heute stehe.</p>
     </div>
+    <ol class="x-tale__list">
+      <li class="x-tale__item">
+        <figure class="x-tale__photo" data-anim>
+          <img src="assets/img/klein-marc.jpg" width="428" height="713" alt="Klein-Marc auf den Schultern von zwei Jungschwingern, beide Arme in die Höhe gestreckt" loading="lazy">
+          <figcaption class="x-scribble">«Ich wott eifach<br>go schwinge!»</figcaption>
+        </figure>
+        <div class="x-tale__text" data-anim>
+          <b class="x-tale__year">Als Bub</b>
+          <h3>Alles fängt in der Stube an.</h3>
+          <p>Schon als kleiner Bub wollte ich nur eines: schwingen. Bis ich durfte, habe ich mich mit meinem Vater und den Cousins in der Stube gerauft. Mit sieben ging es endlich in die Schwinghalle.</p>
+        </div>
+      </li>
+      <li class="x-tale__item">
+        <figure class="x-tale__photo" data-anim>
+          <img src="assets/img/action-2.jpg" width="370" height="276" alt="Marc Lustenberger im Zweikampf im Sägemehl" loading="lazy">
+        </figure>
+        <div class="x-tale__text" data-anim>
+          <b class="x-tale__year">2022</b>
+          <h3>Ein halber Punkt.</h3>
+          <p>In Pratteln fehlte mir ein halber Punkt zum eidgenössischen Kranz. Das hat weh getan – und mich noch härter arbeiten lassen.</p>
+        </div>
+      </li>
+      <li class="x-tale__item">
+        <figure class="x-tale__photo" data-anim>
+          <img src="assets/img/action-3.jpg" width="370" height="275" alt="Marc Lustenberger im Sägemehl" loading="lazy">
+        </figure>
+        <div class="x-tale__text" data-anim>
+          <b class="x-tale__year">2023–2024</b>
+          <h3>Mit Gleitwirbel weiter.</h3>
+          <p>Verletzungen, ein Rücken, der nicht ideal ist fürs Schwingen. Trotzdem: 7. am Unspunnen, Dritter am Stoos, Bergkranz auf dem Weissenstein.</p>
+        </div>
+      </li>
+      <li class="x-tale__item">
+        <figure class="x-tale__photo" data-anim>
+          <img src="assets/img/portrait-kranz.jpg" width="826" height="824" alt="Marc Lustenberger mit dem Eichenlaub am ESAF 2025 in Mollis" loading="lazy">
+        </figure>
+        <div class="x-tale__text" data-anim>
+          <b class="x-tale__year">2025</b>
+          <h3>Mein Kindheitstraum.</h3>
+          <p>Erster Festsieg in Sachseln – sechs Gänge, sechs Siege. Und dann Mollis: der eidgenössische Kranz. Eidgenosse.</p>
+        </div>
+      </li>
+      <li class="x-tale__item">
+        <figure class="x-tale__photo" data-anim>
+          <img src="assets/img/cheer.jpg" width="664" height="805" alt="Marc Lustenberger jubelt im Sägemehl" loading="lazy">
+        </figure>
+        <div class="x-tale__text" data-anim>
+          <b class="x-tale__year">2026</b>
+          <h3>Und es geht weiter.</h3>
+          <p>Festsieg am Innerschweizer in Arth. Ich bin noch lange nicht fertig.</p>
+          <a class="x-link" href="mein-weg.html">Mein ganzer Weg</a>
+        </div>
+      </li>
+    </ol>
   </div>
 </section>
 
-<!-- ============ STATEMENT ============ -->
-<section class="x-state">
-  <div class="wrap">
-    <p class="eyebrow">Was mich antreibt</p>
-    <p class="x-state__text" data-words>Mein Rücken ist nicht ideal fürs Schwingen. Eidgenosse bin ich trotzdem geworden.</p>
+<!-- ============ LEIDENSCHAFT ============ -->
+<section class="x-passion">
+  <img class="x-passion__img" src="assets/img/team.jpg" width="1720" height="594" alt="" loading="lazy">
+  <div class="wrap x-passion__inner">
+    <p class="eyebrow eyebrow--light">Was mich antreibt</p>
+    <p class="x-state__text" data-words>Kein Zentimeter wird geschenkt. Und am Abend sitzen wir wieder zusammen am Tisch.</p>
   </div>
 </section>
 

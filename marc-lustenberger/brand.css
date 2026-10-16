@@ -360,3 +360,77 @@ body { font-family: var(--f-body); color: var(--ink); background: #fff; }
 .news .h2, .media .h2 { margin-bottom: clamp(24px, 3vw, 40px); }
 .eyebrow, .x-kicker { margin-bottom: 18px; }
 @media (max-width: 760px) { .x-scribble { line-height: 1.18; } }
+
+/* ==========================================================================
+   STARTSEITE: dunkler Einstieg mit Hintergrundvideo
+   ========================================================================== */
+/* Header über dem dunklen Hero: weiss, sobald er hell hinterlegt ist wieder dunkel */
+body:has(.x-hero--dark) .head:not(.is-solid) { color: #fff; }
+body:has(.x-hero--dark) .head:not(.is-solid) .logo { color: #fff; }
+body:has(.x-hero--dark) .head:not(.is-solid) .menu__cta { background: #fff; color: var(--black) !important; }
+body:has(.x-hero--dark) .head:not(.is-solid) .menu__cta:hover { background: var(--blue); color: #fff !important; }
+
+.x-hero--dark { position: relative; min-height: 100svh; padding-top: 0; display: flex; flex-direction: column; justify-content: flex-end; background: var(--black); color: #fff; isolation: isolate; }
+.x-hero__bg { position: absolute; inset: 0; overflow: hidden; z-index: -1; }
+.x-hero__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; filter: grayscale(1) contrast(1.1) brightness(.75); }
+.x-hero__video { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s ease; }
+.x-hero__video.is-on { opacity: 1; }
+.x-hero__video iframe { position: absolute; top: 50%; left: 50%; width: max(100%, 177.78svh); height: max(100%, 56.25vw); transform: translate(-50%, -50%) scale(1.18); border: 0; pointer-events: none; filter: grayscale(1) contrast(1.15) brightness(.8); }
+.x-hero__shade { position: absolute; inset: 0; background:
+  linear-gradient(180deg, rgba(17,20,24,.55) 0%, rgba(17,20,24,0) 28%),
+  linear-gradient(0deg, rgba(17,20,24,.95) 0%, rgba(17,20,24,.55) 42%, rgba(17,20,24,.15) 75%),
+  linear-gradient(90deg, rgba(17,20,24,.6) 0%, rgba(17,20,24,0) 70%); }
+.x-hero__inner { padding-top: 140px; container-type: inline-size; }
+.x-hero--dark .x-kicker { color: #fff; }
+.x-hero--dark .x-hero__name { font-size: clamp(46px, 10vw, 170px); line-height: .92; margin-top: 6px; }
+@supports (font-size: 1cqi) { .x-hero--dark .x-hero__name { font-size: min(13.6cqi, 170px); } }
+.x-hero--dark .x-line:first-child > span { color: var(--blue-light); }
+.x-hero--dark .x-hero__claim { color: #fff; max-width: 22em; }
+.btn--ghost { border-color: #fff; color: #fff; background: transparent; }
+.btn--ghost:hover { background: #fff; color: var(--black); }
+
+.x-stats--dark { border-top-color: rgba(255,255,255,.35); margin-top: clamp(36px, 5vw, 70px); }
+.x-stats--dark > div + div { border-left-color: rgba(255,255,255,.18); }
+.x-stats--dark dt { color: var(--blue-light); }
+.x-stats--dark dd small { color: #C3CBD2; }
+.x-hero--dark + .x-ticker { margin-top: 0; border-top: 1px solid rgba(255,255,255,.12); }
+
+/* ---------- Meine Geschichte ---------- */
+.x-tale__list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(56px, 8vw, 120px); }
+.x-tale__item { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 110px); align-items: center; }
+.x-tale__item:nth-child(even) .x-tale__photo { order: 2; justify-self: start; }
+.x-tale__photo { position: relative; margin: 0; justify-self: end; width: 100%; max-width: 420px; isolation: isolate; }
+.x-tale__photo::before { content: ""; position: absolute; inset: 18px -18px -18px 18px; background: var(--blue); z-index: -1; transition: transform .6s var(--ease); }
+.x-tale__item:nth-child(even) .x-tale__photo::before { inset: 18px 18px -18px -18px; }
+.x-tale__photo:hover::before { transform: translate(-6px, -6px); }
+.x-tale__photo img { display: block; width: 100%; height: auto; filter: var(--grade); }
+.x-tale__photo img[width="370"] { max-width: 370px; }
+.x-tale__item:has(img[width="370"]) .x-tale__photo { max-width: 370px; }
+.x-tale__photo img[width="428"] { max-width: 380px; }
+.x-tale__item:first-child .x-tale__photo { max-width: 380px; }
+.x-tale__item:nth-child(4) .x-tale__photo, .x-tale__item:nth-child(5) .x-tale__photo { max-width: 440px; }
+.x-tale__item:first-child .x-scribble { right: -38%; bottom: 8%; }
+.x-tale__year { display: block; font-weight: 700; font-style: italic; text-transform: uppercase; font-size: clamp(34px, 4.4vw, 72px); line-height: 1; color: var(--blue); margin-bottom: 14px; }
+.x-tale__text h3 { margin: 0 0 12px; font-weight: 700; font-style: italic; text-transform: uppercase; font-size: clamp(22px, 2.2vw, 36px); line-height: 1.05; }
+.x-tale__text p { margin: 0 0 20px; max-width: 28em; font-size: clamp(17px, .5vw + 14px, 21px); line-height: 1.55; color: var(--ink-soft); }
+
+/* ---------- Leidenschaft (Bildband mit Statement) ---------- */
+.x-passion { position: relative; color: #fff; background: var(--black); overflow: hidden; isolation: isolate; }
+.x-passion__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 40% 40%; filter: grayscale(1) contrast(1.1) brightness(.45); z-index: -1; }
+.x-passion__inner { padding-block: clamp(90px, 13vw, 200px); }
+.x-passion .x-state__text { color: #fff; max-width: 16em; }
+.motion .x-passion .x-state__text span { color: rgba(255,255,255,.28); }
+.motion .x-passion .x-state__text span.on { color: #fff; }
+
+@media (max-width: 760px) {
+  .x-hero--dark { min-height: 100svh; }
+  .x-hero__inner { padding-top: 120px; }
+  .x-stats--dark > div { border-bottom-color: rgba(255,255,255,.18); }
+  .x-stats--dark > div:nth-child(even) { border-left-color: rgba(255,255,255,.18) !important; }
+  .x-tale__item { grid-template-columns: 1fr; gap: 34px; }
+  .x-tale__item:nth-child(even) .x-tale__photo { order: 0; }
+  .x-tale__photo, .x-tale__item:nth-child(even) .x-tale__photo { justify-self: start; max-width: calc(100% - 18px); }
+  .x-tale__item:nth-child(even) .x-tale__photo { margin-left: 18px; }
+  .x-tale__item:first-child .x-scribble { right: auto; left: 34%; }
+}
+.x-head .eyebrow { display: flex; width: max-content; }

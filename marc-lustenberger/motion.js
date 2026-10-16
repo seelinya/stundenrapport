@@ -5,6 +5,24 @@
   "use strict";
   var root = document.documentElement;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var saveData = navigator.connection && navigator.connection.saveData;
+
+  // Hintergrundvideo (YouTube, stumm, Schlaufe, schwarz-weiss per CSS).
+  // Ohne Bewegung oder im Datensparmodus bleibt das Standbild.
+  var yt = document.querySelector("[data-yt]");
+  if (yt && !reduce && !saveData) {
+    var id = yt.getAttribute("data-yt");
+    var f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&mute=1&loop=1&playlist=" + id +
+      "&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&fs=0";
+    f.title = "Hintergrundvideo";
+    f.allow = "autoplay; encrypted-media; picture-in-picture";
+    f.setAttribute("tabindex", "-1");
+    f.setAttribute("aria-hidden", "true");
+    f.addEventListener("load", function () { setTimeout(function () { yt.classList.add("is-on"); }, 1400); });
+    yt.appendChild(f);
+  }
+
   if (reduce || !("IntersectionObserver" in window)) { root.classList.add("no-motion"); return; }
   root.classList.add("motion");
 
