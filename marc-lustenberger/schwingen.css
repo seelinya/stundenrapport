@@ -72,3 +72,46 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .sw-in { animation: none; opacity: 1; filter: none; transform: none; }
 }
+
+/* ==========================================================================
+   Einstieg wieder dunkel und animiert, danach der wachsende Ring
+   ========================================================================== */
+.sw-hero { min-height: 100svh; background: #000; padding: 120px var(--gutter); }
+.sw-bg { filter: grayscale(1) contrast(1.1) brightness(.42); }
+.sw-hero::after { mix-blend-mode: normal; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.1) 0%, rgba(0,0,0,.55) 70%), linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 30%); }
+.sw-spot { background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 40%), rgba(79,107,127,.38), rgba(79,107,127,.1) 40%, transparent 70%); }
+.sw-hero .sw-kicker { color: var(--blue-light); }
+.sw-hero__title span:last-child { color: var(--blue-light); }
+.sw-hero__ring { position: absolute; left: 50%; top: 50%; width: min(118vmin, 1100px); height: auto; transform: translate(-50%, -50%); fill: none; stroke: rgba(167,185,198,.22); stroke-width: 1; z-index: -1; animation: sw-spin 80s linear infinite; }
+.sw-hero__ring circle:nth-child(2) { stroke-dasharray: 2 10; stroke: rgba(238,235,228,.35); }
+.sw-hero__ring circle:nth-child(3) { stroke: rgba(79,107,127,.7); stroke-width: 2; }
+@keyframes sw-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.sw-hero__lead { margin: clamp(20px, 2.4vw, 34px) auto 0; max-width: 26em; font-weight: 300; font-size: var(--t-lead); color: rgba(255,255,255,.85); }
+.sw-scroll { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: 2px; height: 70px; background: rgba(255,255,255,.2); overflow: hidden; }
+.sw-scroll span { position: absolute; left: 0; top: -30px; width: 2px; height: 30px; background: #fff; animation: sw-drop 1.8s ease-in-out infinite; }
+@keyframes sw-drop { to { top: 70px; } }
+
+.sw-zoom { position: relative; height: 260vh; background: #000; }
+.sw-zoom__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; place-items: center; align-content: center; gap: 30px; overflow: hidden; }
+.sw-zoom__circle { position: absolute; left: 50%; top: 50%; width: 46vmin; height: 46vmin; border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #E9DFC9 0%, #D3C3A2 45%, #B4A07B 75%, #8C7A58 100%);
+  box-shadow: 0 0 0 2px rgba(238,235,228,.25), 0 0 120px rgba(211,195,162,.35);
+  transform: translate(-50%, -50%) scale(calc(.55 + var(--p, 0) * 3.4)); will-change: transform; }
+.sw-zoom__circle::after { content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: .35;
+  background-image: radial-gradient(rgba(90,70,40,.55) 1px, transparent 1.4px), radial-gradient(rgba(255,255,255,.6) 1px, transparent 1.4px);
+  background-size: 9px 9px, 13px 13px; background-position: 0 0, 4px 6px; }
+.sw-zoom__text { position: relative; margin: 0; display: grid; gap: 4px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: var(--t-display); line-height: .95; color: #fff; mix-blend-mode: difference; }
+.sw-zoom__text span { opacity: .12; transform: translateY(16px); transition: opacity .4s, transform .6s cubic-bezier(.2,.7,.2,1); }
+.sw-zoom__text span.on { opacity: 1; transform: none; }
+.sw-zoom__cta { position: relative; opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; pointer-events: none; }
+.sw-zoom__cta.on { opacity: 1; transform: none; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-hero__ring, .sw-scroll span { animation: none; }
+  .sw-zoom { height: auto; }
+  .sw-zoom__sticky { position: relative; height: 80vh; }
+  .sw-zoom__circle { transform: translate(-50%, -50%) scale(1.6); }
+  .sw-zoom__text span, .sw-zoom__cta { opacity: 1; transform: none; pointer-events: auto; }
+}
+.sw-zoom__text { font-size: clamp(36px, 7vw, 120px) !important; }
+.sw-hero__lead { font-size: var(--t-lead) !important; }

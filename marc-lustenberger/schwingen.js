@@ -64,6 +64,7 @@
   var zoom = document.querySelector(".sw-zoom");
   var circle = document.querySelector(".sw-zoom__circle");
   var words = document.querySelectorAll(".sw-zoom__text span");
+  var cta = document.querySelector(".sw-zoom__cta");
   function onScroll() {
     if (!zoom || reduce) return;
     var r = zoom.getBoundingClientRect();
@@ -71,6 +72,7 @@
     var p = Math.max(0, Math.min(1, -r.top / (total || 1)));
     circle.style.setProperty("--p", p.toFixed(3));
     for (var i = 0; i < words.length; i++) words[i].classList.toggle("on", p > .12 + i * .22);
+    if (cta) cta.classList.toggle("on", p > .78);
   }
   window.addEventListener("scroll", function () { requestAnimationFrame(onScroll); }, { passive: true });
   onScroll();
