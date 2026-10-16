@@ -139,6 +139,44 @@
 </section>
 
 
+<!-- ============ MINI-SPIEL ============ -->
+<section class="game sec" id="mitschwingen">
+  <div class="wrap game__grid">
+    <div class="game__intro">
+      <p class="eyebrow">Mitschwingen</p>
+      <h2 class="h2 rv">Schwing<br>mit mir.</h2>
+      <p>Klick oder tipp in die Arena, so schnell du kannst – jeder Klick gibt mir Kraft. Schaffen wir es vor Ablauf der Zeit, liegt der Gegner mit dem Wyberhaken im Sägemehl. Sonst heisst es: gestellt.</p>
+      <fieldset class="game__levels">
+        <legend>Gegner</legend>
+        <label><input type="radio" name="level" id="lv-1" value="0" checked><span>Jungschwinger</span></label>
+        <label><input type="radio" name="level" id="lv-2" value="1"><span>Kranzschwinger</span></label>
+        <label><input type="radio" name="level" id="lv-3" value="2"><span>Eidgenosse</span></label>
+      </fieldset>
+      <p class="game__best" id="best">Deine Bestzeit: –</p>
+    </div>
+
+    <div class="arena" id="arena" tabindex="0" role="application" aria-label="Mini-Spiel: Klicken, tippen oder Leertaste drücken, um Marc Kraft zu geben">
+      <div class="arena__stage">
+        <canvas id="ring" width="1280" height="720"></canvas>
+        <div class="arena__hud" aria-hidden="true">
+          <span>Marc</span>
+          <span class="arena__timer" id="timer">12.0 s</span>
+          <span id="foe-name">Jungschwinger</span>
+        </div>
+        <span class="arena__tap" id="tap-hint" hidden>Klick! Klick! Klick!</span>
+      </div>
+      <div class="arena__panel" id="overlay">
+        <div class="arena__msg">
+          <p class="arena__ptitle" id="ov-title">Bereit zum Anschwingen?</p>
+          <p class="arena__ptext" id="ov-text">Zwölf Sekunden. Klicken, tippen oder Leertaste.</p>
+        </div>
+        <button type="button" class="btn btn--blue arena__btn" id="start">Gang starten</button>
+      </div>
+      <p class="sr" id="game-status" role="status"></p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ SPONSORENBAND ============ -->
 <aside class="sbar" aria-label="Partner von Marc Lustenberger">
   <div class="wrap sbar__inner">
@@ -167,10 +205,10 @@
     <p class="foot__copy">© <span id="year">2026</span> marc-lustenberger.ch</p>
   </div>
 </footer>
-<a class="play-fab" id="fab" href="index.html#mitschwingen" aria-label="Mini-Spiel: Schwing gegen Marc"><svg aria-hidden="true" viewBox="0 0 40 30"><use href="#wrestle"/></svg><span class="fab__long">Schwing gegen Marc</span><span class="fab__short">Mitschwingen</span></a>
 
 <!-- @artifact-body-end -->
 <script src="main.js"></script>
 <script src="site.js"></script>
+<script src="game.js"></script>
 </body>
 </html>

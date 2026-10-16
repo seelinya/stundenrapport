@@ -126,9 +126,51 @@
     box.appendChild(ul);
   }
 
+
+  // Startseite: Kommendes (kräftig) oben, danach Vergangenes (ausgeblasst), Neuestes zuerst
+  function renderTimeline(box, maxPast) {
+    if (!box) return;
+    var today = new Date().toISOString().slice(0, 10);
+    var next = TERMINE.filter(function (t) { return t.date >= today; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var past = RESULTATE.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).slice(0, maxPast || 4);
+    var ul = el("ul", "tl");
+    if (!next.length) {
+      var li = el("li", "tl__item tl__item--next");
+      li.appendChild(el("span", "tl__when", "Saison 2027"));
+      var i = el("span", "tl__what");
+      i.appendChild(el("strong", null, "Meine Schwingfeste folgen bald"));
+      i.appendChild(el("span", null, "Sobald die Einteilungen feststehen, findest du hier, wo ich als Nächstes schwinge."));
+      li.appendChild(i);
+      li.appendChild(el("span", "tl__badge", "Demnächst"));
+      ul.appendChild(li);
+    }
+    next.forEach(function (t, n) {
+      var li = el("li", "tl__item tl__item--next");
+      li.appendChild(el("span", "tl__when", fmt(t.date)));
+      var i = el("span", "tl__what");
+      i.appendChild(el("strong", null, t.name));
+      i.appendChild(el("span", null, [t.place, t.note].filter(Boolean).join(" · ")));
+      li.appendChild(i);
+      li.appendChild(el("span", "tl__badge", n === 0 ? "Nächstes Fest" : "Geplant"));
+      ul.appendChild(li);
+    });
+    past.forEach(function (r) {
+      var li = el("li", "tl__item tl__item--past");
+      li.appendChild(el("span", "tl__when", fmt(r.date)));
+      var i = el("span", "tl__what");
+      i.appendChild(el("strong", null, r.name));
+      i.appendChild(el("span", null, r.place + (r.note ? " · " + r.note : "")));
+      li.appendChild(i);
+      li.appendChild(el("span", "tl__rank", r.rank));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+
   function max(id) { var n = document.getElementById(id); return n ? +n.getAttribute("data-max") || 0 : 0; }
   renderTermine(document.getElementById("termine"), max("termine"));
   renderResultate(document.getElementById("resultate"), max("resultate"));
   renderNews(document.getElementById("news-list"), max("news-list"));
   renderMedien(document.getElementById("medien"));
+  renderTimeline(document.getElementById("timeline"), max("timeline"));
 })();

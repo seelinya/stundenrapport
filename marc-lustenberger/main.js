@@ -116,6 +116,23 @@
   });
 
 
+
+  // --- Partner-Logos auf der Startseite (alle, Hauptsponsoren grösser) -----
+  var plogos = document.getElementById("partner-logos");
+  if (plogos) {
+    var seenP = {};
+    SPONSORS.forEach(function (g) {
+      g.items.forEach(function (s) {
+        if (seenP[s.logo]) return; seenP[s.logo] = true;
+        var a = el(s.url ? "a" : "span", "plogo" + (g.main ? " plogo--main" : ""));
+        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
+        a.title = s.name;
+        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
+        a.appendChild(img); plogos.appendChild(a);
+      });
+    });
+  }
+
   // --- Sponsorenband auf jeder Seite -------------------------------------
   var bar = document.getElementById("sponsor-bar");
   if (bar) {

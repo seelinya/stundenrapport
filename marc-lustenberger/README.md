@@ -5,12 +5,11 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) geschrieben;
-auf der Partner-Seite werden Unternehmen mit «Sie» angesprochen, Fans mit «du».
+Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) und per du geschrieben.
 
 | Seite | Inhalt |
 |---|---|
-| `index.html` | Startseite: Hero, Steckbrief, «Warum man Marc die Daumen drückt», Erfolge, «Mein Weg» (Auszug, blätterbar), «Was es braucht» (Einblicke-Auszug), Mini-Spiel, Partner, News, Instagram |
+| `index.html` | Startseite: Titelbild, Facts, «Hoi, ich bin Marc» (mit Kinderfoto), News & Saison (Kommendes oben, Vergangenes ausgeblasst), Partner mit Aufruf, Fanshop |
 | `ueber-marc.html` (Über mich) | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
 | `mein-weg.html` | Alle Stationen von der Kindheit bis heute, jede mit Bild, dazu «Der Plan» bis 2031 |
 | `news.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |

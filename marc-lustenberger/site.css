@@ -863,3 +863,132 @@ body:has(.pghero:not(.pghero--img)) .head:not(.is-solid) .menu__cta:hover { back
 
 /* Handy: kein schwebender Spiel-Button – ruhiger Fokus */
 @media (max-width: 900px) { .play-fab { display: none !important; } }
+
+/* ==========================================================================
+   Moderner & lockerer: Rot statt Gold, runde Formen, mehr Bildkontrast
+   ========================================================================== */
+:root {
+  --accent: #E0352B;             /* Schweizer Rot – sparsamer Akzent */
+  --warm: var(--accent);
+  --radius: 14px;
+  --grade: grayscale(1) contrast(1.2) brightness(1.03);
+  --grade-hover: grayscale(1) contrast(1.25) brightness(1.06);
+}
+
+/* Titel in normaler Schreibweise wirken lockerer */
+.h2, .pghero__title, .phero__title, .motto__text, .plan__list strong, .why3__item h3,
+.story__text h2, .benefit__grid h3, .hl__item figcaption strong, .values5__list strong,
+.switch__text, .people__grid h3, .trust__list strong, .next__card strong, .cal__empty strong {
+  text-transform: none;
+  letter-spacing: -.005em;
+}
+.h2 { font-weight: 800; line-height: 1.02; }
+.pghero__title { line-height: 1.02; }
+
+/* Runde, moderne Formen */
+.btn { border-radius: 999px; padding-inline: 28px; }
+.menu__cta { border-radius: 999px !important; }
+.hero2__img { filter: grayscale(1) contrast(1.22) brightness(.98) !important; }
+.hl__item, .story__media, .step__media, .intro__photo img, .who__photo img, .ig__tile, .gi, .product, .card, .pack, .why__quote, .people__said, .collab, .cal__empty, .form, .arena, .order__item, .summary, .done, .next__card { border-radius: var(--radius); }
+.ig__tile { overflow: hidden; }
+.product { overflow: hidden; }
+.card { border-top-width: 1px; border-top-color: var(--sand-line); }
+
+/* Rote Akzente statt Gold */
+.eyebrow::before, .eyebrow--light::before { background: var(--accent); }
+.eyebrow { color: var(--blue-dark); }
+.hero2__eyebrow { color: #fff; }
+.pteaser__tiers li { border-left-color: var(--accent) !important; }
+.plan__goal .plan__year { color: #fff; }
+.plan__goal::before { background: var(--accent) !important; border-color: var(--accent) !important; box-shadow: 0 0 0 6px rgba(224,53,43,.25) !important; }
+.why3__no { color: var(--accent); }
+.step__year { color: #B9C7D2; }
+.story--accent .story__year, .step--accent .step__year { color: var(--accent); }
+.values5__list li, .benefit__grid article { border-top-color: var(--blue); }
+.offer__list li::before { background: var(--accent); }
+.more::after { color: var(--accent); }
+.card__link { border-bottom-color: var(--accent); }
+
+/* ---------- Startseite: Hoi ---------- */
+.hoi { background: #fff; overflow: hidden; }
+.hoi__grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(36px, 6vw, 110px); align-items: center; }
+.hoi__photo { margin: 0; position: relative; max-width: 460px; }
+.hoi__photo img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 15%; border-radius: 22px; filter: var(--grade) !important; }
+.hoi__bubble {
+  position: absolute; left: -14px; bottom: 34px;
+  background: #fff; color: var(--ink);
+  font-family: var(--f-head); font-weight: 800; font-style: italic;
+  font-size: clamp(22px, 2vw, 32px); line-height: 1.05;
+  padding: 14px 20px 16px; border-radius: 18px 18px 18px 4px;
+  box-shadow: 0 14px 34px rgba(21,26,31,.18);
+  transform: rotate(-4deg);
+  max-width: 78%;
+}
+.hoi__bubble::after { content: "Klein-Marc"; display: block; margin-top: 4px; font-family: var(--f-body); font-style: normal; font-weight: 600; font-size: 13px; color: var(--accent); letter-spacing: .02em; }
+.hoi__text { display: grid; gap: 18px; }
+.hoi__lead { font-size: clamp(18px, .6vw + 14px, 24px); line-height: 1.5; color: var(--ink); }
+.hoi__text p:not(.hoi__lead):not(.eyebrow) { color: var(--ink-soft); font-size: clamp(16px, .35vw + 14px, 20px); line-height: 1.65; }
+.hoi__links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+@media (max-width: 860px) {
+  .hoi__grid { grid-template-columns: 1fr; }
+  .hoi__photo { max-width: 360px; margin-inline: auto; }
+  .hoi__bubble { left: -6px; }
+}
+
+/* ---------- Startseite: Saison-Zeitleiste ---------- */
+.season2 { background: var(--sand); }
+.season2__grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: clamp(28px, 5vw, 90px); align-items: start; }
+.season2__head { display: grid; gap: 14px; align-content: start; }
+.season2__head > p:not(.eyebrow) { color: var(--ink-soft); font-size: clamp(16px, .35vw + 14px, 19px); line-height: 1.6; }
+.season2__head .more { margin-top: 4px; }
+.tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tl__item { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 22px; border-radius: var(--radius); background: #fff; }
+.tl__when { font-family: var(--f-head); font-weight: 700; font-size: 16px; letter-spacing: .04em; color: var(--ink-soft); }
+.tl__what { display: grid; gap: 2px; min-width: 0; }
+.tl__what strong { font-weight: 700; color: var(--ink); line-height: 1.3; }
+.tl__what span { font-size: 14.5px; color: var(--ink-soft); }
+.tl__badge { font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.tl__rank { font-family: var(--f-head); font-weight: 800; font-size: 26px; color: var(--blue); min-width: 2.2em; text-align: right; }
+.tl__item--next { background: var(--blue-deep); box-shadow: 0 14px 34px rgba(31,47,60,.18); }
+.tl__item--next .tl__when { color: #C9D6E0; }
+.tl__item--next .tl__what strong { color: #fff; font-size: 18px; }
+.tl__item--next .tl__what span { color: #C9D6E0; }
+.tl__item--past { opacity: .6; transition: opacity .25s; }
+.tl__item--past:first-of-type, .tl__item--next + .tl__item--past { opacity: .85; }
+.tl__item--past:hover { opacity: 1; }
+@media (max-width: 860px) { .season2__grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) {
+  .tl__item { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 16px; }
+  .tl__when { grid-column: 1 / -1; font-size: 14px; }
+}
+
+/* ---------- Startseite: Partner ---------- */
+.partners2 { background: #fff; }
+.partners2__head { margin-bottom: clamp(20px, 2.4vw, 36px); }
+.partners2__logos { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+.plogo { display: flex; align-items: center; justify-content: center; aspect-ratio: 177 / 101; background: var(--tile); border-radius: 12px; overflow: hidden; }
+.plogo img { width: 100%; height: 100%; object-fit: contain; filter: grayscale(1); opacity: .8; transition: filter .3s, opacity .3s; mix-blend-mode: multiply; }
+.plogo:hover img { filter: none; opacity: 1; }
+.plogo--main { grid-column: span 2; }
+.join { margin-top: clamp(28px, 3.4vw, 52px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px 40px; padding: clamp(24px, 3.4vw, 48px); border-radius: 22px; background: var(--blue); color: #fff; }
+.join__title { font-family: var(--f-head); font-weight: 800; font-size: clamp(26px, 2.6vw, 42px); line-height: 1.05; }
+.join p { margin-top: 10px; color: #E6EDF2; max-width: 34em; font-size: clamp(16px, .35vw + 14px, 19px); line-height: 1.55; }
+.join__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 600px) {
+  .plogo--main { grid-column: span 1; }
+  .partners2__logos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .join__actions .btn { width: 100%; }
+}
+
+/* ---------- Startseite: Fanshop ---------- */
+.shop2 { background: var(--sand); }
+.shop2__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 32px; margin-bottom: clamp(20px, 2.4vw, 36px); }
+.shop2__head .more { margin-top: 0; }
+.product img { filter: grayscale(1) contrast(1.12) !important; transition: filter .4s, transform .8s cubic-bezier(.2,.7,.2,1); }
+.product:hover img { filter: none !important; }
+@media (min-width: 1101px) { .shop2__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+/* Spiel auf «Über mich» */
+.game { background: var(--blue-soft); }
+
+@media (max-width: 600px) { .partners2__logos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } .plogo { border-radius: 8px; } }
