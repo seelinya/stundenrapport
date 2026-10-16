@@ -5,26 +5,30 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Zwei Seiten:
+Mehrere Seiten mit gemeinsamem Header und Footer:
 
-- `index.html` – Startseite: Hero mit bewegtem Hintergrund (Fotos blenden ineinander, Sägemehl
-  fliegt), Steckbrief, «Über Marc», der Werdegang in zehn Stationen
-  vom Schnuppertraining bis zum Ziel ESAF 2028, Motto, Kranz-Bilanz, Mini-Spiel, News,
-  Partner-Teaser, Fanartikel und Kontakt.
-- `partner.html` – für Sponsoren: Warum Marc, die drei Pakete aus dem Sponsoringdossier, aktuelle
-  Partner und Anfrage. Die Anfrage-Buttons öffnen das Formular auf der Startseite bereits ausgefüllt
-  (z. B. `index.html#anfrage-hauptsponsor`).
+| Seite | Inhalt |
+|---|---|
+| `index.html` | Startseite: Hero, Steckbrief, «Warum man Marc die Daumen drückt», Erfolge, «Mein Weg» (Auszug, blätterbar), «Was es braucht» (Einblicke-Auszug), Mini-Spiel, Partner, News, Instagram |
+| `ueber-marc.html` | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
+| `mein-weg.html` | Alle Stationen von der Kindheit bis heute, jede mit Bild |
+| `einblicke.html` | Galerie mit Filter (Wettkampf, Training, Alltag) und Grossansicht |
+| `partner.html` | Was Partner davon haben, Leistungsausweis, Ablauf, Pakete, aktuelle Partner |
+| `fanartikel.html` | Fanartikel; «Bestellen» öffnet `kontakt.html#artikel-<id>` mit vorausgefülltem Warenkorb |
+| `kontakt.html` | Kontakt- und Bestellformular, Instagram |
 
-Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `journey.js` (Hero, Kapitel, Kranz-Bilanz),
-`form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `journey.css`.
+Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `site.js` (Hero-Video, «Mein Weg», Galerie,
+Anfrage-Links), `form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `site.css`.
 
-### Platzhalter und Video
+### Platzhalter, Instagram und Video
 
-- «Foto folgt»-Platzhalter im Werdegang (Kindheit, Jungschwinger) und in der Galerie (Training,
-  Ernährungsberatung, Routine, Körperanalyse, Ferien). In der Galerie eine Kachel ersetzen durch
+- «Foto folgt» in «Mein Weg» (Kindheit, Jungschwinger) und in der Galerie (Training, Ernährungsberatung,
+  Kraftraum, Körperanalyse, Ferien). Galerie-Kachel ersetzen durch
   `<figure class="gi" data-cat="training"><img src="assets/img/…" alt="…"><figcaption>…</figcaption></figure>`.
-- Hintergrundvideo im Hero: Datei z. B. als `assets/video/hero.mp4` ablegen und den Pfad im
-  `data-src` des `<video id="hero-video">` eintragen. Ohne Video blenden die Fotos ineinander.
+- Instagram: Die Kacheln verlinken auf das Profil und zeigen Fotos der Website. Für echte, aktuelle Beiträge
+  beim Hosting ein Instagram-Feed-Widget einbinden (Platz ist im Code markiert).
+- Hintergrundvideo im Hero: Datei z. B. als `assets/video/hero.mp4` ablegen und im `data-src` des
+  `<video id="hero-video">` eintragen.
 
 ## Inhalte pflegen
 

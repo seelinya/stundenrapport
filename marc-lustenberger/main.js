@@ -130,8 +130,7 @@
     body.appendChild(price);
     if (!p.noOrder) {
       var a = el("a", "product__order", "Bestellen");
-      a.href = "#kontakt";
-      a.setAttribute("data-product", p.id);
+      a.href = "kontakt.html#artikel-" + p.id;
       body.appendChild(a);
     } else {
       body.appendChild(el("span"));

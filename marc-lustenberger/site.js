@@ -1,4 +1,4 @@
-/* Startseite: Hero-Hintergrund, Werdegang-Navigation, Anfrage-Links */
+/* Seiten: Hero-Video, «Mein Weg», Galerie, Anfrage-Links, Spiel-Button */
 (function () {
   "use strict";
 
@@ -168,7 +168,7 @@
   }
 
 
-  // --- Werdegang: Pfeile zum Blättern -------------------------------------------
+  // --- Mein Weg: Pfeile zum Blättern -------------------------------------------
   var track = $("path-track"), prev = $("path-prev"), next = $("path-next");
   if (track && prev && next) {
     var stepW = function () { var f = track.querySelector(".step"); return f ? f.getBoundingClientRect().width + 24 : 300; };
@@ -208,6 +208,19 @@
     $("lb-close").addEventListener("click", close);
     lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) close(); });
+  }
+
+
+  // Spiel-Button auf Seiten ohne Spiel: nach etwas Scrollen einblenden
+  var fab = $("fab");
+  if (fab && !$("arena")) {
+    var footer = document.querySelector(".foot");
+    var onFab = function () {
+      var nearEnd = footer && footer.getBoundingClientRect().top < window.innerHeight;
+      fab.classList.toggle("is-visible", (window.scrollY || 0) > window.innerHeight * 0.6 && !nearEnd);
+    };
+    window.addEventListener("scroll", onFab, { passive: true });
+    onFab();
   }
 
   // --- Direktlinks von der Partner-Seite: Formular vorausfüllen -----------------
