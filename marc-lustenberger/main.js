@@ -120,7 +120,7 @@
 
   // --- Sponsoren --------------------------------------------------------
   var tiers = document.getElementById("tiers");
-  SPONSORS.forEach(function (group) {
+  if (tiers) SPONSORS.forEach(function (group) {
     var tier = el("div", "tier" + (group.main ? " tier--main" : ""));
     tier.appendChild(el("h3", "tier__name", group.tier));
     var ul = el("ul", "tier__logos");
@@ -144,35 +144,48 @@
   var MONTHS_LONG = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
   var cal = document.getElementById("kalender");
   if (cal) {
-    var today = new Date().toISOString().slice(0, 10);
+    var now = new Date(); var today = now.toISOString().slice(0, 10);
     var next = TERMINE.filter(function (t) { return t.date >= today; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
-    var calItem = function (date, title, sub, badge, cls) {
-      var li = el("li", "m-cal__item " + cls);
-      var d = el("span", "m-cal__date");
-      var p = date.split("-");
-      d.appendChild(el("b", null, p[2] ? String(parseInt(p[2], 10)) : "–"));
-      d.appendChild(el("span", null, (p[1] ? MONTHS[parseInt(p[1], 10) - 1] + " " : "") + p[0]));
-      li.appendChild(d);
-      var info = el("span", "m-cal__info");
-      info.appendChild(el("strong", null, title));
-      info.appendChild(el("span", null, sub));
-      li.appendChild(info);
-      if (badge) li.appendChild(el("span", "m-cal__badge", badge));
-      cal.appendChild(li);
+    var fmtDate = function (d) {
+      var p = d.split("-");
+      if (p.length === 3) return parseInt(p[2], 10) + ". " + MONTHS_LONG[parseInt(p[1], 10) - 1] + " " + p[0];
+      if (p.length === 2) return MONTHS_LONG[parseInt(p[1], 10) - 1] + " " + p[0];
+      return p[0];
     };
-    if (!next.length) {
-      var li0 = el("li", "m-cal__item m-cal__item--next");
-      var d0 = el("span", "m-cal__date"); d0.appendChild(el("b", null, "27")); d0.appendChild(el("span", null, "Saison"));
-      li0.appendChild(d0);
-      var i0 = el("span", "m-cal__info");
-      i0.appendChild(el("strong", null, "Saison 2027"));
-      i0.appendChild(el("span", null, "Meine Schwingfeste folgen, sobald die Einteilungen feststehen."));
-      li0.appendChild(i0);
-      li0.appendChild(el("span", "m-cal__badge", "Demnächst"));
-      cal.appendChild(li0);
+    // Als Nächstes: hervorgehobene Karte
+    var feat = el("div", "m-next");
+    var tag = el("span", "m-next__tag", "Als Nächstes");
+    feat.appendChild(tag);
+    if (next.length) {
+      var t0 = next[0];
+      var days = Math.round((new Date(t0.date + "T12:00:00") - now) / 864e5);
+      feat.appendChild(el("span", "m-next__date", fmtDate(t0.date) + (days >= 0 ? " · in " + days + (days === 1 ? " Tag" : " Tagen") : "")));
+      feat.appendChild(el("strong", "m-next__name", t0.name));
+      feat.appendChild(el("span", "m-next__place", t0.place));
+    } else {
+      feat.appendChild(el("span", "m-next__date", "Saison 2027"));
+      feat.appendChild(el("strong", "m-next__name", "Meine Schwingfeste folgen bald"));
+      feat.appendChild(el("span", "m-next__place", "Sobald die Einteilungen feststehen, siehst du hier, wo ich schwinge."));
     }
-    next.slice(0, 4).forEach(function (t, i) { calItem(t.date, t.name, t.place, i === 0 ? "Nächstes Fest" : "", "m-cal__item--next"); });
-    RESULTATE.slice(0, 3).forEach(function (r) { calItem(r.date, r.name, r.place + " · " + r.note, r.rank, "m-cal__item--past"); });
+    cal.appendChild(feat);
+    var row = function (list, title, date, name, sub, end) {
+      var li = el("li", "m-row");
+      var main = el("span", "m-row__main");
+      main.appendChild(el("span", "m-row__date", date));
+      main.appendChild(el("strong", "m-row__name", name));
+      if (sub) main.appendChild(el("span", "m-row__sub", sub));
+      li.appendChild(main);
+      if (end) li.appendChild(el("span", "m-row__end", end));
+      list.appendChild(li);
+    };
+    if (next.length > 1) {
+      cal.appendChild(el("p", "m-rows__title", "Weitere Termine"));
+      var ul1 = el("ul", "m-rows"); cal.appendChild(ul1);
+      next.slice(1, 4).forEach(function (t) { row(ul1, null, fmtDate(t.date), t.name, t.place); });
+    }
+    cal.appendChild(el("p", "m-rows__title", "Zuletzt"));
+    var ul2 = el("ul", "m-rows m-rows--past"); cal.appendChild(ul2);
+    RESULTATE.slice(0, 3).forEach(function (r) { row(ul2, null, fmtDate(r.date), r.name, r.place + " · " + r.note, r.rank); });
   }
   var newsList = document.getElementById("news-list");
   if (newsList) NEWS.slice(0, 3).forEach(function (n) {
@@ -188,28 +201,43 @@
 
   // --- Fanartikel -------------------------------------------------------
   var products = document.getElementById("products");
-  if (products) PRODUCTS.forEach(function (p) {
-    var li = el("li", "product");
-    var img = el("img");
-    img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
-    li.appendChild(img);
-    var body = el("div", "product__body");
-    body.appendChild(el("h3", null, p.name));
-    body.appendChild(el("p", null, p.text));
-    var price = el("p", "product__price", p.chf ? "CHF " + p.chf.toFixed(2) : "Gratis");
-    price.appendChild(el("small", null, p.ship));
-    body.appendChild(price);
-    if (!p.noOrder) {
-      var a = el("a", "product__order", "Bestellen");
-      a.href = "#kontakt";
-      a.setAttribute("data-product", p.id);
-      body.appendChild(a);
-    } else {
-      body.appendChild(el("span"));
-    }
-    li.appendChild(body);
-    products.appendChild(li);
-  });
+  if (products) {
+    var external = products.getAttribute("data-order") === "page";
+    var skip = (products.getAttribute("data-skip") || "").split(",");
+    var limit = parseInt(products.getAttribute("data-limit") || "0", 10);
+    var list = PRODUCTS.filter(function (p) { return skip.indexOf(p.id) < 0; });
+    if (limit) list = list.slice(0, limit);
+    list.forEach(function (p) {
+      var li = el("li", "p3d");
+      var card = el("div", "p3d__card");
+      var stage = el("div", "p3d__stage");
+      var img = el("img"); img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
+      stage.appendChild(img);
+      card.appendChild(stage);
+      var body = el("div", "p3d__body");
+      body.appendChild(el("h3", null, p.name));
+      body.appendChild(el("p", "p3d__price", p.chf ? "CHF " + p.chf.toFixed(2) : "Gratis"));
+      if (!p.noOrder) {
+        var a = el("a", "btn m-btn m-btn--line p3d__btn", "Bestellen");
+        if (external) a.href = "index.html#bestellen-" + p.id;
+        else { a.href = "#kontakt"; a.setAttribute("data-product", p.id); }
+        body.appendChild(a);
+      }
+      card.appendChild(body);
+      li.appendChild(card);
+      products.appendChild(li);
+      // 3D-Neigung folgt der Maus
+      if (!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+        stage.addEventListener("pointermove", function (e) {
+          var r = stage.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          stage.style.setProperty("--ry", (x * 18).toFixed(1) + "deg");
+          stage.style.setProperty("--rx", (-y * 14).toFixed(1) + "deg");
+        });
+        stage.addEventListener("pointerleave", function () { stage.style.removeProperty("--ry"); stage.style.removeProperty("--rx"); });
+      }
+    });
+  }
 
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");

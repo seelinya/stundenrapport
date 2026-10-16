@@ -180,6 +180,17 @@
     if (t) selectTopic(t.getAttribute("data-topic"));
   });
 
+  // Vom Fanshop kommend (index.html#bestellen-<id>): Artikel direkt in den Warenkorb
+  var mHash = /^#bestellen-(.+)$/.exec(location.hash);
+  if (mHash) {
+    selectTopic("Fanartikel");
+    var lh = lines.find(function (x) { return x.pid === mHash[1]; });
+    if (lh && lh.qty === 0) lh.qty = 1;
+    renderOrder(); update();
+    var kk = document.getElementById("kontakt");
+    if (kk) setTimeout(function () { kk.scrollIntoView(); }, 80);
+  }
+
   // --- Prüfen --------------------------------------------------------------
   function setErr(key, msg) {
     var p = form.querySelector("[data-err='" + key + "']");
