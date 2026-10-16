@@ -765,3 +765,84 @@ body:has(.pghero:not(.pghero--img)) .head:not(.is-solid) .menu__cta:hover { back
 .fanclub__grid { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px 60px; }
 .fanclub .h2 { color: #fff; }
 .fanclub p:not(.eyebrow) { margin-top: 12px; max-width: 34em; color: #E6EDF2; font-size: clamp(16px, .4vw + 14px, 20px); line-height: 1.6; }
+
+/* ==========================================================================
+   Lebendiger: Fotos in Farbe mit einheitlichem Look, mehr Blau, knapper
+   ========================================================================== */
+
+:root {
+  /* Ein gemeinsamer Farblook für alle Fotos: leicht entsättigt, warm, klarer Kontrast */
+  --grade: saturate(.78) contrast(1.07) brightness(1.03) sepia(.12);
+  --grade-hover: saturate(.95) contrast(1.05) brightness(1.04) sepia(.06);
+  --warm: #C9A06A;           /* Sägemehl-Gold, nur für kleine Akzente */
+  --sec: clamp(56px, 6.5vw, 108px);
+}
+@media (min-width: 1800px) { :root { --sec: clamp(100px, 6vw, 140px); } }
+@media (max-width: 600px) { :root { --sec: 52px; } }
+
+/* Alle Fotos im gleichen Look */
+.hero2__img, .who__photo img, .hl__item img, .step__media img, .story__media img,
+.gi img, .ig__tile img, .intro__photo img, .motto__img, .pghero__img, .phero__img,
+.contact__img, .product img, .order__item img, .mile img, .band__img, .about__photo img, .chap__img img {
+  filter: var(--grade) !important;
+}
+.hl__item:hover img, .gi:hover img, .ig__tile:hover img, .product:hover img { filter: var(--grade-hover) !important; }
+.order__item img { opacity: .55; }
+.order__item.is-active img { opacity: 1; }
+.lb img { filter: none; }
+
+/* Logos in Originalfarbe */
+.logo-tile img, .logo-marquee__track img, .sbar__logo img { filter: none !important; opacity: 1; }
+
+/* Überlagerungen in Markenblau statt Grau */
+.hero2__shade {
+  background:
+    linear-gradient(180deg, rgba(31,47,60,.45) 0%, rgba(31,47,60,0) 25%),
+    linear-gradient(0deg, rgba(31,47,60,.88) 0%, rgba(42,66,86,.4) 45%, rgba(42,66,86,0) 72%),
+    linear-gradient(90deg, rgba(31,47,60,.5) 0%, rgba(31,47,60,0) 60%);
+}
+.motto__shade { background: linear-gradient(90deg, rgba(31,47,60,.9) 0%, rgba(42,66,86,.65) 55%, rgba(90,122,146,.3) 100%); }
+.pghero--img::after { background: linear-gradient(90deg, rgba(31,47,60,.9) 0%, rgba(42,66,86,.6) 55%, rgba(90,122,146,.2) 100%); }
+
+/* Kleine warme Akzente */
+.eyebrow::before { background: var(--warm); height: 2px; }
+.eyebrow--light::before { background: var(--warm); }
+.hero2__eyebrow { color: #F1DFC4; }
+.why3__no, .step__year { color: var(--warm); }
+.plan__goal .plan__year { color: var(--warm); }
+.plan__goal::before { background: var(--warm) !important; border-color: var(--warm) !important; box-shadow: 0 0 0 6px rgba(201,160,106,.25) !important; }
+.more::after { color: var(--warm); }
+
+/* Farbiger Rhythmus der Abschnitte */
+.why3 { background: #fff; }
+.hl { background: var(--blue-soft); }
+.hl__line { font-family: var(--f-head); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: clamp(17px, 1.2vw, 22px); color: var(--blue-dark); margin-top: clamp(20px, 2.4vw, 32px); }
+.hl__line b { color: var(--blue); font-weight: 800; font-size: 1.25em; }
+.insight { background: #fff; padding-top: var(--sec); }
+.game { background: var(--sand); }
+.pteaser { background: var(--blue); color: #fff; }
+.pteaser .h2, .pteaser .eyebrow { color: #fff; }
+.pteaser .lead { color: #E6EDF2; }
+.pteaser .btn--blue { background: #fff; color: var(--blue-dark); }
+.pteaser .btn--blue:hover { background: var(--blue-soft); }
+.pteaser .btn--line { border-color: rgba(255,255,255,.75); color: #fff; }
+.pteaser .btn--line:hover { background: rgba(255,255,255,.12); }
+.pteaser__tiers li { background: rgba(255,255,255,.1); border-left-color: var(--warm) !important; }
+.pteaser__tiers strong { color: #fff; }
+.pteaser__tiers span { color: #DCE5EC; }
+.season { background: #fff; }
+.ig { background: var(--sand); }
+.values5 { background: #fff; padding-top: var(--sec); }
+.values5__list li { border-top-color: var(--warm); }
+.back { background: var(--blue-deep); color: #fff; }
+.back .h2, .back__quote { color: #fff; }
+.back__text p:not(.back__quote) { color: #C9D6E0; }
+.benefit__grid article { border-top-color: var(--warm); }
+.offer__list li::before { background: var(--warm); }
+
+/* Knapper: weniger Luft zwischen Kopf und Inhalt */
+.why3__head, .hl__head, .insight__head, .season__head, .plan__head, .gal__head, .ig__head { margin-bottom: clamp(18px, 2.2vw, 32px); }
+.pghero { padding-bottom: clamp(36px, 4.5vw, 72px); }
+.story { padding-block: clamp(28px, 4vw, 60px); }
+.switch__half { padding-block: clamp(44px, 6vw, 96px); }
+.plan__base { margin-top: clamp(24px, 3vw, 40px); }
