@@ -324,3 +324,14 @@ strong, b { font-weight: 900; }
   .tier__logos li { width: calc(33.333% - 12px); }
   .tier--main .tier__logos li { width: calc(50% - 9px); }
 }
+
+/* Hero: Marcs Spruch unter dem Namen */
+.m-hero__quote { margin: clamp(18px, 2vw, 28px) 0 0; }
+.m-hero__quote blockquote { margin: 0; font-family: var(--f-note); font-size: clamp(30px, 2.8vw, 50px); line-height: 1.15; color: #fff; }
+.m-hero__quote figcaption { margin-top: 10px; font-weight: 900; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+
+/* Bildband: nur ein Zitat */
+.m-band__inner { display: flex; justify-content: center; text-align: center; }
+.m-band__quote { margin: 0; }
+.m-band__quote .m-band__motto { margin: 0; font-size: clamp(32px, 5vw, 84px); line-height: 1.04; max-width: 14em; }
+.m-band__quote footer { margin-top: 22px; font-weight: 900; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--blue-light); }
