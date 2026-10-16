@@ -115,3 +115,8 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 }
 .sw-zoom__text { font-size: clamp(36px, 7vw, 120px) !important; }
 .sw-hero__lead { font-size: var(--t-lead) !important; }
+
+/* Spiel freigestellt: keine Kachel, kein Schatten */
+.sw-game .arena[data-bare] { background: transparent; box-shadow: none !important; border-radius: 0; overflow: visible; }
+.sw-game .arena[data-bare] .arena__panel { background: transparent; border-top: 0; padding-inline: 0; }
+.sw-game .arena[data-bare] .arena__hud { color: var(--ink); }

@@ -97,7 +97,11 @@
     ctx.fill();
   }
 
+  // Freigestellt (data-bare an der Arena): keine Kachel, keine Tribüne – nur Ring und Schwinger
+  var bare = arena && arena.hasAttribute("data-bare");
+
   function drawBackground(cheer) {
+    if (bare) { ctx.clearRect(0, 0, W, H); drawRing(); return; }
     var g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, "#F4F7F9"); g.addColorStop(0.55, "#E9EFF3"); g.addColorStop(1, "#DCE5EC");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -113,7 +117,10 @@
     });
     rrect(0, 380, W, 8, 0, "#C7D3DC");
 
-    // Sägemehlring
+    drawRing();
+  }
+
+  function drawRing() {
     ctx.fillStyle = "#CDB483";
     ctx.beginPath(); ctx.ellipse(CX, 646, W * 0.488, 88, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = C.saw;
