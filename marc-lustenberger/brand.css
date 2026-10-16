@@ -491,3 +491,77 @@ strong, b { font-weight: 900; }
   .sp-why__list, .sp-get__list { grid-template-columns: 1fr; }
   .sp-cta__btns .m-btn { flex: 1 1 100%; }
 }
+
+/* ==========================================================================
+   Runde 2: Kalender & News, keine Schattenrahmen, Sponsoren links, neuer Footer
+   ========================================================================== */
+/* Keine versetzten Rahmen mehr hinter den Bildern */
+.m-about__photo::before, .m-spons__photo::before, .sp-proof::before { display: none !important; }
+.m-about__photo, .m-spons__photo { margin-right: 0 !important; margin-left: 0 !important; }
+
+/* Kalender & News */
+.m-news { background: #F5F5F5; }
+.m-news__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.m-cal__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.m-cal__item { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 18px; align-items: center; background: #fff; padding: 14px 18px 14px 14px; }
+.m-cal__date { display: grid; place-items: center; align-content: center; width: 74px; height: 74px; background: var(--blue); color: #fff; border-radius: 12px; line-height: 1; }
+.m-cal__date b { font-size: 28px; font-weight: 900; }
+.m-cal__date span { font-size: 11px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; margin-top: 4px; }
+.m-cal__item--past .m-cal__date { background: #E3E8EC; color: var(--blue-dark); }
+.m-cal__info { display: grid; gap: 3px; min-width: 0; }
+.m-cal__info strong { font-weight: 900; text-transform: uppercase; font-size: 16px; line-height: 1.2; }
+.m-cal__info span { color: var(--ink-soft); font-size: 15px; }
+.m-cal__badge { font-weight: 900; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 7px 12px; border-radius: 999px; background: var(--blue); color: #fff; white-space: nowrap; }
+.m-cal__item--past .m-cal__badge { background: transparent; color: var(--ink); font-size: 20px; letter-spacing: 0; padding: 0; }
+.m-news__list { display: grid; gap: 10px; }
+.m-newsitem { display: grid; gap: 6px; background: #fff; padding: 20px 22px; text-decoration: none; color: var(--ink); border-left: 3px solid var(--blue); transition: transform .3s var(--ease), box-shadow .3s; }
+.m-newsitem:hover { transform: translateX(6px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+.m-newsitem__meta { font-weight: 900; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); }
+.m-newsitem strong { font-weight: 900; text-transform: uppercase; font-size: 18px; line-height: 1.2; }
+.m-newsitem__text { color: var(--ink-soft); }
+.m-newsitem__src { font-weight: 900; font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; }
+.m-newsitem__src::after { content: " ↗"; }
+
+/* Sponsoring schlanker, Sponsoren links bündig */
+.m-spons__intro { align-items: center; }
+.m-spons__photo { max-width: 320px; }
+.m-thanks { text-align: left; margin-top: clamp(40px, 5vw, 70px); }
+.m-thanks .m-sub { text-align: left; }
+.tiers { justify-items: stretch; }
+.tier { grid-template-columns: 170px 1fr !important; justify-items: start; align-items: center; border-top: 1px solid #E6E6E6; padding-block: 14px; }
+.tier__name { text-align: left; }
+.tier__logos { justify-content: flex-start; gap: 10px 12px; }
+.tier__logos li { width: 130px; }
+.tier--main .tier__logos li { width: 170px; }
+@media (max-width: 860px) { .tier { grid-template-columns: 1fr !important; } }
+@media (max-width: 560px) {
+  .tier__logos li { width: calc(33.333% - 8px); }
+  .tier--main .tier__logos li { width: calc(50% - 6px); }
+}
+
+/* Zitat als Abschluss über dem Footer */
+.m-band__inner { padding-block: clamp(80px, 10vw, 150px); }
+
+/* Footer höher und übersichtlicher */
+.m-foot { padding-block: clamp(56px, 7vw, 96px) 0; }
+.m-foot__top { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr; gap: 36px 40px; padding-bottom: clamp(40px, 5vw, 64px); }
+.m-foot__brand p { margin: 18px 0 0; color: rgba(255,255,255,.85); font-weight: 300; font-size: 17px; line-height: 1.5; }
+.m-foot .logo__full { height: 70px; }
+.m-foot__col { display: grid; gap: 10px; align-content: start; }
+.m-foot__col h4 { margin: 0 0 6px; font-weight: 900; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.m-foot__col a { color: #fff; text-decoration: none; font-weight: 400; font-size: 16px; display: inline-flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
+.m-foot__col a:hover { text-decoration: underline; }
+.m-foot__col .m-foot__game svg { width: 22px; height: 17px; }
+.m-foot__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 20px; padding-block: 20px calc(env(safe-area-inset-bottom, 0px) + 20px); border-top: 1px solid rgba(255,255,255,.22); }
+.m-foot__bottom p, .m-foot__bottom a { margin: 0; color: rgba(255,255,255,.75); font-size: 14px; text-decoration: none; }
+.m-foot__bottom a:hover { color: #fff; }
+@media (max-width: 980px) {
+  .m-news__grid { grid-template-columns: 1fr; }
+  .m-foot__top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .m-foot__top { grid-template-columns: 1fr; }
+  .m-cal__item { grid-template-columns: 60px minmax(0, 1fr); }
+  .m-cal__date { width: 60px; height: 60px; }
+  .m-cal__badge { grid-column: 2; justify-self: start; }
+}

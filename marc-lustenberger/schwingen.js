@@ -1,6 +1,6 @@
 /* Landing Page «Tauch ein ins Sägemehl»
-   Sägemehlstaub im Licht, Spotlight folgt der Maus, der Ring wächst beim Scrollen,
-   Kapitel blenden ein und werden farbig. Bei «Bewegung reduzieren» bleibt alles ruhig. */
+   Sägemehlstaub im Einstieg, Spotlight folgt der Maus, Kapitel werden farbig,
+   sobald sie im Blick sind. Bei «Bewegung reduzieren» bleibt alles ruhig. */
 (function () {
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -13,7 +13,7 @@
   function size() {
     if (!ctx) return;
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth; H = window.innerHeight;
+    W = canvas.clientWidth || window.innerWidth; H = canvas.clientHeight || window.innerHeight;
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     var n = Math.round(Math.min(140, W * H / 11000));

@@ -54,6 +54,24 @@
     { id: "autogramm", name: "Autogrammkarte", img: "fan-autogramm.jpg", text: "Frankiertes, adressiertes C5-Kuvert senden an: Marc Lustenberger, Buechmatt 2, 6166 Hasle.", chf: 0, ship: "gegen frankiertes Rückkuvert", noOrder: true }
   ];
 
+  // Kalender: kommende Schwingfeste. Während der Saison wöchentlich pflegen (Datum JJJJ-MM-TT).
+  // Beispiel: { date: "2027-05-09", name: "Luzerner Kantonales", place: "Ort LU" },
+  var TERMINE = [];
+
+  // Letzte Resultate (neueste zuerst) – erscheinen im Kalender unter den Terminen
+  var RESULTATE = [
+    { date: "2026-07-05", name: "Innerschweizer Schwingfest", place: "Arth", rank: "1a", note: "Festsieg" },
+    { date: "2025-08-31", name: "Eidgenössisches", place: "Mollis", rank: "Kranz", note: "Eidgenosse" },
+    { date: "2025-06-01", name: "Ob- und Nidwaldner Kantonales", place: "Sachseln", rank: "1.", note: "Erster Festsieg" }
+  ];
+
+  // News (neueste zuerst)
+  var NEWS = [
+    { date: "2026-07", tag: "Festsieg", title: "Doppelsieg am Innerschweizer in Arth", text: "Gestellter Schlussgang gegen Samuel Schwyzer – zwei Festsieger.", url: "https://www.srf.ch/sport/mehr-sport/schwingen/innerschweizer-schwingfest-lustenberger-und-schwyzer-teilen-festsieg-in-arth", src: "SRF Sport" },
+    { date: "2026", tag: "Heimat", title: "Empfang im Entlebuch", text: "Der Entlebucher Schwingerverband lädt zum Empfang.", url: "https://entlebucher-schwingerverband.ch/2026/empfang-marc-lustenberger/", src: "Entlebucher SV" },
+    { date: "2025-06", tag: "Interview", title: "Schwinger der Woche", text: "Nach dem ersten Kranzfestsieg in Sachseln.", url: "https://www.schlussgang.ch/aktuell/im-interview-marc-lustenberger-zum-ersten-kranzfestsieg", src: "Schlussgang" }
+  ];
+
   // Für das Bestellformular (form.js)
   window.MARC = { CONTACT_EMAIL: CONTACT_EMAIL, PRODUCTS: PRODUCTS };
 
@@ -119,6 +137,53 @@
     });
     tier.appendChild(ul);
     tiers.appendChild(tier);
+  });
+
+  // --- Kalender & News ------------------------------------------------
+  var MONTHS = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  var MONTHS_LONG = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  var cal = document.getElementById("kalender");
+  if (cal) {
+    var today = new Date().toISOString().slice(0, 10);
+    var next = TERMINE.filter(function (t) { return t.date >= today; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var calItem = function (date, title, sub, badge, cls) {
+      var li = el("li", "m-cal__item " + cls);
+      var d = el("span", "m-cal__date");
+      var p = date.split("-");
+      d.appendChild(el("b", null, p[2] ? String(parseInt(p[2], 10)) : "–"));
+      d.appendChild(el("span", null, (p[1] ? MONTHS[parseInt(p[1], 10) - 1] + " " : "") + p[0]));
+      li.appendChild(d);
+      var info = el("span", "m-cal__info");
+      info.appendChild(el("strong", null, title));
+      info.appendChild(el("span", null, sub));
+      li.appendChild(info);
+      if (badge) li.appendChild(el("span", "m-cal__badge", badge));
+      cal.appendChild(li);
+    };
+    if (!next.length) {
+      var li0 = el("li", "m-cal__item m-cal__item--next");
+      var d0 = el("span", "m-cal__date"); d0.appendChild(el("b", null, "27")); d0.appendChild(el("span", null, "Saison"));
+      li0.appendChild(d0);
+      var i0 = el("span", "m-cal__info");
+      i0.appendChild(el("strong", null, "Saison 2027"));
+      i0.appendChild(el("span", null, "Meine Schwingfeste folgen, sobald die Einteilungen feststehen."));
+      li0.appendChild(i0);
+      li0.appendChild(el("span", "m-cal__badge", "Demnächst"));
+      cal.appendChild(li0);
+    }
+    next.slice(0, 4).forEach(function (t, i) { calItem(t.date, t.name, t.place, i === 0 ? "Nächstes Fest" : "", "m-cal__item--next"); });
+    RESULTATE.slice(0, 3).forEach(function (r) { calItem(r.date, r.name, r.place + " · " + r.note, r.rank, "m-cal__item--past"); });
+  }
+  var newsList = document.getElementById("news-list");
+  if (newsList) NEWS.slice(0, 3).forEach(function (n) {
+    var a = el("a", "m-newsitem");
+    a.href = n.url; a.target = "_blank"; a.rel = "noopener";
+    var p = n.date.split("-");
+    a.appendChild(el("span", "m-newsitem__meta", (p[1] ? MONTHS_LONG[parseInt(p[1], 10) - 1] + " " : "") + p[0] + " · " + n.tag));
+    a.appendChild(el("strong", null, n.title));
+    a.appendChild(el("span", "m-newsitem__text", n.text));
+    a.appendChild(el("span", "m-newsitem__src", n.src));
+    newsList.appendChild(a);
   });
 
   // --- Fanartikel -------------------------------------------------------

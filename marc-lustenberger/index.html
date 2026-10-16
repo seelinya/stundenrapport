@@ -92,6 +92,11 @@
     <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
     <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
   </symbol>
+    <symbol id="ml-logo" viewBox="0 0 171 134">
+    <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
+    <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
+    <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
+  </symbol>
   <symbol id="ml" viewBox="0 0 138 110">
     <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
   </symbol>
@@ -106,6 +111,7 @@
   <nav class="menu" id="menu" aria-label="Hauptnavigation">
     <a href="#ueber-mich">Über mich</a>
     <a href="#erfolge">Erfolge</a>
+    <a href="#news">News</a>
     <a href="#sponsoring">Sponsoring</a>
     <a href="#einblicke">Einblicke</a>
     <a href="#fanshop">Fanshop</a>
@@ -158,22 +164,8 @@
       <h2 class="h2">Hoi, ich bin Marc.</h2>
       <p class="m-lead">Ich war sechs, als mich meine Mutter an die Luzerner Fasnacht mitnehmen wollte. Ich hatte andere Pläne: Ich lief davon und fragte fremde Leute, wo der Zug fährt. Ich wollte schwingen gehen.</p>
       <p class="m-lead m-lead--strong">Die Leidenschaft ist geblieben. Nur die Ziele sind grösser geworden.</p>
-      <ul class="m-values" aria-label="Meine Werte">
-        <li>Disziplin</li><li>Kollegialität</li><li>Loyalität</li><li>Leidenschaft</li><li>Lebensfreude</li>
-      </ul>
       <p class="m-sign" aria-label="Unterschrift Marc">Marc</p>
     </div>
-  </div>
-</section>
-
-<!-- ============ HALTUNG ============ -->
-<section class="m-band">
-  <img class="m-band__img" src="assets/img/ring.jpg" width="1440" height="960" alt="" loading="lazy">
-  <div class="wrap m-band__inner">
-    <blockquote class="m-band__quote">
-      <p class="m-band__motto" id="statement">«Ausreden zählen nicht. Aufgeben geht nicht.»</p>
-      <footer>Marc Lustenberger</footer>
-    </blockquote>
   </div>
 </section>
 
@@ -223,6 +215,26 @@
   </ol>
 </section>
 
+<!-- ============ KALENDER & NEWS ============ -->
+<section class="m-news sec" id="news">
+  <div class="wrap">
+    <div class="m-head rv">
+      <p class="m-eyebrow">Kalender &amp; News</p>
+      <h2 class="h2">Was läuft.</h2>
+    </div>
+    <div class="m-news__grid">
+      <div class="m-cal rv">
+        <h3 class="m-sub">Kalender</h3>
+        <ol class="m-cal__list" id="kalender"></ol>
+      </div>
+      <div class="m-news__col rv">
+        <h3 class="m-sub">News</h3>
+        <div class="m-news__list" id="news-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ SPONSORING ============ -->
 <section class="m-spons sec" id="sponsoring">
   <div class="wrap">
@@ -231,7 +243,7 @@
         <p class="m-eyebrow">Sponsoring</p>
         <h2 class="h2">Gemeinsam an die Spitze.</h2>
         <p class="m-lead">Ich suche Partner, die meinen Weg mitgehen – bis 2031 und darüber hinaus.</p>
-        <div class="m-btns"><a class="btn m-btn m-btn--blue" href="sponsoring.html">Warum ich?</a><a class="btn m-btn m-btn--line" href="#pakete">Pakete ansehen</a></div>
+        <div class="m-btns"><a class="btn m-btn m-btn--blue" href="sponsoring.html">Warum ich?</a><a class="btn m-btn m-btn--line" href="sponsoring.html#pakete">Pakete ansehen</a></div>
       </div>
       <figure class="m-spons__photo rv">
         <img src="assets/img/partner-auto.jpg" width="501" height="673" alt="Marc Lustenberger mit einem Partner vor dem Auto mit ML-Logo" loading="lazy">
@@ -241,29 +253,8 @@
 
 
 
-    <div class="m-packs rv-group" id="pakete">
-      <article class="m-pack m-pack--main">
-        <p class="m-pack__tag">Maximale Sichtbarkeit</p>
-        <h3>Hauptsponsor</h3>
-        <ul><li>Grosses Logo auf Jacke &amp; Shirt</li><li>Logo auf dem Auto</li><li>Website &amp; Social Media</li><li>Saisonrückblick + 2 Tickets</li></ul>
-        <a class="btn m-btn m-btn--blue" href="#kontakt" data-pack="Hauptsponsor">Anfragen</a>
-      </article>
-      <article class="m-pack">
-        <p class="m-pack__tag">Sichtbar am Fest</p>
-        <h3>Co-Sponsor</h3>
-        <ul><li>Logo auf Jacke &amp; Shirt</li><li>Website &amp; Social Media</li><li>Saisonrückblick + 2 Tickets Sörenberg</li></ul>
-        <a class="btn m-btn m-btn--blue" href="#kontakt" data-pack="Co-Sponsor">Anfragen</a>
-      </article>
-      <article class="m-pack">
-        <p class="m-pack__tag">Gemeinsam unterwegs</p>
-        <h3>Partner</h3>
-        <ul><li>Website &amp; Social Media</li><li>Saisonrückblick + 2 Tickets Sörenberg</li></ul>
-        <a class="btn m-btn m-btn--line" href="#kontakt" data-pack="Partner">Anfragen</a>
-      </article>
-    </div>
-
     <div class="m-thanks rv">
-      <h3 class="m-sub">Danke für euer Vertrauen</h3>
+      <h3 class="m-sub">Meine Sponsoren</h3>
       <div class="tiers" id="tiers"></div>
     </div>
   </div>
@@ -472,24 +463,43 @@
   </div>
 </section>
 
+<!-- ============ HALTUNG ============ -->
+<section class="m-band">
+  <img class="m-band__img" src="assets/img/ring.jpg" width="1440" height="960" alt="" loading="lazy">
+  <div class="wrap m-band__inner">
+    <blockquote class="m-band__quote">
+      <p class="m-band__motto" id="statement">«Ausreden zählen nicht. Aufgeben geht nicht.»</p>
+      <footer>Marc Lustenberger</footer>
+    </blockquote>
+  </div>
+</section>
+
 </main>
 
-<!-- ============ SPONSORENBAND ============ -->
-<aside class="m-sbar" aria-label="Meine Sponsoren">
-  <p class="m-sbar__label">Meine Sponsoren</p>
-  <div class="logo-marquee"><div class="logo-marquee__track" id="marquee"></div></div>
-</aside>
-
 <footer class="foot m-foot">
-  <div class="wrap m-foot__grid">
-    <a class="logo" href="#top" aria-label="Nach oben"><svg class="logo__full" viewBox="0 0 171 134" aria-hidden="true"><use href="#ml-logo"/></svg></a>
-    <nav class="m-foot__links" aria-label="Fusszeile">
-      <a href="#ueber-mich">Über mich</a><a href="#erfolge">Erfolge</a><a href="sponsoring.html">Sponsoring</a><a href="#fanshop">Fanshop</a><a href="#kontakt">Kontakt</a>
-      <a href="https://www.instagram.com/marc_lustenberger/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://marc-lustenberger.ch/impressum/" target="_blank" rel="noopener">Impressum</a>
-      <a href="schwingen.html" class="m-foot__game"><svg aria-hidden="true" viewBox="0 0 40 30"><use href="#wrestle"/></svg>Schwing gegen mich</a>
+  <div class="wrap m-foot__top">
+    <div class="m-foot__brand">
+      <a class="logo" href="#top" aria-label="Nach oben"><svg class="logo__full" viewBox="0 0 171 134" aria-hidden="true"><use href="#ml-logo"/></svg></a>
+      <p>Schwinger aus Hasle LU.<br>Eidgenosse 2025.</p>
+    </div>
+    <nav class="m-foot__col" aria-label="Seiten">
+      <h4>Entdecken</h4>
+      <a href="#ueber-mich">Über mich</a><a href="#erfolge">Erfolge</a><a href="#news">Kalender &amp; News</a><a href="#einblicke">Einblicke</a>
     </nav>
+    <nav class="m-foot__col" aria-label="Mitmachen">
+      <h4>Mitmachen</h4>
+      <a href="sponsoring.html">Sponsoring</a><a href="#fanshop">Fanshop</a><a href="schwingen.html" class="m-foot__game"><svg aria-hidden="true" viewBox="0 0 40 30"><use href="#wrestle"/></svg>Schwing gegen mich</a>
+    </nav>
+    <div class="m-foot__col">
+      <h4>Kontakt</h4>
+      <a href="mailto:kontakt@marc-lustenberger.ch">kontakt@marc-lustenberger.ch</a>
+      <a href="https://www.instagram.com/marc_lustenberger/" target="_blank" rel="noopener">Instagram</a>
+      <a href="#kontakt">Anfrage senden</a>
+    </div>
+  </div>
+  <div class="wrap m-foot__bottom">
     <p class="foot__copy">© <span id="year">2026</span> marc-lustenberger.ch</p>
+    <a href="https://marc-lustenberger.ch/impressum/" target="_blank" rel="noopener">Impressum</a>
   </div>
 </footer>
 
