@@ -7,13 +7,17 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 Mehrere Seiten mit gemeinsamem Header und Footer. Alle Texte sind aus Marcs Sicht (Ich-Form) und per du geschrieben.
 
+Gestaltung: klare Linien, Schwarz/Weiss mit hohem Kontrast, eckige Elemente. Blau (`--cta` in `site.css`)
+ist die einzige Farbe und steht für Buttons und Links. Auf Tablet und Handy blendet sich der Header beim
+Runterscrollen aus und erscheint beim Hochscrollen wieder.
+
 | Seite | Inhalt |
 |---|---|
-| `index.html` | Startseite: Titelbild, Facts, «Hoi, ich bin Marc» (mit Kinderfoto), News & Saison (Kommendes oben, Vergangenes ausgeblasst), Partner mit Aufruf, Fanshop |
+| `index.html` | Startseite: Titelbild, Facts, «Hoi, ich bin Marc» (mit Kinderfoto), Erfolge & Saison (Kommendes oben, Vergangenes ausgeblasst), Sponsoren mit Aufruf, Fanshop |
 | `ueber-marc.html` (Über mich) | Wer Marc ist, drei Gründe zum Mitfiebern, wie ihn sein bester Freund beschreibt, Steckbrief, Motto |
 | `mein-weg.html` | Alle Stationen von der Kindheit bis heute, jede mit Bild, dazu «Der Plan» bis 2031 |
-| `news.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |
-| `partner.html` | Was Partner davon haben, Leistungsausweis, Ablauf, Pakete, aktuelle Partner |
+| `erfolge.html` | Nächste Schwingfeste, Resultate, News und Medienberichte (Daten aus `saison.js`) |
+| `sponsoren.html` | Was Sponsoren davon haben, Leistungsausweis, Ablauf, Pakete, aktuelle Sponsoren |
 | `fanartikel.html` | Fanartikel; «Bestellen» öffnet `kontakt.html#artikel-<id>` mit vorausgefülltem Warenkorb |
 | `kontakt.html` | Kontakt- und Bestellformular, Instagram |
 
@@ -22,7 +26,7 @@ Auf jeder Seite steht über dem Footer das Sponsorenband mit Haupt- und Co-Spons
 ### Wöchentlich aktualisieren
 
 Termine, Resultate, News und Medienberichte stehen oben in `saison.js` als einfache Listen. Neue Einträge
-oben einfügen – Startseite und News-Seite zeigen sie automatisch an.
+oben einfügen – Startseite und Erfolge-Seite zeigen sie automatisch an.
 
 Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `site.js` (Hero-Video, «Mein Weg», Galerie,
 Anfrage-Links), `form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `site.css`.

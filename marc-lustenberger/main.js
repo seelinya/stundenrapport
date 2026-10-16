@@ -82,11 +82,17 @@
 
   var links = Array.prototype.slice.call(menu.querySelectorAll("a[href^='#']"));
   var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
-  var ticking = false;
+  var ticking = false, lastY = 0;
   function onScroll() {
     ticking = false;
     var y = window.scrollY || window.pageYOffset;
     head.classList.toggle("is-solid", y > 60);
+    // Tablet & Handy: beim Runterscrollen ausblenden, beim Hochscrollen wieder zeigen
+    var compact = window.matchMedia("(max-width: 1140px)").matches;
+    var menuOpen = burger.getAttribute("aria-expanded") === "true";
+    if (compact && !menuOpen && y > 120 && y > lastY + 4) head.classList.add("is-hidden");
+    else if (!compact || menuOpen || y < lastY - 4 || y <= 120) head.classList.remove("is-hidden");
+    lastY = y;
     var active = -1;
     targets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top < window.innerHeight * .4) active = i; });
     links.forEach(function (a, i) { a.classList.toggle("is-active", i === active); });
