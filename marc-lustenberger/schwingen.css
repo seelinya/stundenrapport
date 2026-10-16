@@ -54,7 +54,7 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 .sw-chap__text { padding-top: 16px; border-top: 3px solid var(--blue); margin-top: 14px; }
 .sw-chap__no { display: block; font-weight: 900; font-size: 12px; letter-spacing: .24em; color: var(--blue); margin-bottom: 6px; }
 .sw-chap__title { margin: 0 0 8px; font-weight: 900; text-transform: uppercase; font-size: clamp(19px, 1.5vw, 24px); line-height: 1.1; }
-.sw-chap__text p { margin: 0; font-weight: 300; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
+.sw-chap__text p { margin: 0; font-weight: 400; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
 
 /* ---------- Fuss ---------- */
 .sw-foot { display: flex; justify-content: center; gap: 28px; padding: 30px var(--gutter) calc(env(safe-area-inset-bottom, 0px) + 30px); background: var(--blue); }
@@ -86,7 +86,7 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 .sw-hero__ring circle:nth-child(2) { stroke-dasharray: 2 10; stroke: rgba(238,235,228,.35); }
 .sw-hero__ring circle:nth-child(3) { stroke: rgba(79,107,127,.7); stroke-width: 2; }
 @keyframes sw-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-.sw-hero__lead { margin: clamp(20px, 2.4vw, 34px) auto 0; max-width: 26em; font-weight: 300; font-size: var(--t-lead); color: rgba(255,255,255,.85); }
+.sw-hero__lead { margin: clamp(20px, 2.4vw, 34px) auto 0; max-width: 26em; font-weight: 400; font-size: var(--t-lead); color: rgba(255,255,255,.85); }
 .sw-scroll { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: 2px; height: 70px; background: rgba(255,255,255,.2); overflow: hidden; }
 .sw-scroll span { position: absolute; left: 0; top: -30px; width: 2px; height: 30px; background: #fff; animation: sw-drop 1.8s ease-in-out infinite; }
 @keyframes sw-drop { to { top: 70px; } }
