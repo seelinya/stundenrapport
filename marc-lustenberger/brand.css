@@ -381,3 +381,18 @@ strong, b { font-weight: 900; }
 
 /* Storytelling bei «Hoi, ich bin Marc» */
 .m-lead--strong { font-weight: 900; margin-top: 0; }
+
+/* Marcs Blau stärker: Fakten-Band und Einblicke in #4F6B7F */
+.m-facts { background: var(--blue); }
+.m-facts dt { color: #D5DEE5; }
+.m-facts__grid > div + div { border-left-color: rgba(255,255,255,.22); }
+.m-life { background: var(--blue); }
+.m-life .m-eyebrow { color: #fff; }
+.m-life .m-head__lead { color: rgba(255,255,255,.85); }
+.m-life__grid figure { background: #3B5263; }
+.m-insta:hover { color: #000; }
+
+/* Dezenter Link zum Spiel im Footer */
+.m-foot__links a.m-foot__game { display: inline-flex; align-items: center; gap: 8px; color: var(--blue-light); }
+.m-foot__game svg { width: 22px; height: 17px; }
+.m-foot__links a.m-foot__game:hover { color: #fff; }

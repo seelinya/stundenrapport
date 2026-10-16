@@ -44,3 +44,9 @@ schlussgang.ch, SRF Sport, Luzerner Zeitung und Entlebucher Schwingerverband.
 - Schriften: Titel Lato Black / Black Italic, Text Lato Light / Light Italic, Roustel nur selten (Unterschrift)
 - Fotos aus dem Moodboard liegen in `assets/img/` (max. 1600 px, nie hochskaliert)
 - Paket-Buttons (`data-pack`) füllen das Kontaktformular automatisch vor
+
+## Landing Page `schwingen.html`
+
+«Tauch ein ins Sägemehl»: dunkle Landing Page mit Sägemehlstaub (Canvas), Spotlight, einem Ring,
+der beim Scrollen wächst, fünf Kapiteln (Ring, Griff, Plattwurf, Respekt, Kranz) und dem Mini-Spiel.
+Verlinkt dezent im Footer der Startseite. Dateien: `schwingen.html`, `schwingen.css`, `schwingen.js`, `game.js`.

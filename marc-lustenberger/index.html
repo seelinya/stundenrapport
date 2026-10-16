@@ -72,6 +72,16 @@
     <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
     <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
   </symbol>
+    <symbol id="ml-logo" viewBox="0 0 171 134">
+    <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
+    <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
+    <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
+  </symbol>
+    <symbol id="ml-logo" viewBox="0 0 171 134">
+    <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
+    <text x="0" y="108.4" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="58" lengthAdjust="spacing">MARC</text>
+    <text x="0" y="133" font-family="Lato, Arial, sans-serif" font-weight="400" font-size="18.6" textLength="170" lengthAdjust="spacing">LUSTENBERGER</text>
+  </symbol>
   <symbol id="ml" viewBox="0 0 138 110">
     <path d="M0 0H26L53.6 39.6L81.6 0H107V83H138L120.6 109.6H78.6V46L53.6 80.6L28 46V63H0Z"/>
   </symbol>
@@ -270,43 +280,6 @@
   </div>
 </section>
 
-<!-- ============ MITSCHWINGEN ============ -->
-<section class="game sec" id="mitschwingen">
-  <div class="wrap game__grid">
-    <div class="game__intro">
-      <p class="eyebrow">Mitschwingen</p>
-      <h2 class="h2 rv">Schwing gegen mich.</h2>
-      <p>Klick so schnell du kannst – schaffst du den Plattwurf in zwölf Sekunden?</p>
-      <fieldset class="game__levels">
-        <legend>Gegner</legend>
-        <label><input type="radio" name="level" id="lv-1" value="0" checked><span>Jungschwinger</span></label>
-        <label><input type="radio" name="level" id="lv-2" value="1"><span>Kranzschwinger</span></label>
-        <label><input type="radio" name="level" id="lv-3" value="2"><span>Eidgenosse</span></label>
-      </fieldset>
-      <p class="game__best" id="best">Deine Bestzeit: –</p>
-    </div>
-
-    <div class="arena" id="arena" tabindex="0" role="application" aria-label="Mini-Spiel: Klicken, tippen oder Leertaste drücken, um Marc Kraft zu geben">
-      <div class="arena__stage">
-        <canvas id="ring" width="1280" height="720"></canvas>
-        <div class="arena__hud" aria-hidden="true">
-          <span>Marc</span>
-          <span class="arena__timer" id="timer">12.0 s</span>
-          <span id="foe-name">Jungschwinger</span>
-        </div>
-        <span class="arena__tap" id="tap-hint" hidden>Klick! Klick! Klick!</span>
-      </div>
-      <div class="arena__panel" id="overlay">
-        <div class="arena__msg">
-          <p class="arena__ptitle" id="ov-title">Bereit zum Anschwingen?</p>
-          <p class="arena__ptext" id="ov-text">Zwölf Sekunden. Klicken, tippen oder Leertaste.</p>
-        </div>
-        <button type="button" class="btn btn--blue arena__btn" id="start">Gang starten</button>
-      </div>
-      <p class="sr" id="game-status" role="status"></p>
-    </div>
-  </div>
-</section>
 
 <!-- ============ FANSHOP ============ -->
 <section class="m-shop sec" id="fanshop">
@@ -504,6 +477,7 @@
       <a href="#ueber-mich">Über mich</a><a href="#erfolge">Erfolge</a><a href="#sponsoring">Sponsoring</a><a href="#fanshop">Fanshop</a><a href="#kontakt">Kontakt</a>
       <a href="https://www.instagram.com/marc_lustenberger/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://marc-lustenberger.ch/impressum/" target="_blank" rel="noopener">Impressum</a>
+      <a href="schwingen.html" class="m-foot__game"><svg aria-hidden="true" viewBox="0 0 40 30"><use href="#wrestle"/></svg>Schwing gegen mich</a>
     </nav>
     <p class="foot__copy">© <span id="year">2026</span> marc-lustenberger.ch</p>
   </div>
@@ -512,6 +486,5 @@
 <!-- @artifact-body-end -->
 <script src="main.js"></script>
 <script src="form.js"></script>
-<script src="game.js"></script>
 </body>
 </html>
