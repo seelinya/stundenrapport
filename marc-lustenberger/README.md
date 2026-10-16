@@ -5,10 +5,25 @@ Statische One-Page-Website (HTML/CSS/JS, keine Abhängigkeiten, kein Build).
 
 ## Aufbau
 
-Hero · Steckbrief · Über mich · Statement · Mini-Spiel «Schwing gegen Marc» · Erfolge · Kraft/Technik/Kopf · News · Sponsoren · Fanartikel · Kontakt
+Zwei Seiten:
 
-Das Mini-Spiel steckt in `game.js` (Canvas, keine Abhängigkeiten). Schwierigkeit und Dauer
-stehen oben in der Datei (`LEVELS`, `DURATION`, `TAP`).
+- `index.html` – die Journey: Hero mit bewegtem Hintergrund (Fotos blenden ineinander, Sägemehl
+  fliegt), Steckbrief, «Wer ist Marc?» (Worte seines besten Freundes), die Journey in zehn Kapiteln
+  vom Schnuppertraining bis zum Ziel ESAF 2028, Motto, Kranz-Bilanz, Mini-Spiel, News,
+  Partner-Teaser, Fanartikel und Kontakt.
+- `partner.html` – für Sponsoren: Warum Marc, die drei Pakete aus dem Sponsoringdossier, aktuelle
+  Partner und Anfrage. Die Anfrage-Buttons öffnen das Formular auf der Startseite bereits ausgefüllt
+  (z. B. `index.html#anfrage-hauptsponsor`).
+
+Skripte: `main.js` (Inhalte, Menü, Sponsoren, Fanartikel), `journey.js` (Hero, Kapitel, Kranz-Bilanz),
+`form.js` (Formular), `game.js` (Mini-Spiel). Styles: `styles.css` und `journey.css`.
+
+### Platzhalter und Video
+
+- In den Kapiteln «Der Anfang» und «Jungschwinger» stehen gestrichelte Platzhalter für ein Kinderfoto
+  und ein Foto aus der Jungschwingerzeit. Ersetzen durch `<figure class="chap__img"><img src="…"></figure>`.
+- Hintergrundvideo im Hero: Datei z. B. als `assets/video/hero.mp4` ablegen und den Pfad im
+  `data-src` des `<video id="hero-video">` eintragen. Ohne Video blenden die Fotos ineinander.
 
 ## Inhalte pflegen
 

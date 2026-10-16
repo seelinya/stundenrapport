@@ -96,7 +96,7 @@
 
   // --- Sponsoren --------------------------------------------------------
   var tiers = document.getElementById("tiers");
-  SPONSORS.forEach(function (group) {
+  if (tiers) SPONSORS.forEach(function (group) {
     var tier = el("div", "tier" + (group.main ? " tier--main" : ""));
     tier.appendChild(el("h3", "tier__name", group.tier));
     var ul = el("ul", "tier__logos");
@@ -117,7 +117,7 @@
 
   // --- Fanartikel -------------------------------------------------------
   var products = document.getElementById("products");
-  PRODUCTS.forEach(function (p) {
+  if (products) PRODUCTS.forEach(function (p) {
     var li = el("li", "product");
     var img = el("img");
     img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
@@ -142,6 +142,7 @@
 
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");
+  if (mail) (function () {
   mail.textContent = CONTACT_EMAIL;
   document.getElementById("copy").addEventListener("click", function (e) {
     var btn = e.currentTarget;
@@ -158,6 +159,8 @@
     } catch (err) { fallback(); }
   });
 
+
+  })();
 
   // --- Eye-Catcher -----------------------------------------------------
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

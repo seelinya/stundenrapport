@@ -5,12 +5,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marc Lustenberger</title>
-<meta name="description" content="Marc Lustenberger – Eidgenosse und Schwinger aus Hasle LU. Geschichte, Erfolge, News, Sponsoren, Fanartikel und Kontakt.">
+<meta name="description" content="Marc Lustenberger – Eidgenosse und Schwinger aus Hasle LU. Seine Journey vom Schnuppertraining zum Eidgenössischen Kranz, Erfolge, News, Fanartikel und Partnerschaften.">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="journey.css">
 <!-- @artifact-head-end -->
 </head>
 <body>
@@ -31,7 +32,9 @@
   <symbol id="ml" viewBox="0 0 160 125">
     <path d="M0 0H40V73H0Z M0 0H40L60 32L85 0V52L58 90L22 40Z M85 0H125V95H160L138 125H85Z"/>
   </symbol>
+  <symbol id="kranz" viewBox="0 0 40 40"><g fill="currentColor"><path d="M17 34 A13.2 13.2 0 0 1 9.8 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M23 34 A13.2 13.2 0 0 0 30.2 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="18.01" cy="32.27" rx="5.40" ry="2.48" transform="rotate(218.0 18.01 32.27)"/><ellipse cx="11.42" cy="33.25" rx="5.17" ry="2.38" transform="rotate(187.0 11.42 33.25)"/><ellipse cx="10.09" cy="26.72" rx="4.93" ry="2.27" transform="rotate(268.0 10.09 26.72)"/><ellipse cx="5.10" cy="22.30" rx="4.70" ry="2.16" transform="rotate(237.0 5.10 22.30)"/><ellipse cx="9.25" cy="17.09" rx="4.47" ry="2.05" transform="rotate(318.0 9.25 17.09)"/><ellipse cx="9.42" cy="10.42" rx="4.23" ry="1.95" transform="rotate(287.0 9.42 10.42)"/><ellipse cx="16.09" cy="10.25" rx="4.00" ry="1.84" transform="rotate(368.0 16.09 10.25)"/><ellipse cx="21.99" cy="32.27" rx="5.40" ry="2.48" transform="rotate(-38.0 21.99 32.27)"/><ellipse cx="28.58" cy="33.25" rx="5.17" ry="2.38" transform="rotate(-7.0 28.58 33.25)"/><ellipse cx="29.91" cy="26.72" rx="4.93" ry="2.27" transform="rotate(-88.0 29.91 26.72)"/><ellipse cx="34.90" cy="22.30" rx="4.70" ry="2.16" transform="rotate(-57.0 34.90 22.30)"/><ellipse cx="30.75" cy="17.09" rx="4.47" ry="2.05" transform="rotate(-138.0 30.75 17.09)"/><ellipse cx="30.58" cy="10.42" rx="4.23" ry="1.95" transform="rotate(-107.0 30.58 10.42)"/><ellipse cx="23.91" cy="10.25" rx="4.00" ry="1.84" transform="rotate(-188.0 23.91 10.25)"/><path d="M20 33 L15.5 39 L18.5 38.4 L20 35.5 L21.5 38.4 L24.5 39 Z"/><circle cx="20" cy="33.2" r="2.2"/></g></symbol>
 </svg>
+
 
 <!-- ============ HEADER ============ -->
 <header class="head" id="head">
@@ -40,12 +43,12 @@
     <span class="logo__type">Marc<br>Lustenberger</span>
   </a>
   <nav class="menu" id="menu" aria-label="Hauptnavigation">
-    <a href="#ueber-mich">Über mich</a>
+    <a href="#marc">Marc</a>
+    <a href="#journey">Journey</a>
     <a href="#erfolge">Erfolge</a>
     <a href="#mitschwingen">Mitschwingen</a>
-    <a href="#news">News</a>
-    <a href="#sponsoren">Sponsoren</a>
     <a href="#fanartikel">Fanartikel</a>
+    <a href="partner.html" class="menu__partner">Partner</a>
     <a href="#kontakt" class="menu__cta">Kontakt</a>
   </nav>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">
@@ -55,17 +58,28 @@
 
 <main id="inhalt">
 
-<!-- ============ HERO ============ -->
-<section class="hero" id="top">
-  <img class="hero__img" src="assets/img/hero-action.jpg" alt="Schwinger im Zweikampf, das Sägemehl fliegt" fetchpriority="high">
-  <div class="hero__shade" aria-hidden="true"></div>
-  <div class="hero__content wrap">
-    <p class="hero__eyebrow"><span class="dot" aria-hidden="true"></span>Eidgenosse · ESAF 2025 Mollis</p>
-    <h1 class="hero__title"><span class="ln">Marc</span><span class="ln"><span>Lustenberger</span></span></h1>
-    <p class="hero__sub">Schwinger aus Hasle im Entlebuch. Kompromisslos im Sägemehl, bodenständig daneben.</p>
-    <div class="hero__cta">
-      <a class="btn btn--white" href="#ueber-mich">Mehr über Marc</a>
-      <a class="btn btn--ghost" href="#mitschwingen">Gegen Marc schwingen</a>
+<!-- ============ HERO: bewegter Hintergrund ============ -->
+<section class="hero2" id="top">
+  <div class="hero2__stage" aria-hidden="true">
+    <div class="hero2__slides" id="slides">
+      <img src="assets/img/cheer.jpg" alt="" class="is-on" style="--pos: 50% 18%">
+      <img src="assets/img/hero-action.jpg" alt="" style="--pos: 62% 40%">
+      <img src="assets/img/fist.jpg" alt="" style="--pos: 55% 30%">
+    </div>
+    <!-- Optional: echtes Hintergrundvideo. Datei ablegen (z. B. assets/video/hero.mp4) und den Pfad
+         in data-src eintragen. Ohne Video blenden die Fotos ineinander. -->
+    <video class="hero2__video" id="hero-video" muted loop playsinline preload="none" data-src=""></video>
+    <canvas class="hero2__dust" id="dust"></canvas>
+    <div class="hero2__shade"></div>
+  </div>
+
+  <div class="hero2__content wrap">
+    <p class="hero2__eyebrow"><span class="dot" aria-hidden="true"></span>Eidgenosse 2025 · Schwinger aus Hasle LU</p>
+    <h1 class="hero2__title"><span>Marc</span><span>Lustenberger</span></h1>
+    <p class="hero2__motto">«Ausreden zählen nicht.<br>Aufgeben geht nicht.»</p>
+    <div class="hero2__cta">
+      <a class="btn btn--white" href="#journey">Seine Journey</a>
+      <a class="btn btn--ghost" href="partner.html">Partner werden</a>
     </div>
   </div>
 
@@ -76,12 +90,14 @@
     </svg>
     <svg class="badge__mark"><use href="#ml"/></svg>
   </div>
+
+  <a class="hero2__scroll" href="#marc" aria-label="Weiter zu: Wer ist Marc?"><span></span></a>
 </section>
 
 <!-- ============ LAUFBAND ============ -->
 <div class="ticker" aria-label="Erfolge in Kürze">
   <div class="ticker__track">
-    <span>Eidgenosse 2025</span><i></i><span>Festsieg Innerschweizer 2026</span><i></i><span>8 Kränze 2025</span><i></i><span>31 Kränze</span><i></i><span>Erster Kranzfestsieg Sachseln</span><i></i><span>Hasle LU</span><i></i>
+    <span>Eidgenosse 2025</span><i></i><span>28 Kränze</span><i></i><span>Festsieg Sachseln 2025</span><i></i><span>Festsieg Innerschweizer 2026</span><i></i><span>15. Rang Jahreswertung 2025</span><i></i><span>Hasle LU</span><i></i>
   </div>
 </div>
 
@@ -93,46 +109,190 @@
     <div><dt>Geboren</dt><dd>02.02.2003</dd></div>
     <div><dt>Beruf</dt><dd>Zimmermann</dd></div>
     <div><dt>Grösse</dt><dd>182 cm</dd></div>
-    <div><dt>Gewicht</dt><dd>104 kg</dd></div>
+    <div><dt>Gewicht</dt><dd>107 kg</dd></div>
   </dl>
 </section>
 
-<!-- ============ ÜBER MICH ============ -->
-<section class="about sec" id="ueber-mich">
-  <div class="wrap about__grid">
-    <figure class="about__photo rv">
-      <img src="assets/img/portrait-kranz.jpg" alt="Marc Lustenberger mit dem eidgenössischen Kranz und in der Tracht" loading="lazy">
-      <figcaption>Mit dem Eichenlaub am ESAF 2025</figcaption>
+<!-- ============ WER IST MARC ============ -->
+<section class="who sec" id="marc">
+  <div class="wrap who__grid">
+    <figure class="who__photo rv">
+      <img src="assets/img/portrait-kranz.jpg" alt="Marc Lustenberger mit dem eidgenössischen Kranz am ESAF 2025" loading="lazy">
+      <figcaption>Mit dem Eichenlaub am ESAF 2025 in Mollis</figcaption>
     </figure>
-
-    <div class="about__text">
-      <p class="eyebrow">Über mich</p>
-      <h2 class="h2 rv">Vom Wohnzimmer<br>ins Sägemehl.</h2>
-      <blockquote class="story">
-        <p>«Als kleiner Junge wollte ich nach meinem ersten Schnuppertraining unbedingt in die Schwinghalle. Obwohl ich noch zu jung war, verfolgte ich den Schwingsport weiterhin begeistert vor dem Fernseher und raufte mich zu Hause mit meinem Vater und meinen älteren Cousins.»</p>
-        <p>«Mit sieben Jahren durfte ich endlich mit dem Schwingtraining beginnen – die Aufregung war riesig.»</p>
+    <div class="who__text">
+      <p class="eyebrow">Wer ist Marc?</p>
+      <blockquote class="who__quote rv">
+        <p>«Du hast ein riesengrosses Herz.»</p>
+        <footer>Sein bester Freund über Marc</footer>
       </blockquote>
-      <p>Heute ist Marc Eidgenosse und Festsieger. Von Beruf ist er Zimmermann, im Sägemehl steht er für den Entlebucher Schwingerverband.</p>
-
-      <div class="duo">
-        <div>
-          <h3>Im Ring</h3>
-          <p>Diszipliniert, ehrgeizig, fokussiert. Wenn der Gang läuft, sucht Marc die Entscheidung.</p>
-        </div>
-        <div>
-          <h3>Daneben</h3>
-          <p>Bodenständig, humorvoll, nahbar. Einer, mit dem man nach dem Fest gerne noch etwas trinkt.</p>
-        </div>
-      </div>
+      <p class="who__lead">Im Sägemehl zielstrebig, diszipliniert und willensstark. Daneben einer, der für Familie und Freunde bedingungslos da ist – hilfsbereit, herzlich und mit viel Humor. «Halt einfach so, wie man sich einen besten Freund wünscht.»</p>
+      <ul class="values" id="values" aria-label="So beschreiben ihn seine Freunde">
+        <li>Hilfsbereit</li><li>Herzlich</li><li>Zielstrebig</li><li>Loyal</li><li>Diszipliniert</li><li>Humorvoll</li>
+        <li>Vertrauenswürdig</li><li>Teamplayer</li><li>Willensstark</li><li>Ehrgeizig</li><li>Einfühlsam</li><li>Zuverlässig</li>
+        <li>Lösungsorientiert</li><li>Positiv denkend</li><li>Lernbereit</li><li>Innere Stärke</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ============ STATEMENT ============ -->
-<section class="statement" aria-label="Haltung">
+<!-- ============ JOURNEY ============ -->
+<section class="journey sec" id="journey">
   <div class="wrap">
-    <p class="statement__text" id="statement">Kein Kranz wird geschenkt. Jeder Gang wird erarbeitet. Im Training, im Kopf, im Sägemehl.</p>
-    <p class="statement__sign">Marc Lustenberger · Eidgenosse</p>
+    <div class="journey__head">
+      <p class="eyebrow">Die Journey</p>
+      <h2 class="h2 rv">Vom Schnuppertraining<br>zum Eichenlaub.</h2>
+      <p class="lead">Rückschläge, Verletzungen, ein halber Punkt – und ein Kindheitstraum, der in Erfüllung geht. Marcs Weg in seinen eigenen Worten.</p>
+    </div>
+
+    <div class="journey__body">
+      <nav class="jnav" id="jnav" aria-label="Kapitel der Journey">
+        <ol>
+          <li><a href="#j-anfang">Der Anfang</a></li>
+          <li><a href="#j-jung">Jungschwinger</a></li>
+          <li><a href="#j-aktiv">Aktivschwinger</a></li>
+          <li><a href="#j-pratteln">Pratteln 2022</a></li>
+          <li><a href="#j-unspunnen">Unspunnen 2023</a></li>
+          <li><a href="#j-2024">2024</a></li>
+          <li><a href="#j-durchbruch">Durchbruch 2025</a></li>
+          <li><a href="#j-esaf">Eidgenosse</a></li>
+          <li><a href="#j-2026">2026</a></li>
+          <li><a href="#j-ziel">Ziel ESAF 2028</a></li>
+        </ol>
+        <span class="jnav__bar"><span id="jbar"></span></span>
+      </nav>
+
+      <ol class="chapters" id="chapters">
+        <li class="chap" id="j-anfang">
+          <p class="chap__when">Kindheit · Hasle</p>
+          <h3>Der Anfang</h3>
+          <figure class="ph rv">
+            <span class="ph__icon" aria-hidden="true"><svg viewBox="0 0 40 30"><use href="#wrestle"/></svg></span>
+            <span class="ph__label">Platzhalter · Kinderfoto</span>
+            <span class="ph__hint">Marc als Bub im Sägemehl oder beim ersten Schnuppertraining</span>
+          </figure>
+          <p>«Schon als kleiner Junge war ich vom Schwingsport begeistert. Nach meinem ersten Schnuppertraining wollte ich unbedingt in die Schwinghalle.» Weil er noch zu jung war, schaute er vor dem Fernseher zu und raufte sich zu Hause mit dem Vater und den älteren Cousins.</p>
+        </li>
+
+        <li class="chap" id="j-jung">
+          <p class="chap__when">Ab 7 Jahren</p>
+          <h3>Jungschwinger</h3>
+          <figure class="ph rv">
+            <span class="ph__icon" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#kranz"/></svg></span>
+            <span class="ph__label">Platzhalter · Jungschwingerzeit</span>
+            <span class="ph__hint">Foto von einem Jungschwingertag oder mit den ersten Zweigen</span>
+          </figure>
+          <p>«Mit sieben Jahren durfte ich endlich starten.» Schon bald folgten Erfolge an Jungschwingertagen.</p>
+          <div class="chap__stats">
+            <div><strong>40+</strong><span>Festsiege als Jungschwinger</span></div>
+            <div><strong>120+</strong><span>Zweige</span></div>
+          </div>
+        </li>
+
+        <li class="chap" id="j-aktiv">
+          <p class="chap__when">Ab 2019</p>
+          <h3>Bei den Aktiven</h3>
+          <p>2019 beginnt die Laufbahn als Aktivschwinger. Bereits in der zweiten Saison gewinnt Marc am Schwyzer Kantonalen seinen ersten Kranz. Es folgen weitere Kränze, ein Teilverbandskranz am Innerschweizer und der erste Bergkranz auf dem Brünig.</p>
+          <figure class="chap__img rv"><img src="assets/img/action-2.jpg" alt="Marc Lustenberger im Zweikampf" loading="lazy"></figure>
+        </li>
+
+        <li class="chap chap--setback" id="j-pratteln">
+          <p class="chap__when">2022 · ESAF Pratteln</p>
+          <h3>Ein halber Punkt</h3>
+          <p>Am Eidgenössischen in Pratteln verpasst Marc den Kranz um einen halben Punkt. «Diese Erfahrung gab mir die Motivation, noch härter an mir zu arbeiten.» Doch Verletzungen bremsen ihn immer wieder aus.</p>
+        </li>
+
+        <li class="chap" id="j-unspunnen">
+          <p class="chap__when">2023 · Unspunnen-Schwinget</p>
+          <h3>Zurück nach schwierigen Monaten</h3>
+          <p>Marc qualifiziert sich für den prestigeträchtigen Unspunnen-Schwinget – und belegt mit vier Siegen, einem Unentschieden und einer Niederlage den 7. Rang. «Eine grosse Genugtuung nach schwierigen Monaten.»</p>
+          <div class="chap__stats">
+            <div><strong>4</strong><span>Siege</span></div>
+            <div><strong>7.</strong><span>Rang</span></div>
+          </div>
+        </li>
+
+        <li class="chap" id="j-2024">
+          <p class="chap__when">2024</p>
+          <h3>Trotz Rücken: Bergkranz</h3>
+          <p>Immer wieder kämpft Marc mit dem Rücken und kleineren Verletzungen. Trotzdem: 3. Rang am Stoos-Schwinget und der Bergkranz auf dem Weissenstein.</p>
+        </li>
+
+        <li class="chap chap--big" id="j-durchbruch">
+          <p class="chap__when">2025 · Sachseln</p>
+          <h3>Ein Kindheitstraum</h3>
+          <p>Eine Verletzung am Schlüsselbein – und dank seinem Team rechtzeitig zurück zur Kranzfestsaison. Am Luzerner Kantonalen steht er erstmals im Schlussgang eines Kranzfests. Eine Woche später gewinnt er das Ob- und Nidwaldner Kantonale in Sachseln: sechs Gänge, sechs Siege. «Ein Kindheitstraum ging in Erfüllung.»</p>
+          <figure class="chap__img rv"><img src="assets/img/action-3.jpg" alt="Marc Lustenberger im Zweikampf" loading="lazy"></figure>
+        </li>
+
+        <li class="chap chap--big chap--gold" id="j-esaf">
+          <p class="chap__when">30./31. August 2025 · ESAF Mollis</p>
+          <h3>Eidgenosse</h3>
+          <p>«Mit grosser Freude, aber auch mit Druck reiste ich nach Mollis.» Dort erfüllt Marc sein grosses Ziel: den Eidgenössischen Kranz. Acht Saisonkränze und der 15. Rang in der eidgenössischen Jahreswertung.</p>
+          <figure class="chap__img chap__img--tall rv"><img src="assets/img/cheer.jpg" alt="Marc Lustenberger jubelt mit beiden Fäusten" loading="lazy"></figure>
+          <div class="chap__stats">
+            <div><strong>8</strong><span>Kränze 2025</span></div>
+            <div><strong>15.</strong><span>Rang Jahreswertung</span></div>
+          </div>
+        </li>
+
+        <li class="chap" id="j-2026">
+          <p class="chap__when">5. Juli 2026 · Arth</p>
+          <h3>Festsieg am Innerschweizer</h3>
+          <p>Schlussgang gegen Samuel Schwyzer, nach 14 Minuten gestellt. Zwei Festsieger, Marc im Rang 1a – sein bisher grösster Erfolg auf Teilverbandsebene.</p>
+        </li>
+
+        <li class="chap chap--future" id="j-ziel">
+          <p class="chap__when">Nächstes Kapitel</p>
+          <h3>ESAF 2028: ganz vorne mitschwingen</h3>
+          <p>«Mein Ziel ist es, mich Schritt für Schritt an der Spitze zu etablieren, um am ESAF 2028 ganz vorne mitzuschwingen.» Dafür braucht es harte Arbeit und ein professionelles Umfeld. Daneben beginnt Marc eine Weiterbildung zum Technischen Kaufmann.</p>
+          <div class="chap__cta">
+            <a class="btn btn--blue" href="partner.html">Weg als Partner begleiten</a>
+            <a class="btn btn--line" href="#fanartikel">Als Fan dabei sein</a>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOTTO ============ -->
+<section class="motto" aria-label="Marcs Motto">
+  <img class="motto__img" src="assets/img/fist.jpg" alt="" loading="lazy">
+  <div class="motto__shade" aria-hidden="true"></div>
+  <div class="wrap motto__inner">
+    <p class="motto__text" id="statement">Ausreden zählen nicht, aufgeben geht nicht. Wo ein Wille ist, ist immer ein Weg.</p>
+    <p class="motto__sign">Marc Lustenberger</p>
+  </div>
+</section>
+
+<!-- ============ ERFOLGE: KRANZ-BILANZ ============ -->
+<section class="kranz sec" id="erfolge">
+  <div class="wrap">
+    <div class="kranz__head">
+      <div>
+        <p class="eyebrow">Erfolge</p>
+        <h2 class="h2 rv">28 Kränze.<br>Jeder einzelne erarbeitet.</h2>
+      </div>
+      <p class="lead">Stand nach der Saison 2025. Dazu zwei Festsiege: Sachseln 2025 und das Innerschweizer in Arth 2026.</p>
+    </div>
+
+    <div class="kranz__board">
+      <div class="kranz__grid" id="kranz-grid" aria-hidden="true"></div>
+      <ul class="kranz__legend" id="kranz-legend">
+        <li data-type="eidg"><span class="kranz__swatch"></span><strong>1</strong> Eidgenössischer Kranz</li>
+        <li data-type="tv"><span class="kranz__swatch"></span><strong>6</strong> Teilverbandskränze</li>
+        <li data-type="berg"><span class="kranz__swatch"></span><strong>5</strong> Bergkränze</li>
+        <li data-type="kant"><span class="kranz__swatch"></span><strong>16</strong> Kantonalkränze</li>
+      </ul>
+    </div>
+
+    <div class="kranz__facts">
+      <div><strong data-count="2">2</strong><span>Festsiege<small>Sachseln 2025 · Arth 2026</small></span></div>
+      <div><strong data-count="8">8</strong><span>Schlussgänge<small>Stand Saison 2025</small></span></div>
+      <div><strong>15.</strong><span>Rang<small>Eidg. Jahreswertung 2025</small></span></div>
+      <div><strong>7.</strong><span>Rang<small>Unspunnen-Schwinget 2023</small></span></div>
+    </div>
   </div>
 </section>
 
@@ -170,63 +330,6 @@
         <button type="button" class="btn btn--blue arena__btn" id="start">Gang starten</button>
       </div>
       <p class="sr" id="game-status" role="status"></p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ERFOLGE ============ -->
-<section class="wins sec" id="erfolge">
-  <div class="wrap">
-    <div class="sec__head">
-      <p class="eyebrow">Erfolge</p>
-      <h2 class="h2 rv">Kranz um Kranz.</h2>
-    </div>
-
-    <div class="numbers rv-group">
-      <div class="num"><span class="num__v" data-count="1">1</span><span class="num__l">Eidgenössischer Kranz<small>ESAF 2025 Glarnerland+</small></span></div>
-      <div class="num"><span class="num__v" data-count="8">8</span><span class="num__l">Kränze<small>Saison 2025</small></span></div>
-      <div class="num"><span class="num__v" data-count="31">31</span><span class="num__l">Kränze total<small>Stand ESV-Portrait 2026</small></span></div>
-    </div>
-
-    <ol class="miles rv-group">
-      <li class="mile">
-        <img src="assets/img/action-2.jpg" alt="" loading="lazy">
-        <div class="mile__body">
-          <p class="mile__date"><time datetime="2025-06-01">01.06.2025</time> · Sachseln</p>
-          <h3>Erster Kranzfestsieg</h3>
-          <p>Ob- und Nidwaldner Kantonales: sechs Gänge, sechs Siege. Schlussgang gegen Jugendfreund Fabian Scherrer, gewonnen mit dem Wyberhaken. Siegermuni «Fredy».</p>
-        </div>
-      </li>
-      <li class="mile mile--hl">
-        <img src="assets/img/portrait-kranz.jpg" alt="" loading="lazy" class="mile__top">
-        <div class="mile__body">
-          <p class="mile__date"><time datetime="2025-08-31">30./31.08.2025</time> · Mollis</p>
-          <h3>Eidgenosse</h3>
-          <p>Am Eidgenössischen Schwing- und Älplerfest Glarnerland+ holt Marc das Eichenlaub. Das grosse Ziel der Saison.</p>
-        </div>
-      </li>
-      <li class="mile">
-        <img src="assets/img/action-3.jpg" alt="" loading="lazy">
-        <div class="mile__body">
-          <p class="mile__date"><time datetime="2026-07-05">05.07.2026</time> · Arth</p>
-          <h3>Innerschweizer Festsieg</h3>
-          <p>Schlussgang gegen Samuel Schwyzer, nach 14 Minuten gestellt. Zwei Festsieger, Marc im Rang 1a – sein bisher grösster Erfolg.</p>
-        </div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ============ MINDSET-BAND ============ -->
-<section class="band" aria-labelledby="band-title">
-  <img class="band__img" src="assets/img/sponsor-hero.jpg" alt="" loading="lazy">
-  <div class="band__shade" aria-hidden="true"></div>
-  <div class="wrap band__inner">
-    <h2 class="band__title" id="band-title"><span>Kraft.</span> <span>Technik.</span> <span>Kopf.</span></h2>
-    <div class="band__cols">
-      <p><strong>Kraft</strong> Ein Körper, der acht Gänge an zwei Tagen trägt. Aufgebaut über Jahre.</p>
-      <p><strong>Technik</strong> Griffe und Schwünge, tausendfach wiederholt – bis sie im Schlussgang sitzen.</p>
-      <p><strong>Kopf</strong> Ruhig bleiben, wenn es zählt. Einen verlorenen Gang abhaken und weiter.</p>
     </div>
   </div>
 </section>
@@ -271,34 +374,27 @@
   </div>
 </section>
 
-<!-- ============ SPONSOREN ============ -->
-<section class="sponsors sec" id="sponsoren">
+<!-- ============ PARTNER-TEASER ============ -->
+<section class="pteaser sec" id="partner">
   <div class="wrap">
-    <div class="sponsors__intro">
-      <div>
-        <p class="eyebrow">Sponsoren</p>
-        <h2 class="h2 rv">Gemeinsam<br>im Sägemehl.</h2>
+    <div class="pteaser__grid">
+      <div class="pteaser__text">
+        <p class="eyebrow">Partner</p>
+        <h2 class="h2 rv">Werde Teil<br>der Journey.</h2>
+        <p class="lead">«Falls ihr mich auf diesem Weg in den nächsten drei Jahren begleiten möchtet, würde ich mich sehr über ein persönliches Gespräch freuen.»</p>
+        <div class="pteaser__cta">
+          <a class="btn btn--blue" href="partner.html">Sponsoring-Pakete ansehen</a>
+          <a class="btn btn--line" href="#kontakt" data-topic="Sponsoring">Direkt anfragen</a>
+        </div>
       </div>
-      <p class="lead">Ohne Partner kein Kranz. Diese Betriebe, Marken und Institutionen tragen Marcs Weg mit – vom Entlebuch bis ans Eidgenössische.</p>
-    </div>
-
-    <div class="logo-marquee" aria-hidden="true"><div class="logo-marquee__track" id="marquee"></div></div>
-
-    <!-- wird aus main.js (SPONSORS) befüllt -->
-    <div class="tiers" id="tiers"></div>
-
-    <div class="collab">
-      <div class="collab__text">
-        <h3 class="h3">Partner werden</h3>
-        <p>Marc steht für Werte, die man in der Schweiz versteht: Einsatz, Fairness, Herkunft. Als Eidgenosse und Festsieger ist er ein glaubwürdiges Gesicht – auf dem Schwingplatz, an Anlässen und in den Medien.</p>
-        <a class="btn btn--blue" href="#kontakt" data-topic="Sponsoring">Sponsoring anfragen</a>
-      </div>
-      <ul class="collab__list">
-        <li><strong>Markenbotschafter</strong><span>Langfristig und mit Gesicht, für Marken, die zu Tradition und Leistung passen.</span></li>
-        <li><strong>Events &amp; Autogrammstunden</strong><span>Firmenanlässe, Kundenevents, Vereinsfeste – natürlich und ohne Allüren.</span></li>
-        <li><strong>Medien &amp; Content</strong><span>Interviews, Shootings und Social Content, authentisch statt inszeniert.</span></li>
+      <ul class="pteaser__tiers">
+        <li><strong>Hauptsponsor</strong><span>Logo auf Jacke und T-Shirts, Auto, Website, Social Media</span></li>
+        <li><strong>Co-Sponsor</strong><span>Logo auf Jacke und T-Shirts, Website, Social Media</span></li>
+        <li><strong>Partner</strong><span>Erwähnung auf Website und Social Media, Saisonrückblick</span></li>
       </ul>
     </div>
+    <p class="pteaser__thanks">Danke an alle, die Marc heute schon unterstützen:</p>
+    <div class="logo-marquee logo-marquee--show" aria-hidden="true"><div class="logo-marquee__track" id="marquee"></div></div>
   </div>
 </section>
 
@@ -327,6 +423,7 @@
       <p class="eyebrow eyebrow--light">Kontakt</p>
       <h2 class="h2 rv">Bereit für den<br>nächsten Gang?</h2>
       <p>Möchtest du Marc als Sponsor unterstützen, ihn für eine Autogrammstunde buchen oder Fanartikel bestellen? Melde dich unverbindlich.</p>
+      <a class="insta" href="https://www.instagram.com/marc_lustenberger/" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>@marc_lustenberger folgen</a>
       <div class="mail">
         <span class="mail__addr" id="mail">kontakt@marc-lustenberger.ch</span>
         <button type="button" class="mail__copy" id="copy">Kopieren</button>
@@ -494,6 +591,8 @@
       <span class="logo__type">Marc<br>Lustenberger</span>
     </a>
     <nav class="foot__links" aria-label="Weiterführende Links">
+      <a href="partner.html">Partner werden</a>
+      <a href="https://www.instagram.com/marc_lustenberger/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://esv.ch/schwingerportraets/Lustenberger_Marc_Hasle_LU/" target="_blank" rel="noopener">ESV-Portrait</a>
       <a href="https://marc-lustenberger.ch/impressum/" target="_blank" rel="noopener">Impressum</a>
     </nav>
@@ -505,6 +604,7 @@
 
 <!-- @artifact-body-end -->
 <script src="main.js"></script>
+<script src="journey.js"></script>
 <script src="form.js"></script>
 <script src="game.js"></script>
 </body>
