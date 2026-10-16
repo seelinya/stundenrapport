@@ -106,3 +106,12 @@ body.sw { background: #000; color: #fff; overflow-x: hidden; }
   .sw-chap__img img { transform: none; filter: saturate(.9); }
   .sw-chap__text { opacity: 1; transform: none; }
 }
+
+/* Foto statt reinem Schwarz (wie beim Startbild) */
+.sw-hero, .sw-outro { isolation: isolate; }
+.sw-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: grayscale(1) contrast(1.1) brightness(.42); }
+.sw-hero::after, .sw-outro::after { content: ""; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 70%), linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 30%); }
+.sw-outro::after { background: radial-gradient(ellipse at 50% 100%, rgba(79,107,127,.5), transparent 65%), linear-gradient(180deg, #000 0%, rgba(0,0,0,.2) 35%, rgba(0,0,0,.6) 100%); }
+.sw-outro { background: #000; }
+.sw-head__back { border-radius: 999px; border-width: 1px; }

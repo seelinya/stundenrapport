@@ -123,7 +123,7 @@
 
   // --- Fanartikel -------------------------------------------------------
   var products = document.getElementById("products");
-  PRODUCTS.forEach(function (p) {
+  if (products) PRODUCTS.forEach(function (p) {
     var li = el("li", "product");
     var img = el("img");
     img.src = "assets/img/" + p.img; img.alt = p.name; img.loading = "lazy";
@@ -148,8 +148,8 @@
 
   // --- Kontakt ----------------------------------------------------------
   var mail = document.getElementById("mail");
-  mail.textContent = CONTACT_EMAIL;
-  document.getElementById("copy").addEventListener("click", function (e) {
+  if (mail) mail.textContent = CONTACT_EMAIL;
+  if (mail && document.getElementById("copy")) document.getElementById("copy").addEventListener("click", function (e) {
     var btn = e.currentTarget;
     var fallback = function () {
       var r = document.createRange(); r.selectNodeContents(mail);
