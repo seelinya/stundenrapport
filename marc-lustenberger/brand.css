@@ -308,3 +308,19 @@ strong, b { font-weight: 900; }
 /* Fakten-Band dunkelblau */
 .m-facts { background: #2E4251; border-top: 0; }
 .m-facts dt { color: #B9C8D3; }
+
+/* Sponsoren: ohne Rand, mittig */
+.m-thanks { text-align: center; }
+.m-thanks .m-sub { text-align: center; }
+.tiers { justify-items: center; }
+.tier { grid-template-columns: 1fr !important; justify-items: center; gap: 12px; width: 100%; border-top: 0; padding-block: 16px; }
+.tier__name { padding-top: 0; text-align: center; }
+.tier__logos { display: flex !important; flex-wrap: wrap; justify-content: center; gap: 10px 18px; }
+.tier__logos li { width: 150px; }
+.tier--main .tier__logos li { width: 210px; }
+.logo-tile { border: 0 !important; background: transparent !important; }
+.logo-marquee__track img { border: 0 !important; background: transparent !important; }
+@media (max-width: 560px) {
+  .tier__logos li { width: calc(33.333% - 12px); }
+  .tier--main .tier__logos li { width: calc(50% - 9px); }
+}

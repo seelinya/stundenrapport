@@ -111,7 +111,7 @@
       var tile = el(s.url ? "a" : "div", "logo-tile");
       if (s.url) { tile.href = s.url; tile.target = "_blank"; tile.rel = "noopener"; }
       var img = el("img");
-      img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
+      img.src = "assets/logos/" + s.logo; img.alt = s.name; img.loading = "lazy";
       tile.title = s.name;
       tile.appendChild(img);
       li.appendChild(tile);
@@ -177,7 +177,7 @@
     var seen = {};
     SPONSORS.forEach(function (g) { g.items.forEach(function (s) {
       if (seen[s.logo]) return; seen[s.logo] = true;
-      var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = ""; marquee.appendChild(img);
+      var img = el("img"); img.src = "assets/logos/" + s.logo; img.alt = ""; marquee.appendChild(img);
     }); });
     marquee.innerHTML += marquee.innerHTML;
   }

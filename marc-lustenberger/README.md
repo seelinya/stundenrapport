@@ -15,7 +15,7 @@ stehen oben in der Datei (`LEVELS`, `DURATION`, `TAP`).
 Alles Wiederkehrende steht oben in `main.js`:
 
 - `CONTACT_EMAIL` – Kontaktadresse
-- `SPONSORS` – Sponsoren nach Kategorie (Logos in `assets/partner/`, optional mit `url`)
+- `SPONSORS` – Sponsoren nach Kategorie (Logos in `assets/logos/`, optional mit `url`)
 - `PRODUCTS` – Fanartikel mit Preis (`chf`), Grössen und Versandhinweis (Bilder in `assets/img/`)
 
 Das Kontakt- und Bestellformular steckt in `form.js`: Felder je Anliegen, Warenkorb mit
