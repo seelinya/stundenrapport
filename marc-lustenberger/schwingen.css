@@ -120,3 +120,8 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 .sw-game .arena[data-bare] { background: transparent; box-shadow: none !important; border-radius: 0; overflow: visible; }
 .sw-game .arena[data-bare] .arena__panel { background: transparent; border-top: 0; padding-inline: 0; }
 .sw-game .arena[data-bare] .arena__hud { color: var(--ink); }
+
+/* Spieltexte etwas heller */
+.sw-game .arena[data-bare] .arena__hud, .sw-game .arena[data-bare] .arena__timer { color: #7C8994; }
+.sw-game .arena[data-bare] .arena__ptitle { color: var(--blue); }
+.sw-game .arena[data-bare] .arena__ptext { color: #7C8994; }
