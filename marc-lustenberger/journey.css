@@ -465,3 +465,10 @@
 .step__media.ph { aspect-ratio: 4 / 3; }
 .who__photo img { object-position: 62% 30%; }
 @media (max-width: 600px) { .hl__item figcaption span { display: none; } }
+
+/* Original-Logo (Zeichen + Schriftzug) */
+.logo { align-items: center; }
+.logo__full { display: block; height: clamp(46px, 3.6vw, 62px); width: auto; aspect-ratio: 171 / 134; fill: currentColor; }
+.head.is-solid .logo__full { height: clamp(40px, 3vw, 52px); }
+.logo--foot .logo__full { height: clamp(64px, 5vw, 88px); }
+@media (max-width: 600px) { .logo__full { height: 42px; } .head.is-solid .logo__full { height: 38px; } }
