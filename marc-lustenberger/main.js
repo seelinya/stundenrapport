@@ -115,6 +115,22 @@
     tiers.appendChild(tier);
   });
 
+
+  // --- Sponsorenband auf jeder Seite -------------------------------------
+  var bar = document.getElementById("sponsor-bar");
+  if (bar) {
+    var shown = {};
+    SPONSORS.filter(function (g) { return g.main || g.tier === "Co-Sponsoren"; }).forEach(function (g) {
+      g.items.forEach(function (s) {
+        if (shown[s.logo]) return; shown[s.logo] = true;
+        var a = el(s.url ? "a" : "span", "sbar__logo" + (g.main ? " sbar__logo--main" : ""));
+        if (s.url) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
+        var img = el("img"); img.src = "assets/partner/" + s.logo; img.alt = s.name; img.loading = "lazy";
+        a.appendChild(img); bar.appendChild(a);
+      });
+    });
+  }
+
   // --- Fanartikel -------------------------------------------------------
   var products = document.getElementById("products");
   if (products) PRODUCTS.forEach(function (p) {

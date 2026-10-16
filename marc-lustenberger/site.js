@@ -228,6 +228,17 @@
   var PACKS = { "anfrage-hauptsponsor": "Hauptsponsor", "anfrage-cosponsor": "Co-Sponsor", "anfrage-partner": "Partner", "anfrage-sponsoring": "" };
   function prefill() {
     var key = (location.hash || "").slice(1);
+    if (key === "fanclub") {
+      var other = document.querySelector("input[name='topic'][value='Anderes']");
+      if (!other) return;
+      other.checked = true;
+      other.dispatchEvent(new Event("change", { bubbles: true }));
+      var m = document.getElementById("f-msg");
+      if (m && !m.value.trim()) m.value = "Ich interessiere mich für den Fanclub von Marc.\n\n";
+      var kk = document.getElementById("kontakt");
+      if (kk) setTimeout(function () { kk.scrollIntoView(); }, 60);
+      return;
+    }
     if (!(key in PACKS)) return;
     var radio = document.querySelector("input[name='topic'][value='Sponsoring']");
     if (!radio) return;

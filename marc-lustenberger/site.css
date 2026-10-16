@@ -613,3 +613,155 @@ body:has(.pghero:not(.pghero--img)) .head:not(.is-solid) .menu__cta:hover { back
 @media (min-width: 901px) { .fan--page .products { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
 @media (max-width: 860px) { .gal__grid--teaser { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ==========================================================================
+   Marcs Inputs: Plan, Saison, Sponsorenband, Werte, Partner
+   ========================================================================== */
+
+/* Navigation mit 7 Einträgen: früher ins Burger-Menü */
+@media (max-width: 1140px) {
+  .burger { display: flex; }
+  .menu {
+    position: fixed; inset: 0; z-index: -1;
+    flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px;
+    padding: 100px var(--gutter) 48px;
+    background: var(--blue); color: #fff;
+    transform: translateY(-100%); visibility: hidden;
+    transition: transform .4s cubic-bezier(.7,0,.2,1), visibility 0s linear .4s;
+  }
+  .menu.is-open { transform: none; visibility: visible; transition: transform .4s cubic-bezier(.7,0,.2,1), visibility 0s; }
+  .menu a { font-size: clamp(30px, 6vw, 48px); letter-spacing: .04em; min-height: 48px; }
+  .menu__cta { margin-top: 12px; font-size: 22px !important; }
+  body:has(.pghero:not(.pghero--img)) .head:not(.is-solid) .menu { color: #fff; }
+}
+
+/* Der Plan */
+.plan { background: var(--blue-deep); color: #fff; }
+.plan__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 60px; margin-bottom: clamp(36px, 4vw, 64px); }
+.plan .h2 { color: #fff; }
+.plan__lead { max-width: 30em; font-size: clamp(17px, .5vw + 14px, 22px); line-height: 1.55; color: #D3DEE6; font-style: italic; }
+.plan__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
+.plan__list::before { content: ""; position: absolute; left: 0; right: 0; top: 9px; height: 1px; background: rgba(255,255,255,.25); }
+.plan__list li { position: relative; display: grid; gap: 8px; align-content: start; padding: 36px 24px 0 0; }
+.plan__list li::before { content: ""; position: absolute; left: 0; top: 2px; width: 15px; height: 15px; border-radius: 50%; background: var(--blue-deep); border: 2px solid #9FB4C4; }
+.plan__year { font-family: var(--f-head); font-weight: 600; font-size: clamp(30px, 2.6vw, 48px); line-height: 1; color: #9FB4C4; }
+.plan__list strong { font-family: var(--f-head); font-weight: 700; font-size: clamp(20px, 1.5vw, 26px); text-transform: uppercase; letter-spacing: .03em; line-height: 1.15; }
+.plan__list em { font-style: normal; color: #C9D6E0; font-size: 16px; line-height: 1.5; }
+.plan__goal::before { background: #fff !important; border-color: #fff !important; box-shadow: 0 0 0 6px rgba(255,255,255,.15); }
+.plan__goal .plan__year { color: #fff; }
+.plan__base { margin-top: clamp(36px, 4vw, 60px); max-width: 52em; color: #C9D6E0; font-size: clamp(16px, .3vw + 14px, 19px); line-height: 1.65; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.15); }
+@media (max-width: 860px) {
+  .plan__list { grid-template-columns: 1fr; gap: 28px; padding-left: 30px; }
+  .plan__list::before { left: 7px; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+  .plan__list li { padding: 0; }
+  .plan__list li::before { left: -30px; top: 6px; }
+}
+
+/* Sponsorenband */
+.sbar { background: #fff; border-top: 1px solid var(--sand-line); }
+.sbar__inner { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 32px; padding-block: 22px; }
+.sbar__label { font-family: var(--f-head); font-weight: 700; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; white-space: nowrap; }
+.sbar__label:hover { color: var(--blue-dark); }
+.sbar__logos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; flex: 1; }
+.sbar__logo { display: block; }
+.sbar__logo img { height: 46px; width: auto; aspect-ratio: 177 / 101; mix-blend-mode: multiply; filter: grayscale(1); opacity: .8; transition: filter .3s, opacity .3s; }
+.sbar__logo--main img { height: 58px; }
+.sbar__logo:hover img { filter: none; opacity: 1; }
+@media (max-width: 600px) { .sbar__logo img { height: 38px; } .sbar__logo--main img { height: 46px; } }
+
+/* Saison */
+.season { background: #fff; }
+.season__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 32px; margin-bottom: clamp(24px, 3vw, 44px); }
+.more--inline { margin-top: 0; }
+.season__grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; }
+.season__grid--page { grid-template-columns: 1fr 1fr; }
+.season__news { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.season__side { display: grid; gap: 14px; }
+.season__title { font-family: var(--f-head); font-weight: 700; font-size: 18px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); margin-bottom: 4px; }
+.season__side .season__title + * { margin-bottom: 18px; }
+.cal__empty { display: grid; gap: 4px; padding: 18px 20px; background: var(--sand); border-radius: 6px; }
+.cal__empty strong { font-family: var(--f-head); font-weight: 700; font-size: 18px; letter-spacing: .04em; text-transform: uppercase; }
+.cal__empty span { color: var(--ink-soft); font-size: 15px; }
+.cal__list, .res__list, .media__list { list-style: none; margin: 0; padding: 0; display: grid; }
+.cal__item, .res__item { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--sand-line); }
+.cal__date { display: grid; justify-items: center; background: var(--blue-soft); border-radius: 6px; padding: 6px 0; }
+.cal__date b { font-family: var(--f-head); font-size: 26px; line-height: 1; color: var(--blue-dark); }
+.cal__date span { font-size: 12.5px; font-weight: 700; text-transform: uppercase; color: var(--ink-soft); }
+.cal__info, .res__info { display: grid; gap: 2px; }
+.cal__info strong, .res__info strong { font-weight: 700; color: var(--ink); line-height: 1.3; }
+.cal__info span, .res__info span { font-size: 14.5px; color: var(--ink-soft); }
+.res__info em { font-style: normal; font-size: 14.5px; color: var(--blue-dark); }
+.res__rank { font-family: var(--f-head); font-weight: 800; font-size: 26px; line-height: 1; color: var(--blue); text-align: center; }
+.media { background: var(--sand); }
+.media__list { margin-top: clamp(20px, 2.4vw, 36px); border-top: 1px solid var(--sand-line); }
+.media__item { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--sand-line); text-decoration: none; color: var(--ink); }
+.media__item:hover strong { color: var(--blue-dark); text-decoration: underline; }
+.media__src { font-family: var(--f-head); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: 14px; color: var(--blue); }
+.media__item strong { font-size: clamp(16px, .3vw + 14px, 19px); line-height: 1.35; }
+.media__date { font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+@media (max-width: 960px) { .season__grid, .season__grid--page { grid-template-columns: 1fr; } .season__news { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) {
+  .season__news { grid-template-columns: 1fr; }
+  .media__item { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* Über Marc: Schalter */
+.switch { display: grid; grid-template-columns: 1fr 1fr; background: #fff; }
+.switch__half { padding: clamp(60px, 9vw, 140px) var(--gutter); display: grid; gap: 10px; align-content: center; }
+.switch__half--ring { background: var(--blue-deep); color: #fff; justify-items: end; text-align: right; }
+.switch__half--evening { background: var(--blue-soft); color: var(--ink); }
+.switch__tag { font-family: var(--f-head); font-weight: 700; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; opacity: .7; }
+.switch__text { font-family: var(--f-head); font-weight: 800; text-transform: uppercase; font-size: clamp(28px, 3.4vw, 60px); line-height: 1.05; max-width: 12ch; }
+.switch__caption { grid-column: 1 / -1; padding-block: clamp(28px, 3vw, 44px); font-size: clamp(17px, .5vw + 14px, 22px); line-height: 1.55; color: var(--ink-soft); font-style: italic; text-align: center; max-width: 52em; }
+@media (max-width: 600px) { .switch { grid-template-columns: 1fr; } .switch__half--ring { justify-items: start; text-align: left; } }
+
+/* Werte */
+.values5 { background: #fff; padding-top: 0; }
+.values5__list { list-style: none; margin: clamp(24px, 3vw, 44px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
+.values5__list li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 2px solid var(--blue); }
+.values5__list strong { font-family: var(--f-head); font-weight: 800; text-transform: uppercase; font-size: clamp(20px, 1.6vw, 28px); letter-spacing: .02em; }
+.values5__list span { color: var(--ink-soft); font-size: 15.5px; line-height: 1.5; }
+@media (max-width: 960px) { .values5__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .values5__list { grid-template-columns: 1fr; } }
+
+/* Rücken */
+.back { background: var(--sand); }
+.back__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(28px, 5vw, 90px); align-items: start; }
+.back__text { display: grid; gap: 18px; }
+.back__quote { font-family: var(--f-head); font-weight: 600; font-size: clamp(22px, 2vw, 34px); line-height: 1.25; color: var(--ink); }
+.back__text p:not(.back__quote) { color: var(--ink-soft); font-size: clamp(16px, .35vw + 14px, 20px); line-height: 1.65; }
+@media (max-width: 860px) { .back__grid { grid-template-columns: 1fr; } }
+
+/* Prägung */
+.people { background: #fff; }
+.people__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 48px); margin-top: clamp(24px, 3vw, 44px); }
+.people__grid article { display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--sand-line); }
+.people__grid h3 { font-family: var(--f-head); font-weight: 700; font-size: clamp(22px, 1.6vw, 28px); text-transform: uppercase; letter-spacing: .03em; }
+.people__grid p { color: var(--ink-soft); line-height: 1.6; }
+.people__said { margin-top: clamp(40px, 5vw, 70px); padding: clamp(24px, 3vw, 44px); background: var(--blue-soft); border-radius: 8px; display: grid; gap: 10px; }
+.people__label { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+.people__words { font-family: var(--f-head); font-weight: 600; font-size: clamp(20px, 1.8vw, 30px); line-height: 1.35; color: var(--blue-dark); text-transform: uppercase; letter-spacing: .03em; }
+.people__quote { font-style: italic; color: var(--ink); font-size: clamp(16px, .4vw + 14px, 20px); }
+.people__quote span { font-style: normal; color: var(--ink-soft); font-size: 15px; }
+@media (max-width: 760px) { .people__grid { grid-template-columns: 1fr; } }
+
+/* Partner: Möglichkeiten und Vertrauen */
+.offer { background: var(--sand); }
+.offer__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(28px, 5vw, 90px); align-items: start; }
+.offer__note { margin-top: 16px; color: var(--ink-soft); max-width: 30em; }
+.offer__list { list-style: none; margin: 0; padding: 0; display: grid; }
+.offer__list li { padding: 16px 0 16px 34px; border-bottom: 1px solid var(--sand-line); position: relative; font-size: clamp(16px, .35vw + 14px, 20px); color: var(--ink); }
+.offer__list li::before { content: ""; position: absolute; left: 0; top: 50%; width: 18px; height: 2px; background: var(--blue); }
+.trust { background: #fff; }
+.trust__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(28px, 5vw, 90px); align-items: start; }
+.trust__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.trust__list li { display: grid; gap: 4px; }
+.trust__list strong { font-family: var(--f-head); font-weight: 700; font-size: clamp(20px, 1.5vw, 26px); text-transform: uppercase; letter-spacing: .03em; }
+.trust__list span { color: var(--ink-soft); }
+@media (max-width: 860px) { .offer__grid, .trust__grid { grid-template-columns: 1fr; } }
+
+/* Fanclub */
+.fanclub { background: var(--blue); color: #fff; }
+.fanclub__grid { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px 60px; }
+.fanclub .h2 { color: #fff; }
+.fanclub p:not(.eyebrow) { margin-top: 12px; max-width: 34em; color: #E6EDF2; font-size: clamp(16px, .4vw + 14px, 20px); line-height: 1.6; }
