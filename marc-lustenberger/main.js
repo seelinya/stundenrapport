@@ -222,7 +222,7 @@
       if (!p.noOrder) {
         var a = el("a", "btn m-btn m-btn--line p3d__btn", "Bestellen");
         if (external) a.href = "index.html#bestellen-" + p.id;
-        else { a.href = "#kontakt"; a.setAttribute("data-product", p.id); }
+        else { var fs = document.getElementById("form"); a.href = "#" + ((fs && fs.closest("section") && fs.closest("section").id) || "kontakt"); a.setAttribute("data-product", p.id); }
         body.appendChild(a);
       }
       card.appendChild(body);

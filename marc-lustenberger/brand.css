@@ -759,3 +759,7 @@ body { font-weight: 400; }
 
 /* Zitat-Band: Schwingbild schwarz-weiss und zurückhaltend im Hintergrund */
 .m-band__img { filter: grayscale(1) contrast(1.05) brightness(.38) !important; object-position: 50% 45%; }
+
+/* Fanshop: Bestellformular direkt auf der Seite, nur Fanartikel */
+.fs-order .form__topics { display: none; }
+.fs-order .contact__grid { padding-block: clamp(70px, 9vw, 130px); }
