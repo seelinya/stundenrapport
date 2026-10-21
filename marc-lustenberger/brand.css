@@ -754,3 +754,4 @@ body { font-weight: 400; }
 .m-about__photo:hover img, .m-spons__photo:hover img, .m-life__grid figure:hover img, .m-card:hover .m-card__img img,
 .m-newsitem:hover .m-newsitem__img, .sp-collage img:hover, .sp-tiles li:hover img {
   filter: saturate(.9) contrast(1.04) !important; transform: scale(1.04); }
+.mail__addr { color: inherit; text-decoration: none; } .mail__addr:hover { text-decoration: underline; }
