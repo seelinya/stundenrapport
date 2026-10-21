@@ -125,3 +125,12 @@ body.sw { background: #fff; color: var(--ink); overflow-x: hidden; }
 .sw-game .arena[data-bare] .arena__hud, .sw-game .arena[data-bare] .arena__timer { color: #7C8994; }
 .sw-game .arena[data-bare] .arena__ptitle { color: var(--blue); }
 .sw-game .arena[data-bare] .arena__ptext { color: #7C8994; }
+
+/* Spiel untereinander: Intro oben, Spielfeld volle Breite */
+.sw-game .game__grid { grid-template-columns: 1fr; gap: clamp(24px, 3vw, 44px); justify-items: center; }
+.sw-game .game__intro { display: grid; justify-items: center; text-align: center; max-width: 640px; }
+.sw-game .game__intro .sw-h2 { margin-bottom: 12px; }
+.sw-game .game__levels { justify-content: center; }
+.sw-game .arena { width: 100%; max-width: 1080px; }
+.sw-game .arena[data-bare] .arena__stage { overflow: hidden; }
+.sw-game .arena[data-bare] canvas { margin-top: -14%; }
