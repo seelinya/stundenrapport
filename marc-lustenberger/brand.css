@@ -746,3 +746,11 @@ body { font-weight: 400; }
 
 /* Bilder ohne abgerundete Ecken – nur Buttons bleiben rund */
 .p3d__stage, .p3d__stage img, .m-next, .m-newsitem__img, .vid, .sp-collage img, .sp-tiles li, .ac, .m-cal__date { border-radius: 0 !important; }
+
+/* Hover wie auf «Schwing gegen mich»: schwarz-weiss, beim Hovern farbig und leicht gezoomt */
+.m-about__photo, .m-spons__photo, .m-life__grid figure, .m-card__img { overflow: hidden; }
+.m-about__photo img, .m-spons__photo img, .m-life__grid img, .m-card__img img, .m-newsitem__img, .sp-collage img, .sp-tiles img {
+  filter: grayscale(1) !important; transition: filter .6s ease, transform .9s cubic-bezier(.2,.7,.2,1) !important; }
+.m-about__photo:hover img, .m-spons__photo:hover img, .m-life__grid figure:hover img, .m-card:hover .m-card__img img,
+.m-newsitem:hover .m-newsitem__img, .sp-collage img:hover, .sp-tiles li:hover img {
+  filter: saturate(.9) contrast(1.04) !important; transform: scale(1.04); }
