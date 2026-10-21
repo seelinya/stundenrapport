@@ -390,6 +390,14 @@
     updS();
   }
 
+  // Hero: heller Lichtschein folgt der Maus (wie auf «Schwing gegen mich»)
+  var heroEl = document.querySelector(".m-hero");
+  if (heroEl && heroEl.querySelector(".m-spot")) heroEl.addEventListener("pointermove", function (e) {
+    var r = heroEl.getBoundingClientRect();
+    heroEl.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    heroEl.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }, { passive: true });
+
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
 })();
