@@ -783,3 +783,6 @@ body { font-weight: 400; }
 }
 @keyframes m-arrive { from { opacity: 0; scale: 1.12; filter: grayscale(1) brightness(.4); } to { opacity: 1; scale: 1; } }
 @keyframes m-glow { from { opacity: 0; } to { opacity: 1; } }
+
+/* Bildlegende innerhalb des Fotos, damit sie nicht abgeschnitten wird */
+.m-spons__photo figcaption, .sp-proof figcaption { left: 0 !important; bottom: 0 !important; right: auto; }
