@@ -755,3 +755,4 @@ body { font-weight: 400; }
 .m-newsitem:hover .m-newsitem__img, .sp-collage img:hover, .sp-tiles li:hover img {
   filter: saturate(.9) contrast(1.04) !important; transform: scale(1.04); }
 .mail__addr { color: inherit; text-decoration: none; } .mail__addr:hover { text-decoration: underline; }
+.sp-cta__btns { margin-top: 30px; }
