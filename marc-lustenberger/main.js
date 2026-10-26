@@ -270,7 +270,8 @@
   var marquee = document.getElementById("marquee");
   if (marquee) {
     var seen = {};
-    SPONSORS.forEach(function (g) { g.items.forEach(function (s) {
+    var onlyTop = marquee.hasAttribute("data-top"); // nur Haupt- und Co-Sponsoren
+    SPONSORS.filter(function (g) { return !onlyTop || g.main || g.tier === "Co-Sponsoren"; }).forEach(function (g) { g.items.forEach(function (s) {
       if (seen[s.logo]) return; seen[s.logo] = true;
       var img = el("img"); img.src = "assets/logos/" + s.logo; img.alt = ""; marquee.appendChild(img);
     }); });

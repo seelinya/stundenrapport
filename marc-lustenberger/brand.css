@@ -786,3 +786,12 @@ body { font-weight: 400; }
 
 /* Bildlegende innerhalb des Fotos, damit sie nicht abgeschnitten wird */
 .m-spons__photo figcaption, .sp-proof figcaption { left: 0 !important; bottom: 0 !important; right: auto; }
+
+/* Sponsorenband (Haupt- und Co-Sponsoren) über den Einblicken */
+.m-sbar { padding: 26px 0; border-top: 1px solid var(--sand-line); background: #fff; }
+.m-sbar .logo-marquee { display: block !important; }
+.m-sbar .logo-marquee__track { animation: marquee 35s linear infinite; }
+.m-sbar .logo-marquee__track img { width: 170px; background: transparent !important; filter: grayscale(1); opacity: .75; }
+.m-sbar .logo-marquee__track img:hover { filter: none; opacity: 1; }
+@media (max-width: 560px) { .m-sbar .logo-marquee__track img { width: 120px; } }
+@media (prefers-reduced-motion: reduce) { .m-sbar .logo-marquee__track { animation: none; } .m-sbar .logo-marquee { overflow-x: auto; } }
