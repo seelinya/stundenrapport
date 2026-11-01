@@ -722,7 +722,7 @@ body, p, .m-newsitem__text, .m-row__sub, .m-next__place, .m-card__body span, .sw
 /* 9 Button */
 .btn, .m-btn, .menu a, .menu .menu__cta, .sw-head__back, .product__order, .mail__copy, .arena__btn, .m-foot__links a {
   font-size: var(--t-btn) !important; font-weight: 900 !important; letter-spacing: .14em !important; text-transform: uppercase !important; }
-@media (max-width: 1140px) { .menu a:not(.menu__cta) { font-size: clamp(24px, 6vw, 34px) !important; letter-spacing: 0 !important; } }
+@media (max-width: 920px) { .menu a:not(.menu__cta) { font-size: clamp(24px, 6vw, 34px) !important; letter-spacing: 0 !important; } }
 @media (max-width: 860px) {
   .fs-card__grid { grid-template-columns: minmax(0, 1fr); }
   .fs-card__visual { min-height: 0; aspect-ratio: 4 / 3; }
