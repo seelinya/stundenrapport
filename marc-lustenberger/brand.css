@@ -795,3 +795,8 @@ body { font-weight: 400; }
 .m-sbar .logo-marquee__track img:hover { filter: none; opacity: 1; }
 @media (max-width: 560px) { .m-sbar .logo-marquee__track img { width: 120px; } }
 @media (prefers-reduced-motion: reduce) { .m-sbar .logo-marquee__track { animation: none; } .m-sbar .logo-marquee { overflow-x: auto; } }
+
+/* Hero-Spruch auf Desktop in einer Zeile */
+@media (min-width: 1000px) {
+  .m-hero__quote blockquote { max-width: none !important; white-space: nowrap; font-size: clamp(18px, 1.55vw, 30px) !important; }
+}
