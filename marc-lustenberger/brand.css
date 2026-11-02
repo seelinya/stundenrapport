@@ -801,3 +801,5 @@ body { font-weight: 400; }
   .m-hero__quote blockquote { max-width: none !important; white-space: nowrap; font-size: clamp(18px, 1.55vw, 30px) !important; }
 }
 .sp-thanks { margin: -6px 0 22px; color: #5B656E; max-width: 34em; }
+.m-spons__sub { margin: clamp(26px, 3vw, 40px) 0 0; font-weight: 900; text-transform: uppercase; font-size: var(--t-h3); line-height: 1.2; }
+.m-spons .m-lead { margin-top: 12px; }
