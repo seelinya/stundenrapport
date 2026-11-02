@@ -803,3 +803,14 @@ body { font-weight: 400; }
 .sp-thanks { margin: -6px 0 22px; color: #5B656E; max-width: 34em; }
 .m-spons__sub { margin: clamp(26px, 3vw, 40px) 0 0; font-weight: 900; text-transform: uppercase; font-size: var(--t-h3); line-height: 1.2; }
 .m-spons .m-lead { margin-top: 12px; }
+
+/* Impressum */
+.imp-body { padding-bottom: clamp(70px, 9vw, 130px); }
+.imp-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: clamp(32px, 6vw, 100px); align-items: start; }
+.imp-side { padding-top: 4px; border-top: 2px solid var(--black); }
+.imp-side .m-sub, .imp-text .m-sub { margin: 22px 0 10px; }
+.imp-side a, .imp-text a { color: var(--blue-dark); }
+.imp-text .m-sub:first-child { margin-top: 22px; }
+.imp-text { border-top: 1px solid var(--sand-line); }
+.imp-text p { max-width: 42em; color: #3E464E; }
+@media (max-width: 760px) { .imp-grid { grid-template-columns: 1fr; } }
