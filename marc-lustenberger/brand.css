@@ -800,3 +800,4 @@ body { font-weight: 400; }
 @media (min-width: 1000px) {
   .m-hero__quote blockquote { max-width: none !important; white-space: nowrap; font-size: clamp(18px, 1.55vw, 30px) !important; }
 }
+.sp-thanks { margin: -6px 0 22px; color: #5B656E; max-width: 34em; }
