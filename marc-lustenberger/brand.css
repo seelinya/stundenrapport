@@ -814,3 +814,7 @@ body { font-weight: 400; }
 .imp-text { border-top: 1px solid var(--sand-line); }
 .imp-text p { max-width: 42em; color: #3E464E; }
 @media (max-width: 760px) { .imp-grid { grid-template-columns: 1fr; } }
+
+/* Kein einzelnes Wort auf der letzten Zeile */
+.sp-quote, .sp-hero__lead, .m-lead, .m-band__text { text-wrap: pretty; }
+.sp-cta .sp-quote { text-wrap: balance; max-width: 38em; }
