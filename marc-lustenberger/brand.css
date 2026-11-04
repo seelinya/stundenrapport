@@ -818,3 +818,10 @@ body { font-weight: 400; }
 /* Kein einzelnes Wort auf der letzten Zeile */
 .sp-quote, .sp-hero__lead, .m-lead, .m-band__text { text-wrap: pretty; }
 .sp-cta .sp-quote { text-wrap: balance; max-width: 38em; }
+
+/* Vier Pakete */
+.m-packs--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.m-packs--4 .m-pack h3 { font-size: clamp(20px, 1.5vw, 26px) !important; hyphens: manual; overflow-wrap: normal; }
+@media (max-width: 1180px) { .m-packs--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; } }
+@media (max-width: 640px) { .m-packs--4 { grid-template-columns: 1fr; } }
+.m-pack ul { align-content: start; }
