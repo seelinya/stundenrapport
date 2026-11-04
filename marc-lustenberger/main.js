@@ -363,6 +363,29 @@
   }
 
   // Paket-Buttons: Kontaktformular mit dem gewählten Paket vorbereiten
+  function prefillPack(name) {
+    var topic = document.getElementById("t-spons");
+    if (topic && !topic.checked) { topic.checked = true; topic.dispatchEvent(new Event("change", { bubbles: true })); }
+    var spons = document.getElementById("i-spons");
+    if (spons && !spons.checked) { spons.checked = true; spons.dispatchEvent(new Event("change", { bubbles: true })); }
+    var msg = document.getElementById("f-msg");
+    if (msg && !msg.value.trim()) msg.value = "Hoi Marc, mich interessiert das Paket «" + name + "». Lass uns gerne bei einem Kafi darüber reden.";
+  }
+  // Von der Sponsoring-Seite: index.html?paket=…#kontakt füllt das Formular vor
+  try {
+    var paket = new URLSearchParams(location.search).get("paket");
+    if (paket && document.getElementById("form")) {
+      prefillPack(paket);
+      var kk2 = document.getElementById("kontakt");
+      if (kk2) {
+        var go = function () { kk2.scrollIntoView(); };
+        setTimeout(go, 80);
+        window.addEventListener("load", function () { setTimeout(go, 50); });
+        [400, 1000].forEach(function (t) { setTimeout(go, t); });
+      }
+    }
+  } catch (err) {}
+
   document.querySelectorAll("[data-pack]").forEach(function (a) {
     a.addEventListener("click", function () {
       var topic = document.getElementById("t-spons");
